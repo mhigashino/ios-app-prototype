@@ -900,6 +900,7 @@
     const active = document.querySelector('.tab-item.active');
     if (active) prevTab = active.getAttribute('onclick').match(/'(\w+)'/)[1];
     switchTab('search', btn);
+    document.querySelector('.search-content-scroll').scrollTop = 0;
     document.getElementById('search-input').focus();
   }
 
