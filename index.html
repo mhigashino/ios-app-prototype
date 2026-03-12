@@ -435,23 +435,18 @@
       flex: 1;
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
-      padding-bottom: 100px; /* tab bar clearance */
+      padding-bottom: 100px;
     }
 
     .history-section-header {
-      font-size: 12px;
+      font-size: 17px;
       font-weight: 600;
-      color: #888;
-      padding: 8px 16px 6px;
-      letter-spacing: 0.3px;
-      text-transform: uppercase;
+      color: #666;
+      padding: 24px 16px 8px;
     }
 
     .history-list {
       background: #fff;
-      border-radius: 14px;
-      margin: 0 16px;
-      overflow: hidden;
     }
 
     .history-row { background: #fff; }
@@ -460,8 +455,8 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 12px 14px;
-      gap: 10px;
+      padding: 16px;
+      gap: 12px;
     }
 
     .history-text {
@@ -474,8 +469,9 @@
 
     .history-title {
       font-size: 14px;
-      font-weight: 500;
-      color: #111;
+      font-weight: 400;
+      color: #333;
+      line-height: 1.4;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -483,7 +479,8 @@
 
     .history-subtitle {
       font-size: 12px;
-      color: #999;
+      color: #666;
+      line-height: 1.4;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -493,38 +490,37 @@
       display: flex;
       align-items: center;
       gap: 2px;
-      margin-top: 1px;
       font-size: 11px;
+      line-height: 1.4;
       white-space: nowrap;
     }
 
     .badge-count {
-      color: #e53935;
-      font-weight: 600;
+      color: #0095ee;
     }
 
     .badge-sort {
       display: inline-flex;
       align-items: center;
-      gap: 1px;
       color: #666;
     }
 
     .history-icons {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 16px;
       flex-shrink: 0;
     }
 
     .history-icons svg {
-      fill: #aaa;
+      fill: #333;
+      opacity: 0.7;
     }
 
     .history-separator {
       height: 0.5px;
-      background: rgba(0,0,0,0.1);
-      margin: 0 14px;
+      background: #ccc;
+      margin: 0 16px;
     }
   </style>
 </head>
@@ -543,15 +539,15 @@
     <div class="filter-chip-bar">
       <div class="chip chip-active">おすすめ</div>
       <div class="chip">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M11 9H9V2H7v7H5V2H3v7c0 2.12 1.66 3.84 3.75 3.97V22h2.5v-9.03C11.34 12.84 13 11.12 13 9V2h-2v7zm5-3v8h2.5v8H21V2c-2.76 0-5 2.24-5 4z" fill="#333"/></svg>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="#333"><path d="M11 9H9V2H7v7H5V2H3v7c0 2.12 1.66 3.84 3.75 3.97V22h2.5v-9.03C11.34 12.84 13 11.12 13 9V2h-2v7zm5-3v8h2.5v8H21V2c-2.76 0-5 2.24-5 4z"/></svg>
         食品・飲料
       </div>
       <div class="chip">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z" fill="#333"/></svg>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="#333"><path d="M16.5 3.5c-.55 0-1.05.22-1.41.58l-2.3 2.3-1.13-1.13 1.42-1.42-1.41-1.41-1.42 1.42-1.41-1.42-2.83 2.83 1.41 1.41-5.67 5.67C1.24 12.74 1 13.36 1 14c0 1.66 1.34 3 3 3 .64 0 1.26-.24 1.71-.69l5.66-5.66 1.42 1.42-5.38 5.38C6.79 17.77 6.44 18 6 18H5v2h8v-2h-3.79l6.37-6.37 1.41 1.41-1.42 1.42 1.41 1.41 2.83-2.83-1.41-1.41 1.41-1.42-1.41-1.41-1.42 1.41-1.13-1.13 2.3-2.3c.36-.36.58-.86.58-1.41 0-1.1-.9-2-2-2z"/></svg>
         ファッション
       </div>
       <div class="chip">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 6h-2.18c.07-.44.18-.86.18-1.3C18 2.12 15.88 0 13.3 0c-1.3 0-2.4.5-3.2 1.6L12 4 9.9 1.6C9.1.5 8 0 6.7 0 4.12 0 2 2.12 2 4.7c0 .44.1.86.18 1.3H0v2h.5L3 19c.2 1.1 1.2 2 2.33 2h13.34C19.8 21 20.8 20.1 21 19l2.5-11H24V6h-4zm-9 11H9l-1-5h3v5zm4 0h-2v-5h3l-1 5z" fill="#333"/></svg>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="#333"><path d="M20 6h-2.18c.07-.44.18-.86.18-1.3C18 2.12 15.88 0 13.3 0c-1.3 0-2.4.5-3.2 1.6L12 4 9.9 1.6C9.1.5 8 0 6.7 0 4.12 0 2 2.12 2 4.7c0 .44.1.86.18 1.3H0v2h.5L3 19c.2 1.1 1.2 2 2.33 2h13.34C19.8 21 20.8 20.1 21 19l2.5-11H24V6h-4zm-9 11H9l-1-5h3v5zm4 0h-2v-5h3l-1 5z"/></svg>
         トレカ
       </div>
     </div>
@@ -566,11 +562,11 @@
           <div class="history-row-content">
             <div class="history-text">
               <span class="history-title">ロレックス エクスプローラー1</span>
-              <span class="history-badge"><span class="badge-count">99+新製品</span><span class="badge-sort">(新しい順<svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M12 5.83L15.17 9l1.41-1.41L12 3 7.41 7.59 8.83 9 12 5.83zm0 12.34L8.83 15l-1.41 1.41L12 21l4.59-4.59L15.17 15 12 18.17z" fill="#666"/></svg>)</span></span>
+              <span class="history-badge"><span class="badge-count">99+新製品</span><span class="badge-sort">　(新しい順<svg width="11" height="11" viewBox="0 0 24 24" fill="#666"><path d="M12 5.83L15.17 9l1.41-1.41L12 3 7.41 7.59 8.83 9 12 5.83zm0 12.34L8.83 15l-1.41 1.41L12 21l4.59-4.59L15.17 15 12 18.17z"/></svg>)</span></span>
             </div>
             <div class="history-icons">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z" fill="#333"/></svg>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" fill="#333"/></svg>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="#333"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="#333"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
             </div>
           </div>
           <div class="history-separator"></div>
@@ -584,8 +580,8 @@
               <span class="history-subtitle">レディーズハイヒール・パンプス</span>
             </div>
             <div class="history-icons">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z" fill="#333"/></svg>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" fill="#333"/></svg>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="#333"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="#333"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
             </div>
           </div>
           <div class="history-separator"></div>
@@ -595,12 +591,12 @@
         <div class="history-row">
           <div class="history-row-content">
             <div class="history-text">
-              <span class="history-title">jill sander Tシャツ</span>
-              <span class="history-badge"><span class="badge-count">99+新製品</span><span class="badge-sort">(新しい順<svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M12 5.83L15.17 9l1.41-1.41L12 3 7.41 7.59 8.83 9 12 5.83zm0 12.34L8.83 15l-1.41 1.41L12 21l4.59-4.59L15.17 15 12 18.17z" fill="#666"/></svg>)</span></span>
+              <span class="history-title">jill sanderTシャツ</span>
+              <span class="history-badge"><span class="badge-count">99+新製品</span><span class="badge-sort">　(新しい順<svg width="11" height="11" viewBox="0 0 24 24" fill="#666"><path d="M12 5.83L15.17 9l1.41-1.41L12 3 7.41 7.59 8.83 9 12 5.83zm0 12.34L8.83 15l-1.41 1.41L12 21l4.59-4.59L15.17 15 12 18.17z"/></svg>)</span></span>
             </div>
             <div class="history-icons">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z" fill="#333"/></svg>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" fill="#333"/></svg>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="#333"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="#333"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
             </div>
           </div>
           <div class="history-separator"></div>
@@ -613,8 +609,8 @@
               <span class="history-title">スリコ ハンモック キャンプ</span>
             </div>
             <div class="history-icons">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z" fill="#333"/></svg>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" fill="#333"/></svg>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="#333"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="#333"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
             </div>
           </div>
           <div class="history-separator"></div>
@@ -624,13 +620,12 @@
         <div class="history-row">
           <div class="history-row-content">
             <div class="history-text">
-              <span class="history-title">pearl drums miniature collection</span>
-              <span class="history-subtitle">カプセルトイ・ガチャガチャ</span>
-              <span class="history-badge"><span class="badge-count">99+新製品</span><span class="badge-sort">(新しい順<svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M12 5.83L15.17 9l1.41-1.41L12 3 7.41 7.59 8.83 9 12 5.83zm0 12.34L8.83 15l-1.41 1.41L12 21l4.59-4.59L15.17 15 12 18.17z" fill="#666"/></svg>)</span></span>
+              <span class="history-title">jill sanderTシャツ</span>
+              <span class="history-subtitle">レディーズ</span>
             </div>
             <div class="history-icons">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z" fill="#333"/></svg>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" fill="#333"/></svg>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="#333"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="#333"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
             </div>
           </div>
           <div class="history-separator"></div>
@@ -640,13 +635,73 @@
         <div class="history-row">
           <div class="history-row-content">
             <div class="history-text">
-              <span class="history-title">iPhone 16 pro max 512gb</span>
-              <span class="history-subtitle">スマートフォン本体</span>
-              <span class="history-badge"><span class="badge-count">99+新製品</span><span class="badge-sort">(新しい順<svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M12 5.83L15.17 9l1.41-1.41L12 3 7.41 7.59 8.83 9 12 5.83zm0 12.34L8.83 15l-1.41 1.41L12 21l4.59-4.59L15.17 15 12 18.17z" fill="#666"/></svg>)</span></span>
+              <span class="history-title">pearl drums miniature collection</span>
+              <span class="history-subtitle">カプセルトイ・ガチャガチャ</span>
+              <span class="history-badge"><span class="badge-count">99+新製品</span><span class="badge-sort">　(新しい順<svg width="11" height="11" viewBox="0 0 24 24" fill="#666"><path d="M12 5.83L15.17 9l1.41-1.41L12 3 7.41 7.59 8.83 9 12 5.83zm0 12.34L8.83 15l-1.41 1.41L12 21l4.59-4.59L15.17 15 12 18.17z"/></svg>)</span></span>
             </div>
             <div class="history-icons">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z" fill="#333"/></svg>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" fill="#333"/></svg>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="#333"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="#333"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+            </div>
+          </div>
+          <div class="history-separator"></div>
+        </div>
+
+        <!-- Row 7 -->
+        <div class="history-row">
+          <div class="history-row-content">
+            <div class="history-text">
+              <span class="history-title">スリコ ハンモック キャンプ</span>
+              <span class="history-badge"><span class="badge-count">99+新製品</span><span class="badge-sort">　(新しい順<svg width="11" height="11" viewBox="0 0 24 24" fill="#666"><path d="M12 5.83L15.17 9l1.41-1.41L12 3 7.41 7.59 8.83 9 12 5.83zm0 12.34L8.83 15l-1.41 1.41L12 21l4.59-4.59L15.17 15 12 18.17z"/></svg>)</span></span>
+            </div>
+            <div class="history-icons">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="#333"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="#333"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+            </div>
+          </div>
+          <div class="history-separator"></div>
+        </div>
+
+        <!-- Row 8 -->
+        <div class="history-row">
+          <div class="history-row-content">
+            <div class="history-text">
+              <span class="history-title">磁器のティーポット</span>
+            </div>
+            <div class="history-icons">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="#333"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="#333"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+            </div>
+          </div>
+          <div class="history-separator"></div>
+        </div>
+
+        <!-- Row 9 -->
+        <div class="history-row">
+          <div class="history-row-content">
+            <div class="history-text">
+              <span class="history-title">jill sanderTシャツ</span>
+              <span class="history-subtitle">レディーズ</span>
+            </div>
+            <div class="history-icons">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="#333"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="#333"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+            </div>
+          </div>
+          <div class="history-separator"></div>
+        </div>
+
+        <!-- Row 10 -->
+        <div class="history-row">
+          <div class="history-row-content">
+            <div class="history-text">
+              <span class="history-title">iPhone 16 pro max 512gb</span>
+              <span class="history-subtitle">スマートフォン本体</span>
+              <span class="history-badge"><span class="badge-count">99+新製品</span><span class="badge-sort">　(新しい順<svg width="11" height="11" viewBox="0 0 24 24" fill="#666"><path d="M12 5.83L15.17 9l1.41-1.41L12 3 7.41 7.59 8.83 9 12 5.83zm0 12.34L8.83 15l-1.41 1.41L12 21l4.59-4.59L15.17 15 12 18.17z"/></svg>)</span></span>
+            </div>
+            <div class="history-icons">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="#333"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="#333"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
             </div>
           </div>
         </div>
