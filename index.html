@@ -356,43 +356,17 @@
       padding-bottom: 160px;
     }
 
-    /* ════════════════════════════════════════
-       SEARCH OVERLAY
-    ════════════════════════════════════════ */
-    .search-overlay {
-      position: absolute;
-      inset: 0;
-      z-index: 200;
-      display: flex;
-      flex-direction: column;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.22s ease;
-    }
-
-    .search-overlay.open {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    .search-overlay-backdrop {
-      position: absolute;
-      inset: 0;
-      backdrop-filter: blur(24px) saturate(180%) brightness(1.04);
-      -webkit-backdrop-filter: blur(24px) saturate(180%) brightness(1.04);
-      background: rgba(255, 255, 255, 0.55);
-    }
-
-    .search-bar-row {
+    /* 浮いている検索フォーム（スクロールされない） */
+    .search-float-bar {
       position: absolute;
       left: 0;
       right: 0;
-      bottom: 0;
+      bottom: 86px;
       display: flex;
       align-items: center;
       gap: 10px;
       padding: 10px 16px 14px;
-      z-index: 1;
+      z-index: 10;
       transition: bottom 0.28s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
@@ -626,12 +600,8 @@
       </div>
     </div>
 
-  </div>
-
-  <!-- Search overlay (floats above all screens) -->
-  <div class="search-overlay" id="search-overlay">
-    <div class="search-overlay-backdrop" onclick="closeSearch()"></div>
-    <div class="search-bar-row" id="search-bar-row">
+    <!-- 浮いている検索フォーム（スクロールされない） -->
+    <div class="search-float-bar" id="search-float-bar">
       <div class="search-input-wrap">
         <svg class="search-input-icon" viewBox="0 0 18.0449 18.0453" xmlns="http://www.w3.org/2000/svg"><path d="M17.8353 16.8353L13.8953 12.8953C15.1915 11.3417 15.8387 9.34807 15.7021 7.32936C15.5655 5.31064 14.6557 3.42236 13.162 2.05753C11.6683 0.692688 9.70582 -0.0435684 7.683 0.00199537C5.66019 0.0475592 3.73285 0.871433 2.30214 2.30214C0.871433 3.73285 0.0475592 5.66019 0.00199537 7.683C-0.0435684 9.70582 0.692687 11.6683 2.05753 13.162C3.42236 14.6557 5.31064 15.5655 7.32936 15.7021C9.34807 15.8387 11.3417 15.1915 12.8953 13.8953L16.8353 17.8353C16.9005 17.9018 16.9783 17.9547 17.0642 17.9907C17.15 18.0268 17.2422 18.0453 17.3353 18.0453C17.427 18.0457 17.5178 18.0273 17.6021 17.9912C17.6864 17.955 17.7624 17.902 17.8253 17.8353C17.8937 17.7716 17.9485 17.6945 17.9862 17.6089C18.024 17.5234 18.0439 17.431 18.0448 17.3375C18.0458 17.2439 18.0277 17.1512 17.9917 17.0649C17.9556 16.9786 17.9025 16.9005 17.8353 16.8353ZM3.32533 12.4253C2.42502 11.5245 1.81202 10.377 1.56381 9.12789C1.31561 7.87875 1.44334 6.58406 1.93087 5.4075C2.41841 4.23095 3.24384 3.22537 4.30282 2.51788C5.36179 1.8104 6.60676 1.43279 7.88033 1.43279C9.15389 1.43279 10.3989 1.8104 11.4578 2.51788C12.5168 3.22537 13.3422 4.23095 13.8298 5.4075C14.3173 6.58406 14.445 7.87875 14.1968 9.12789C13.9486 10.377 13.3356 11.5245 12.4353 12.4253C11.8379 13.0249 11.1281 13.5006 10.3464 13.8252C9.56475 14.1498 8.7267 14.3169 7.88033 14.3169C7.03395 14.3169 6.1959 14.1498 5.41424 13.8252C4.63259 13.5006 3.92271 13.0249 3.32533 12.4253Z"/></svg>
         <input
@@ -646,12 +616,13 @@
           spellcheck="false"
         />
       </div>
-      <button class="search-close-btn" onclick="closeSearch()">
+      <button class="search-close-btn" onclick="exitSearch()">
         <svg viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg">
           <path d="M1 1L13 13M13 1L1 13" stroke="rgba(0,0,0,0.5)" stroke-width="1.8" stroke-linecap="round" fill="none"/>
         </svg>
       </button>
     </div>
+
   </div>
 
   <!-- Tab Bar: left pill (4 tabs) + right pill (search only) -->
@@ -692,7 +663,7 @@
 
     <!-- Search pill (circle, icon only) -->
     <div class="glass-pill search-pill">
-      <div class="search-btn" onclick="openSearch()">
+      <div class="search-btn" onclick="goToSearch(this)">
         <svg viewBox="0 0 18.0449 18.0453" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M17.8353 16.8353L13.8953 12.8953C15.1915 11.3417 15.8387 9.34807 15.7021 7.32936C15.5655 5.31064 14.6557 3.42236 13.162 2.05753C11.6683 0.692688 9.70582 -0.0435684 7.683 0.00199537C5.66019 0.0475592 3.73285 0.871433 2.30214 2.30214C0.871433 3.73285 0.0475592 5.66019 0.00199537 7.683C-0.0435684 9.70582 0.692687 11.6683 2.05753 13.162C3.42236 14.6557 5.31064 15.5655 7.32936 15.7021C9.34807 15.8387 11.3417 15.1915 12.8953 13.8953L16.8353 17.8353C16.9005 17.9018 16.9783 17.9547 17.0642 17.9907C17.15 18.0268 17.2422 18.0453 17.3353 18.0453C17.427 18.0457 17.5178 18.0273 17.6021 17.9912C17.6864 17.955 17.7624 17.902 17.8253 17.8353C17.8937 17.7716 17.9485 17.6945 17.9862 17.6089C18.024 17.5234 18.0439 17.431 18.0448 17.3375C18.0458 17.2439 18.0277 17.1512 17.9917 17.0649C17.9556 16.9786 17.9025 16.9005 17.8353 16.8353ZM3.32533 12.4253C2.42502 11.5245 1.81202 10.377 1.56381 9.12789C1.31561 7.87875 1.44334 6.58406 1.93087 5.4075C2.41841 4.23095 3.24384 3.22537 4.30282 2.51788C5.36179 1.8104 6.60676 1.43279 7.88033 1.43279C9.15389 1.43279 10.3989 1.8104 11.4578 2.51788C12.5168 3.22537 13.3422 4.23095 13.8298 5.4075C14.3173 6.58406 14.445 7.87875 14.1968 9.12789C13.9486 10.377 13.3356 11.5245 12.4353 12.4253C11.8379 13.0249 11.1281 13.5006 10.3464 13.8252C9.56475 14.1498 8.7267 14.3169 7.88033 14.3169C7.03395 14.3169 6.1959 14.1498 5.41424 13.8252C4.63259 13.5006 3.92271 13.0249 3.32533 12.4253Z"/></svg>
       </div>
     </div>
@@ -710,34 +681,40 @@
     document.getElementById('screen-' + tabName).classList.add('active');
   }
 
-  // 検索アイコンタップ → オーバーレイ表示 + キーボード即時起動
-  function openSearch() {
-    document.getElementById('search-overlay').classList.add('open');
+  let prevTab = 'home';
+
+  // 検索アイコンタップ → 検索画面に遷移 + キーボード即時起動
+  function goToSearch(btn) {
+    const active = document.querySelector('.tab-item.active');
+    if (active) prevTab = active.getAttribute('onclick').match(/'(\w+)'/)[1];
+    switchTab('search', btn);
     document.getElementById('search-input').focus();
   }
 
-  // × or バックドロップタップ → オーバーレイを閉じる
-  function closeSearch() {
-    document.getElementById('search-overlay').classList.remove('open');
+  // × ボタン → キーボードを閉じて前の画面に戻る
+  function exitSearch() {
     const input = document.getElementById('search-input');
     input.blur();
     input.value = '';
-    document.getElementById('search-bar-row').style.bottom = '0px';
+    document.getElementById('search-float-bar').style.bottom = '86px';
+    const prevItem = document.querySelector(`.tab-item[onclick*="'${prevTab}'"]`);
+    if (prevItem) switchTab(prevTab, prevItem);
   }
 
-  // キーボード表示に合わせて検索バーをキーボードのすぐ上に追従させる
-  function updateSearchBarPosition() {
-    const overlay = document.getElementById('search-overlay');
-    if (!overlay.classList.contains('open')) return;
+  // キーボード表示に合わせてフォームをキーボードのすぐ上に追従させる
+  function updateFloatBar() {
+    const screen = document.getElementById('screen-search');
+    if (!screen.classList.contains('active')) return;
     const vv = window.visualViewport;
     if (!vv) return;
     const keyboardH = Math.max(0, window.innerHeight - vv.offsetTop - vv.height);
-    document.getElementById('search-bar-row').style.bottom = keyboardH + 'px';
+    const bottom = keyboardH > 0 ? keyboardH : 86;
+    document.getElementById('search-float-bar').style.bottom = bottom + 'px';
   }
 
   if (window.visualViewport) {
-    window.visualViewport.addEventListener('resize', updateSearchBarPosition);
-    window.visualViewport.addEventListener('scroll', updateSearchBarPosition);
+    window.visualViewport.addEventListener('resize', updateFloatBar);
+    window.visualViewport.addEventListener('scroll', updateFloatBar);
   }
 </script>
 </body>
