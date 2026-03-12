@@ -907,6 +907,7 @@
     switchTab('search', btn);
     fixSearchContentHeight();
     document.querySelector('.search-content-scroll').scrollTop = 0;
+    window.scrollTo(0, 0);
     document.getElementById('search-input').focus();
   }
 
@@ -934,6 +935,12 @@
 
   if (window.visualViewport) {
     window.visualViewport.addEventListener('resize', updateFloatBar);
+    // キーボード表示時に iOS が window をスクロールさせるのを防ぐ
+    window.visualViewport.addEventListener('scroll', () => {
+      const screen = document.getElementById('screen-search');
+      if (!screen.classList.contains('active')) return;
+      window.scrollTo(0, 0);
+    });
   }
 </script>
 </body>
