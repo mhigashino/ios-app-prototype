@@ -347,6 +347,11 @@
       overflow: hidden;
     }
 
+    /* 検索画面ではタブバーを非表示 */
+    #screen-search.active ~ .tab-bar-wrapper {
+      display: none;
+    }
+
     /* スクロール可能なコンテンツエリア */
     .search-content-scroll {
       position: absolute;
