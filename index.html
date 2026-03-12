@@ -14,27 +14,18 @@
 
     html, body {
       width: 100%;
-      min-height: 100dvh;
-      background: #c8c8cc;
-      display: flex;
-      align-items: flex-start;
-      justify-content: center;
-      padding: 40px 0;
+      height: 100dvh;
+      background: #fff;
+      overflow: hidden;
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
     }
 
-    /* ── Device 375 × 812 ── */
     .device {
       position: relative;
-      width: 375px;
-      height: 812px;
+      width: 100%;
+      height: 100%;
+      background: #fff;
       overflow: hidden;
-      border-radius: 44px;
-      box-shadow:
-        0 0 0 1px rgba(0,0,0,0.18),
-        0 24px 80px rgba(0,0,0,0.40),
-        0 8px 24px rgba(0,0,0,0.20);
-      flex-shrink: 0;
     }
 
     /* ── Screens ── */
@@ -537,11 +528,8 @@
     const overlay = document.getElementById('search-overlay');
     const input = document.getElementById('search-input');
     overlay.classList.add('open');
-    // フォーカスで日本語キーボードを起動
-    setTimeout(() => {
-      input.focus();
-      updateSearchBarPosition();
-    }, 50);
+    // ユーザージェスチャー内で直接フォーカス → iOSキーボード即時起動
+    input.focus();
   }
 
   function closeSearch() {
@@ -561,14 +549,9 @@
     const vv = window.visualViewport;
     if (!vv) return;
 
-    const device = document.querySelector('.device');
-    const deviceRect = device.getBoundingClientRect();
-
-    // デバイス下端 vs 可視領域下端の差分 = キーボード分のオフセット
-    const visibleBottom = vv.offsetTop + vv.height;
-    const keyboardOverlap = Math.max(0, deviceRect.bottom - visibleBottom);
-
-    document.querySelector('.search-bar-row').style.bottom = keyboardOverlap + 'px';
+    // キーボード高さ = 全体の高さ - 可視領域の高さ
+    const keyboardHeight = Math.max(0, window.innerHeight - vv.offsetTop - vv.height);
+    document.querySelector('.search-bar-row').style.bottom = keyboardHeight + 'px';
   }
 
   if (window.visualViewport) {
