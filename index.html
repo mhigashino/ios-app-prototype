@@ -347,34 +347,32 @@
       overflow: hidden;
     }
 
-    /* アクティブ時は flex で縦積みレイアウト（dvh でキーボード分縮む） */
-    #screen-search.active {
-      display: flex;
-      flex-direction: column;
-    }
-
     /* 検索画面ではタブバーを非表示 */
     #screen-search.active ~ .tab-bar-wrapper {
       display: none;
     }
 
-    /* スクロール可能なコンテンツエリア（残りスペースをすべて占有） */
+    /* スクロール可能なコンテンツエリア */
     .search-content-scroll {
-      flex: 1;
-      min-height: 0;
+      position: absolute;
+      top: 0; left: 0; right: 0;
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
-      padding-bottom: 20px;
+      padding-bottom: 160px;
     }
 
-    /* 検索フォームバー（flex アイテムとしてボトムに自然配置） */
+    /* 浮いている検索フォーム（スクロールされない） */
     .search-float-bar {
-      flex-shrink: 0;
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
       display: flex;
       align-items: center;
       gap: 10px;
       padding: 10px 16px 14px;
       z-index: 10;
+      transition: bottom 0.28s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     /* ── Filter chip bar ── */
@@ -892,6 +890,14 @@
     document.getElementById('screen-' + tabName).classList.add('active');
   }
 
+  // キーボード非表示時の画面高さを記録（キーボードが出ても変わらない基準値）
+  const FULL_HEIGHT = window.innerHeight;
+
+  // コンテンツエリアの高さをキーボードに関係なく常に全画面に固定
+  function fixSearchContentHeight() {
+    document.querySelector('.search-content-scroll').style.height = FULL_HEIGHT + 'px';
+  }
+
   let prevTab = 'home';
 
   // 検索アイコンタップ → 検索画面に遷移 + キーボード即時起動
@@ -899,6 +905,7 @@
     const active = document.querySelector('.tab-item.active');
     if (active) prevTab = active.getAttribute('onclick').match(/'(\w+)'/)[1];
     switchTab('search', btn);
+    fixSearchContentHeight();
     document.querySelector('.search-content-scroll').scrollTop = 0;
     window.scrollTo(0, 0);
     document.getElementById('search-input').focus();
@@ -909,16 +916,31 @@
     const input = document.getElementById('search-input');
     input.blur();
     input.value = '';
+    document.getElementById('search-float-bar').style.bottom = '0px';
     const prevItem = document.querySelector(`.tab-item[onclick*="'${prevTab}'"]`);
     if (prevItem) switchTab(prevTab, prevItem);
   }
 
-  // キーボード表示時に iOS が window をスクロールさせるのを防ぐ
+  // キーボード表示に合わせてフォームをキーボードのすぐ上に追従させる
+  // scroll イベントは除外（スクロール中に位置がズレる原因になるため）
+  function updateFloatBar() {
+    const screen = document.getElementById('screen-search');
+    if (!screen.classList.contains('active')) return;
+    const vv = window.visualViewport;
+    if (!vv) return;
+    const keyboardH = Math.max(0, window.innerHeight - vv.height);
+    document.getElementById('search-float-bar').style.bottom = keyboardH + 'px';
+    fixSearchContentHeight();
+  }
+
   if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', updateFloatBar);
+    // キーボード表示時に iOS が window をスクロールさせるのを防ぐ
     window.visualViewport.addEventListener('scroll', () => {
       const screen = document.getElementById('screen-search');
       if (!screen.classList.contains('active')) return;
       window.scrollTo(0, 0);
+      updateFloatBar();
     });
   }
 </script>
