@@ -355,7 +355,7 @@
     /* スクロール可能なコンテンツエリア */
     .search-content-scroll {
       position: absolute;
-      inset: 0;
+      top: 0; left: 0; right: 0;
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
       padding-bottom: 160px;
@@ -893,6 +893,14 @@
     document.getElementById('screen-' + tabName).classList.add('active');
   }
 
+  // キーボード非表示時の画面高さを記録（キーボードが出ても変わらない基準値）
+  const FULL_HEIGHT = window.innerHeight;
+
+  // コンテンツエリアの高さをキーボードに関係なく常に全画面に固定
+  function fixSearchContentHeight() {
+    document.querySelector('.search-content-scroll').style.height = FULL_HEIGHT + 'px';
+  }
+
   let prevTab = 'home';
 
   // 検索アイコンタップ → 検索画面に遷移 + キーボード即時起動
@@ -900,6 +908,7 @@
     const active = document.querySelector('.tab-item.active');
     if (active) prevTab = active.getAttribute('onclick').match(/'(\w+)'/)[1];
     switchTab('search', btn);
+    fixSearchContentHeight();
     document.querySelector('.search-content-scroll').scrollTop = 0;
     document.getElementById('search-input').focus();
   }
@@ -923,6 +932,7 @@
     if (!vv) return;
     const keyboardH = Math.max(0, window.innerHeight - vv.height);
     document.getElementById('search-float-bar').style.bottom = keyboardH + 'px';
+    fixSearchContentHeight();
   }
 
   if (window.visualViewport) {
