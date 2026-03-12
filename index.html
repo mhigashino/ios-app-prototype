@@ -347,10 +347,100 @@
       overflow: hidden;
     }
 
-    /* 検索画面ではタブバーを非表示 */
-    #screen-search.active ~ .tab-bar-wrapper {
+    /* 検索・カメラ画面ではタブバーを非表示 */
+    #screen-search.active ~ .tab-bar-wrapper,
+    #screen-camera.active ~ .tab-bar-wrapper {
       display: none;
     }
+
+    /* ════════════════════════════════════════
+       CAMERA SCREEN
+    ════════════════════════════════════════ */
+    #screen-camera {
+      background: #000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0;
+    }
+
+    #screen-camera.active { display: flex; }
+
+    .camera-topbar {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      display: flex;
+      align-items: center;
+      padding: 54px 20px 16px;
+      z-index: 10;
+    }
+
+    .camera-close-btn {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: rgba(0,0,0,0.45);
+      border: none;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+    }
+
+    .camera-viewfinder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .camera-frame {
+      width: 72%;
+      aspect-ratio: 1;
+      border-radius: 20px;
+      border: 2px solid rgba(255,255,255,0.7);
+      position: relative;
+      box-shadow: 0 0 0 9999px rgba(0,0,0,0.45);
+    }
+
+    .camera-frame-corner {
+      position: absolute;
+      width: 22px; height: 22px;
+      border-color: #fff;
+      border-style: solid;
+    }
+    .camera-frame-corner.tl { top: -2px; left: -2px; border-width: 3px 0 0 3px; border-radius: 6px 0 0 0; }
+    .camera-frame-corner.tr { top: -2px; right: -2px; border-width: 3px 3px 0 0; border-radius: 0 6px 0 0; }
+    .camera-frame-corner.bl { bottom: -2px; left: -2px; border-width: 0 0 3px 3px; border-radius: 0 0 0 6px; }
+    .camera-frame-corner.br { bottom: -2px; right: -2px; border-width: 0 3px 3px 0; border-radius: 0 0 6px 0; }
+
+    .camera-label {
+      position: absolute;
+      top: calc(50% + 50%/2 + 20px);
+      left: 50%; transform: translateX(-50%);
+      color: rgba(255,255,255,0.75);
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .camera-bottombar {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 0 48px;
+    }
+
+    .camera-shutter {
+      width: 72px; height: 72px;
+      border-radius: 50%;
+      background: #fff;
+      border: 4px solid rgba(255,255,255,0.4);
+      box-shadow: 0 0 0 4px rgba(255,255,255,0.25);
+      cursor: pointer;
+      transition: transform 0.15s ease, opacity 0.15s ease;
+    }
+    .camera-shutter:active { transform: scale(0.88); opacity: 0.8; }
 
     /* スクロール可能なコンテンツエリア */
     .search-content-scroll {
@@ -366,7 +456,7 @@
       position: absolute;
       left: 0;
       right: 0;
-      bottom: 86px;
+      bottom: 0;
       display: flex;
       align-items: center;
       gap: 10px;
@@ -512,6 +602,10 @@
       <!-- フィルターチップ -->
       <div class="filter-chip-bar">
         <div class="chip chip-active">すべて</div>
+        <div class="chip" onclick="openCamera()" style="background:rgba(0,0,0,0.07); border-color:rgba(0,0,0,0.12);">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="#333"><path d="M12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm-7 0V6H3v2H1v2h2v2h2v-2h2V8H5zm14 0h2V6h-2V4h-2v2h-2v2h2v2h2V8zm-7 6c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/></svg>
+          画像検索
+        </div>
         <div class="chip">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="#333"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>
           ヘルプ
@@ -833,6 +927,27 @@
 
   </div>
 
+  <!-- Camera screen -->
+  <div id="screen-camera" class="screen">
+    <div class="camera-topbar">
+      <button class="camera-close-btn" onclick="closeCamera()">
+        <svg width="18" height="18" viewBox="0 0 14 14" fill="none"><path d="M1 1L13 13M13 1L1 13" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="camera-viewfinder">
+      <div class="camera-frame">
+        <div class="camera-frame-corner tl"></div>
+        <div class="camera-frame-corner tr"></div>
+        <div class="camera-frame-corner bl"></div>
+        <div class="camera-frame-corner br"></div>
+      </div>
+    </div>
+    <p class="camera-label">検索したい商品をフレームに合わせてください</p>
+    <div class="camera-bottombar">
+      <div class="camera-shutter"></div>
+    </div>
+  </div>
+
   <!-- Tab Bar: left pill (4 tabs) + right pill (search only) -->
   <div class="tab-bar-wrapper">
 
@@ -899,12 +1014,24 @@
     document.getElementById('search-input').focus();
   }
 
+  // 画像検索 → カメラ画面へ
+  function openCamera() {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('screen-camera').classList.add('active');
+  }
+
+  // カメラ画面を閉じて検索画面に戻る
+  function closeCamera() {
+    document.getElementById('screen-camera').classList.remove('active');
+    document.getElementById('screen-search').classList.add('active');
+  }
+
   // × ボタン → キーボードを閉じて前の画面に戻る
   function exitSearch() {
     const input = document.getElementById('search-input');
     input.blur();
     input.value = '';
-    document.getElementById('search-float-bar').style.bottom = '86px';
+    document.getElementById('search-float-bar').style.bottom = '0px';
     const prevItem = document.querySelector(`.tab-item[onclick*="'${prevTab}'"]`);
     if (prevItem) switchTab(prevTab, prevItem);
   }
@@ -917,8 +1044,7 @@
     const vv = window.visualViewport;
     if (!vv) return;
     const keyboardH = Math.max(0, window.innerHeight - vv.height);
-    const bottom = keyboardH > 0 ? keyboardH : 86;
-    document.getElementById('search-float-bar').style.bottom = bottom + 'px';
+    document.getElementById('search-float-bar').style.bottom = keyboardH + 'px';
   }
 
   if (window.visualViewport) {
