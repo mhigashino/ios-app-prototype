@@ -37,31 +37,6 @@
     }
     .screen.active { display: block; }
 
-    /* ── Status Bar ── */
-    .status-bar {
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 50px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 14px 24px 0;
-      z-index: 50;
-      pointer-events: none;
-    }
-    .status-time {
-      font-size: 15px;
-      font-weight: 600;
-      color: #000;
-      letter-spacing: -0.3px;
-    }
-    .status-icons {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .status-icons svg { fill: #000; }
-
     /* ════════════════════════════════════════
        LIQUID GLASS TAB BAR
     ════════════════════════════════════════ */
@@ -145,15 +120,15 @@
     /* ── 4-tab pill ── */
     .tab-group-pill {
       flex: 1;
-      height: 55px;
+      height: 60px;
       padding: 0 6px;
       justify-content: space-around;
     }
 
     /* ── Search pill (icon only, circular) ── */
     .search-pill {
-      width: 55px;
-      height: 55px;
+      width: 60px;
+      height: 60px;
       border-radius: 50%;
       justify-content: center;
       flex-shrink: 0;
@@ -305,7 +280,7 @@
     .search-input-wrap {
       flex: 1;
       position: relative;
-      height: 55px;
+      height: 60px;
       border-radius: 26px;
       backdrop-filter: blur(48px) saturate(220%) brightness(1.08);
       -webkit-backdrop-filter: blur(48px) saturate(220%) brightness(1.08);
@@ -370,8 +345,8 @@
     /* × 閉じるボタン */
     .search-close-btn {
       flex-shrink: 0;
-      width: 55px;
-      height: 55px;
+      width: 60px;
+      height: 60px;
       border-radius: 50%;
       border: none;
       outline: none;
@@ -413,34 +388,11 @@
 <div class="device">
 
   <!-- Screens -->
-  <div id="screen-home"    class="screen active"></div>
-  <div id="screen-auction" class="screen"></div>
-  <div id="screen-list"    class="screen"></div>
-  <div id="screen-wallet"  class="screen"></div>
+  <div id="screen-home"    class="screen active" style="background:#f0f0f0;"></div>
+  <div id="screen-auction" class="screen"        style="background:#f0f0f0;"></div>
+  <div id="screen-list"    class="screen"        style="background:#f0f0f0;"></div>
+  <div id="screen-wallet"  class="screen"        style="background:#f0f0f0;"></div>
   <div id="screen-search"  class="screen"></div>
-
-  <!-- Status Bar -->
-  <div class="status-bar">
-    <span class="status-time">9:41</span>
-    <div class="status-icons">
-      <svg width="17" height="12" viewBox="0 0 17 12">
-        <rect x="0"    y="7"   width="3" height="5"   rx="0.5"/>
-        <rect x="4.5"  y="5"   width="3" height="7"   rx="0.5"/>
-        <rect x="9"    y="2.5" width="3" height="9.5" rx="0.5"/>
-        <rect x="13.5" y="0"   width="3" height="12"  rx="0.5"/>
-      </svg>
-      <svg width="16" height="12" viewBox="0 0 16 12">
-        <path d="M8 9.5a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3z"/>
-        <path d="M8 6C5.8 6 3.8 7 2.5 8.6l1.5 1.4C5 8.7 6.4 8 8 8s3 .7 4 2l1.5-1.4C12.2 7 10.2 6 8 6z"/>
-        <path d="M8 2C4.7 2 1.7 3.4 0 5.7l1.5 1.4C2.9 5.1 5.3 4 8 4s5.1 1.1 6.5 3.1L16 5.7C14.3 3.4 11.3 2 8 2z"/>
-      </svg>
-      <svg width="25" height="12" viewBox="0 0 25 12">
-        <rect x="0" y="1" width="22" height="10" rx="2" fill="none" stroke="#000" stroke-width="1"/>
-        <rect x="1.5" y="2.5" width="17" height="7" rx="1.2"/>
-        <path d="M23 4v4a2 2 0 0 0 0-4z"/>
-      </svg>
-    </div>
-  </div>
 
   <!-- Search Overlay -->
   <div class="search-overlay" id="search-overlay">
@@ -559,14 +511,6 @@
     window.visualViewport.addEventListener('scroll', updateSearchBarPosition);
   }
 
-  function updateTime() {
-    const now = new Date();
-    const h = now.getHours().toString().padStart(2,'0');
-    const m = now.getMinutes().toString().padStart(2,'0');
-    document.querySelector('.status-time').textContent = `${h}:${m}`;
-  }
-  updateTime();
-  setInterval(updateTime, 10000);
 </script>
 </body>
 </html>
