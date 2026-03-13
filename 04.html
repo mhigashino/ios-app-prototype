@@ -1,0 +1,1612 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>iOS App Prototype</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100dvh;
+      background: #fff;
+      overflow: hidden;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+    }
+
+    .device {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      background: #fff;
+      overflow: hidden;
+    }
+
+    /* ── Screens ── */
+    .screen {
+      display: none;
+      position: absolute;
+      inset: 0;
+      background: #fff;
+    }
+    .screen.active { display: block; }
+
+    /* ════════════════════════════════════════
+       LIQUID GLASS TAB BAR
+    ════════════════════════════════════════ */
+    .tab-bar-wrapper {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      padding: 0 12px 16px;
+      z-index: 100;
+      gap: 10px;
+    }
+
+    /* ── Shared glass mixin ── */
+    .glass-pill {
+      position: relative;
+      display: flex;
+      align-items: center;
+      backdrop-filter: blur(48px) saturate(220%) brightness(1.08);
+      -webkit-backdrop-filter: blur(48px) saturate(220%) brightness(1.08);
+
+      /* layered glass: frosted white + tinted inner glow */
+      background:
+        linear-gradient(
+          175deg,
+          rgba(255,255,255,0.72) 0%,
+          rgba(255,255,255,0.38) 40%,
+          rgba(255,255,255,0.48) 100%
+        );
+      border-radius: 9999px;
+
+      /* crisp edge + depth */
+      border: 1px solid rgba(255,255,255,0.85);
+      box-shadow:
+        /* outer shadow */
+        0 12px 40px rgba(0,0,0,0.14),
+        0 4px 12px rgba(0,0,0,0.10),
+        0 1px 3px rgba(0,0,0,0.08),
+        /* inner top highlight — the "wetness" */
+        inset 0 1.5px 0 rgba(255,255,255,1.0),
+        /* inner bottom shadow — thickness */
+        inset 0 -1px 0 rgba(0,0,0,0.06),
+        /* subtle inner glow */
+        inset 0 0 20px rgba(255,255,255,0.30);
+
+      overflow: hidden;
+    }
+
+    /* Specular streak across the top */
+    .glass-pill::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 10%; right: 10%;
+      height: 1px;
+      background: linear-gradient(90deg,
+        transparent,
+        rgba(255,255,255,0.95) 25%,
+        rgba(255,255,255,1.0) 50%,
+        rgba(255,255,255,0.95) 75%,
+        transparent
+      );
+      border-radius: 999px;
+    }
+
+    /* Soft refraction layer inside the glass */
+    .glass-pill::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        160deg,
+        rgba(255,255,255,0.18) 0%,
+        transparent 55%,
+        rgba(0,0,0,0.02) 100%
+      );
+      border-radius: inherit;
+      pointer-events: none;
+    }
+
+    /* ── 4-tab pill ── */
+    .tab-group-pill {
+      flex: 1;
+      height: 60px;
+      padding: 0;
+      justify-content: flex-start;
+    }
+
+    /* ── Search pill (icon only, circular) ── */
+    .search-pill {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      justify-content: center;
+      flex-shrink: 0;
+      /* circular override */
+      border-radius: 50%;
+    }
+
+    /* Tab item */
+    .tab-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0px;
+      flex: 1;
+      align-self: stretch;
+      border-radius: 9999px;
+      cursor: pointer;
+      user-select: none;
+      position: relative;
+      z-index: 1;
+      transition: background 0.15s ease;
+    }
+
+    .tab-item:active { background: rgba(0, 0, 0, 0.06); }
+
+    .tab-item.active { background: rgba(0, 0, 0, 0.06); }
+
+    .tab-icon {
+      width: 26px;
+      height: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .tab-icon svg {
+      width: 24px;
+      height: 24px;
+      fill: #222;
+    }
+
+    .tab-icon svg path {
+      fill: inherit;
+    }
+
+    .tab-item.active .tab-icon svg {
+      fill: #222;
+      filter: none;
+    }
+
+    .tab-label {
+      font-size: 10px;
+      font-weight: 500;
+      color: #222;
+      letter-spacing: -0.2px;
+      white-space: nowrap;
+      position: relative;
+    }
+
+    .tab-item.active .tab-label {
+      color: #222;
+      font-weight: 600;
+    }
+
+    /* Search button inside the circle pill */
+    .search-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      cursor: pointer;
+      user-select: none;
+      position: relative;
+      z-index: 1;
+      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .search-btn:active { transform: scale(0.85); }
+
+    /* Search active: no background effect */
+
+    .search-btn svg {
+      width: 26px;
+      height: 26px;
+      fill: #222;
+      position: relative;
+    }
+
+    .search-btn svg path {
+      fill: inherit;
+    }
+
+    .search-btn.active svg {
+      fill: #222;
+      transform: scale(1.08);
+      filter: none;
+    }
+
+    /* リキッドグラス入力フォーム */
+    .search-input-wrap {
+      flex: 1;
+      position: relative;
+      height: 60px;
+      border-radius: 9999px;
+      backdrop-filter: blur(48px) saturate(220%) brightness(1.08);
+      -webkit-backdrop-filter: blur(48px) saturate(220%) brightness(1.08);
+      background: linear-gradient(
+        175deg,
+        rgba(255,255,255,0.72) 0%,
+        rgba(255,255,255,0.38) 40%,
+        rgba(255,255,255,0.48) 100%
+      );
+      border: 1px solid rgba(255,255,255,0.85);
+      box-shadow:
+        0 8px 28px rgba(0,0,0,0.10),
+        0 2px 8px rgba(0,0,0,0.08),
+        inset 0 1.5px 0 rgba(255,255,255,1.0),
+        inset 0 -1px 0 rgba(0,0,0,0.05),
+        inset 0 0 16px rgba(255,255,255,0.28);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 12px;
+      overflow: hidden;
+    }
+
+    /* 上部光沢線 */
+    .search-input-wrap::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 8%; right: 8%;
+      height: 1px;
+      background: linear-gradient(90deg,
+        transparent,
+        rgba(255,255,255,0.95) 30%,
+        rgba(255,255,255,1.0) 50%,
+        rgba(255,255,255,0.95) 70%,
+        transparent
+      );
+      border-radius: 999px;
+    }
+
+    .search-input-icon {
+      flex-shrink: 0;
+      width: 16px;
+      height: 16px;
+      fill: rgba(0,0,0,0.35);
+    }
+
+    .search-input-field {
+      flex: 1;
+      background: none;
+      border: none;
+      outline: none;
+      font-size: 16px;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+      color: #111;
+      caret-color: #007aff;
+    }
+
+    .search-input-field::placeholder {
+      color: rgba(0,0,0,0.30);
+    }
+
+    /* × 閉じるボタン */
+    .search-close-btn {
+      flex-shrink: 0;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      -webkit-tap-highlight-color: transparent;
+      backdrop-filter: blur(48px) saturate(220%) brightness(1.08);
+      -webkit-backdrop-filter: blur(48px) saturate(220%) brightness(1.08);
+      background: linear-gradient(
+        175deg,
+        rgba(255,255,255,0.72) 0%,
+        rgba(255,255,255,0.38) 40%,
+        rgba(255,255,255,0.48) 100%
+      );
+      border: 1px solid rgba(255,255,255,0.85);
+      box-shadow:
+        0 4px 16px rgba(0,0,0,0.10),
+        inset 0 1.5px 0 rgba(255,255,255,1.0),
+        inset 0 -1px 0 rgba(0,0,0,0.05);
+      transition: transform 0.15s ease, opacity 0.15s ease;
+    }
+
+    .search-close-btn:active {
+      transform: scale(0.88);
+      opacity: 0.7;
+    }
+
+    .search-close-btn svg {
+      width: 14px;
+      height: 14px;
+      fill: rgba(0,0,0,0.5);
+    }
+
+    /* ════════════════════════════════════════
+       SEARCH HOME SCREEN
+    ════════════════════════════════════════ */
+    #screen-search {
+      overflow: hidden;
+    }
+
+    /* 検索画面ではタブバーを非表示 */
+    #screen-search.active ~ .tab-bar-wrapper {
+      display: none;
+    }
+
+    /* スクロール可能なコンテンツエリア */
+    .search-content-scroll {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 160px;
+    }
+
+    /* 浮いている検索フォーム（スクロールされない） */
+    .search-float-bar {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 16px 14px;
+      z-index: 10;
+      transition: bottom 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* ── Filter chip bar ── */
+    .filter-chip-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 16px 16px 12px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .filter-chip-bar::-webkit-scrollbar { display: none; }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      height: 36px;
+      box-sizing: border-box;
+      line-height: 1;
+      padding: 0 14px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.85);
+      border: 1px solid rgba(0,0,0,0.08);
+      font-size: 13px;
+      font-weight: 500;
+      color: #333;
+      white-space: nowrap;
+      flex-shrink: 0;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .chip-active {
+      background: #222;
+      color: #fff;
+      border-color: #222;
+    }
+    .chip svg {
+      display: block;
+      flex-shrink: 0;
+    }
+
+    /* ── 履歴カード ── */
+    .history-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding: 4px 16px 8px;
+    }
+
+    .history-card {
+      background: #fff;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      padding: 14px;
+      gap: 12px;
+    }
+
+    .history-card-icon {
+      flex-shrink: 0;
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: #f2f2f7;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .history-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .history-title {
+      font-size: 14px;
+      font-weight: 400;
+      color: #333;
+      line-height: 1.4;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .history-subtitle {
+      font-size: 12px;
+      color: #666;
+      line-height: 1.4;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .history-badge {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      font-size: 11px;
+      line-height: 1.4;
+      white-space: nowrap;
+    }
+
+    .badge-count { color: #0095ee; }
+
+    .badge-sort {
+      display: inline-flex;
+      align-items: center;
+      color: #666;
+    }
+
+    .history-icons {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-shrink: 0;
+    }
+
+    .history-icons svg {
+      fill: #bbb;
+    }
+
+    /* ════════════════════════════════════════
+       TOP NAVIGATION BAR
+       Figma: Liquid Glass - Regular - Small
+       Fill: rgb(247,247,247) + backdrop-blur 20px
+    ════════════════════════════════════════ */
+    .top-nav {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 16px;
+      padding-top: calc(env(safe-area-inset-top) + 8px);
+      z-index: 100;
+    }
+
+    /* 検索画面では非表示 */
+    #screen-search.active ~ .top-nav { display: none; }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .nav-icon-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 9999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      cursor: pointer;
+      user-select: none;
+      overflow: hidden;
+      background: rgb(247, 247, 247);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow:
+        0 2px 14px rgba(0,0,0,0.22),
+        0 1px 4px rgba(0,0,0,0.12),
+        inset 0 1px 0 rgba(255,255,255,0.9);
+      transition: opacity 0.12s ease, transform 0.12s ease;
+    }
+
+    .nav-icon-btn:active {
+      opacity: 0.65;
+      transform: scale(0.88);
+    }
+
+    .nav-icon-btn svg {
+      width: 24px;
+      height: 24px;
+      display: block;
+    }
+
+    .nav-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 9999px;
+      flex-shrink: 0;
+      cursor: pointer;
+      user-select: none;
+      overflow: hidden;
+      background: rgb(247, 247, 247);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow:
+        0 2px 14px rgba(0,0,0,0.22),
+        0 1px 4px rgba(0,0,0,0.12),
+        inset 0 1px 0 rgba(255,255,255,0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.12s ease, transform 0.12s ease;
+    }
+
+    .nav-avatar:active {
+      opacity: 0.65;
+      transform: scale(0.88);
+    }
+
+    .nav-avatar img {
+      width: 24px;
+      height: 24px;
+      object-fit: cover;
+      border-radius: 50%;
+      display: block;
+    }
+
+    /* ────── NEW SEARCH SCREEN SECTIONS ────── */
+    .search-section { margin-bottom: 20px; }
+
+    .search-section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+    }
+    .search-section-title {
+      font-size: 17px;
+      font-weight: 600;
+      color: #333;
+      line-height: 1.4;
+    }
+    .search-section-action {
+      font-size: 14px;
+      font-weight: 600;
+      color: #007AFF;
+      display: flex;
+      align-items: center;
+      gap: 2px;
+    }
+
+    /* ショートカットボタン */
+    .shortcut-buttons {
+      display: flex;
+      gap: 12px;
+      padding: 0 16px 4px;
+    }
+    .shortcut-btn {
+      flex: 1;
+      background: #f0f0f0;
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 12px;
+    }
+    .shortcut-btn-img {
+      width: 64px;
+      height: 64px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+    .shortcut-btn-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: #333;
+      line-height: 1.4;
+      text-align: center;
+      margin-top: 4px;
+    }
+
+    /* 最近の検索チップ */
+    .recent-chip-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 0 16px;
+    }
+    .recent-chip {
+      display: inline-flex;
+      align-items: center;
+      height: 34px;
+      padding: 0 14px;
+      border-radius: 9999px;
+      border: 1px solid rgba(0,0,0,0.15);
+      background: #fff;
+      font-size: 13px;
+      font-weight: 500;
+      color: #333;
+      white-space: nowrap;
+    }
+
+    /* メルカリのサービス */
+    .services-scroll {
+      display: flex;
+      gap: 12px;
+      padding: 0 16px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .services-scroll::-webkit-scrollbar { display: none; }
+    .service-card {
+      flex-shrink: 0;
+      background: #f0f0f0;
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 152px;
+      overflow: hidden;
+    }
+    .service-card-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 4px;
+    }
+    .service-card-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #333;
+      line-height: 1.4;
+      flex: 1;
+    }
+    .service-card-arrow {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+      opacity: 0.5;
+    }
+    .service-card-items {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .service-item-wrap {
+      position: relative;
+      overflow: hidden;
+    }
+    .service-item-thumb {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      display: block;
+    }
+    .service-item-price {
+      position: absolute;
+      bottom: 4px;
+      left: 4px;
+      background: rgba(0,0,0,0.4);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 600;
+      padding: 2px 6px;
+      border-radius: 16px;
+      white-space: nowrap;
+    }
+
+    /* トレンドキーワード */
+    .trend-keywords {
+      display: flex;
+      gap: 8px;
+      padding: 0 16px;
+    }
+    .trend-keyword-card {
+      flex: 1;
+      background: #f0f0f0;
+      border-radius: 8px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-width: 0;
+    }
+    .trend-keyword-rank {
+      display: flex;
+      align-items: flex-start;
+      gap: 4px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #333;
+      line-height: 1.4;
+      word-break: break-all;
+    }
+    .trend-keyword-rank svg { flex-shrink: 0; margin-top: 2px; }
+    .trend-keyword-count {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      font-size: 12px;
+      color: #666;
+    }
+
+    /* 急上昇キーワード */
+    .rising-scroll {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 0 16px;
+    }
+    .rising-row {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .rising-row::-webkit-scrollbar { display: none; }
+    .rising-chip {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #f0f0f0;
+      border-radius: 8px;
+      overflow: hidden;
+      padding-right: 10px;
+      flex-shrink: 0;
+    }
+    .rising-chip-thumb {
+      width: 44px;
+      height: 44px;
+      object-fit: cover;
+      flex-shrink: 0;
+      display: block;
+    }
+    .rising-chip-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: #333;
+      white-space: nowrap;
+    }
+
+    /* 人気の検索条件 */
+    .popular-scroll {
+      display: flex;
+      gap: 8px;
+      padding: 0 16px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .popular-scroll::-webkit-scrollbar { display: none; }
+    .popular-card {
+      flex-shrink: 0;
+      background: #f0f0f0;
+      border-radius: 12px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      width: 200px;
+    }
+    .popular-card-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: #333;
+      line-height: 1.4;
+    }
+    .popular-card-meta {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      color: #666;
+    }
+    .popular-card-tag {
+      display: inline-flex;
+      align-items: center;
+      height: 16px;
+      padding: 0 4px;
+      background: #E8004D;
+      border-radius: 3px;
+      font-size: 10px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .popular-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .popular-grid-thumb {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* おすすめフォロワー */
+    .follower-scroll {
+      display: flex;
+      gap: 8px;
+      padding: 0 16px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .follower-scroll::-webkit-scrollbar { display: none; }
+    .follower-card {
+      flex-shrink: 0;
+      background: #f0f0f0;
+      border-radius: 12px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      width: 210px;
+    }
+    .follower-card-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .follower-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #ccc;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+    .follower-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .follower-name {
+      font-size: 12px;
+      font-weight: 600;
+      color: #333;
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .follower-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .follower-grid-thumb {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+<div class="device">
+
+  <!-- Screens -->
+  <div id="screen-home"    class="screen active" style="background:#f0f0f0;"></div>
+  <div id="screen-auction" class="screen"        style="background:#f0f0f0;"></div>
+  <div id="screen-list"    class="screen"        style="background:#f0f0f0;"></div>
+  <div id="screen-wallet"  class="screen"        style="background:#f0f0f0;"></div>
+  <div id="screen-search" class="screen" style="background:#fff;">
+
+    <!-- スクロールコンテンツ -->
+    <div class="search-content-scroll">
+
+      <!-- ショートカットボタン -->
+      <div style="padding-top:16px; margin-bottom:20px;">
+        <div class="shortcut-buttons">
+          <div class="shortcut-btn">
+            <img class="shortcut-btn-img" src="https://www.figma.com/api/mcp/asset/e400d0f9-1a36-46bc-ad9f-cf7f216ab742" alt="">
+            <span class="shortcut-btn-label">カテゴリ</span>
+          </div>
+          <div class="shortcut-btn">
+            <img class="shortcut-btn-img" src="https://www.figma.com/api/mcp/asset/6bc4d1cb-14fb-4e01-9017-15b73751ae7b" alt="">
+            <span class="shortcut-btn-label">ブランド</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 最近の検索 -->
+      <div class="search-section">
+        <div class="search-section-header">
+          <span class="search-section-title">最近の検索</span>
+          <span class="search-section-action">編集 <svg width="12" height="12" viewBox="0 0 24 24" fill="#007AFF"><path d="M9.29 6.71a.996.996 0 0 0 0 1.41L13.17 12l-3.88 3.88a.996.996 0 1 0 1.41 1.41l4.59-4.59a.996.996 0 0 0 0-1.41L10.7 6.7c-.38-.38-1.02-.38-1.41.01z"/></svg></span>
+        </div>
+        <div class="recent-chip-group">
+          <div class="recent-chip">ジルサンダー</div>
+          <div class="recent-chip">嵐ライブグッズ</div>
+          <div class="recent-chip">ちいかわ</div>
+          <div class="recent-chip">URBAN EXPRESS</div>
+          <div class="recent-chip">アウトドア</div>
+          <div class="recent-chip">Tシャツ</div>
+          <div class="recent-chip">ポケモンカード</div>
+          <div class="recent-chip">BlackPink</div>
+          <div class="recent-chip">ボンドロ</div>
+        </div>
+      </div>
+
+      <!-- メルカリのサービス -->
+      <div class="search-section">
+        <div class="search-section-header">
+          <span class="search-section-title">メルカリのサービス</span>
+        </div>
+        <div class="services-scroll">
+          <div class="service-card">
+            <div class="service-card-title-row">
+              <span class="service-card-title">出品されたギガ</span>
+              <img class="service-card-arrow" src="https://www.figma.com/api/mcp/asset/1ac0749b-9a8f-4ca9-8e96-aaa8f24317a7" alt="">
+            </div>
+            <div class="service-card-items">
+              <div class="service-item-wrap"><img class="service-item-thumb" src="https://www.figma.com/api/mcp/asset/53868a48-bd04-403f-9e1a-6cb73a77557c" alt=""><span class="service-item-price">¥2,800</span></div>
+              <div class="service-item-wrap"><img class="service-item-thumb" src="https://www.figma.com/api/mcp/asset/d436c85b-0fd3-4c6d-b380-1fc84d91b93d" alt=""><span class="service-item-price">¥2,800</span></div>
+            </div>
+          </div>
+          <div class="service-card">
+            <div class="service-card-title-row">
+              <span class="service-card-title">メルカリNFT</span>
+              <img class="service-card-arrow" src="https://www.figma.com/api/mcp/asset/1ac0749b-9a8f-4ca9-8e96-aaa8f24317a7" alt="">
+            </div>
+            <div class="service-card-items">
+              <div class="service-item-wrap"><img class="service-item-thumb" src="https://www.figma.com/api/mcp/asset/fec9d60c-5940-4953-a09e-a5642e4b884a" alt=""><span class="service-item-price">¥2,800</span></div>
+              <div class="service-item-wrap"><img class="service-item-thumb" src="https://www.figma.com/api/mcp/asset/e164a3e6-456e-4d09-b065-34e59cc9c64d" alt=""><span class="service-item-price">¥2,800</span></div>
+            </div>
+          </div>
+          <div class="service-card">
+            <div class="service-card-title-row">
+              <span class="service-card-title">メルカリギフト</span>
+              <img class="service-card-arrow" src="https://www.figma.com/api/mcp/asset/1ac0749b-9a8f-4ca9-8e96-aaa8f24317a7" alt="">
+            </div>
+            <div class="service-card-items">
+              <div class="service-item-wrap"><img class="service-item-thumb" src="https://www.figma.com/api/mcp/asset/aee7ce4b-5a9e-44c7-bb95-1eeb3db0d79b" alt=""><span class="service-item-price">¥2,800</span></div>
+              <div class="service-item-wrap"><img class="service-item-thumb" src="https://www.figma.com/api/mcp/asset/23f4a71b-f7dd-4a99-90f2-0d9460c1837c" alt=""><span class="service-item-price">¥2,800</span></div>
+            </div>
+          </div>
+          <div class="service-card">
+            <div class="service-card-title-row">
+              <span class="service-card-title">オークション</span>
+              <img class="service-card-arrow" src="https://www.figma.com/api/mcp/asset/1ac0749b-9a8f-4ca9-8e96-aaa8f24317a7" alt="">
+            </div>
+            <div class="service-card-items">
+              <div class="service-item-wrap"><img class="service-item-thumb" src="https://www.figma.com/api/mcp/asset/633bcd79-dbff-4a57-8d1d-8152780101d8" alt=""><span class="service-item-price">¥2,800</span></div>
+              <div class="service-item-wrap"><img class="service-item-thumb" src="https://www.figma.com/api/mcp/asset/92db6ead-fc1e-4712-a8a6-f530856a94ad" alt=""><span class="service-item-price">¥2,800</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- トレンドキーワード -->
+      <div class="search-section">
+        <div class="search-section-header">
+          <span class="search-section-title">トレンドキーワード</span>
+        </div>
+        <div class="trend-keywords">
+          <div class="trend-keyword-card">
+            <div class="trend-keyword-rank"><svg width="14" height="14" viewBox="0 0 24 24" fill="#4CAF50" style="flex-shrink:0;margin-top:2px"><path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22l1-2.3A4.49 4.49 0 0 0 8 20C19 20 22 3 22 3c-1 2-8 2-11 4z"/></svg>ポケモンカード</div>
+            <div class="trend-keyword-count"><svg width="10" height="10" viewBox="0 0 18 18" fill="#666"><path d="M17.8 16.8l-4-4a7.5 7.5 0 1 0-1 1l4 4a.7.7 0 0 0 1-1zM7.5 13.5a6 6 0 1 1 6-6 6 6 0 0 1-6 6z"/></svg>2,269<svg width="10" height="10" viewBox="0 0 24 24" fill="#F44336"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></svg></div>
+          </div>
+          <div class="trend-keyword-card">
+            <div class="trend-keyword-rank"><svg width="14" height="14" viewBox="0 0 24 24" fill="#4CAF50" style="flex-shrink:0;margin-top:2px"><path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22l1-2.3A4.49 4.49 0 0 0 8 20C19 20 22 3 22 3c-1 2-8 2-11 4z"/></svg>嵐ライブグッズ</div>
+            <div class="trend-keyword-count"><svg width="10" height="10" viewBox="0 0 18 18" fill="#666"><path d="M17.8 16.8l-4-4a7.5 7.5 0 1 0-1 1l4 4a.7.7 0 0 0 1-1zM7.5 13.5a6 6 0 1 1 6-6 6 6 0 0 1-6 6z"/></svg>1,884<svg width="10" height="10" viewBox="0 0 24 24" fill="#F44336"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></svg></div>
+          </div>
+          <div class="trend-keyword-card">
+            <div class="trend-keyword-rank"><svg width="14" height="14" viewBox="0 0 24 24" fill="#4CAF50" style="flex-shrink:0;margin-top:2px"><path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22l1-2.3A4.49 4.49 0 0 0 8 20C19 20 22 3 22 3c-1 2-8 2-11 4z"/></svg>ボンボンドロップシール</div>
+            <div class="trend-keyword-count"><svg width="10" height="10" viewBox="0 0 18 18" fill="#666"><path d="M17.8 16.8l-4-4a7.5 7.5 0 1 0-1 1l4 4a.7.7 0 0 0 1-1zM7.5 13.5a6 6 0 1 1 6-6 6 6 0 0 1-6 6z"/></svg>608<svg width="10" height="10" viewBox="0 0 24 24" fill="#F44336"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></svg></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 急上昇キーワード -->
+      <div class="search-section">
+        <div class="search-section-header">
+          <span class="search-section-title">急上昇キーワード</span>
+        </div>
+        <div class="rising-scroll">
+          <div class="rising-row">
+            <div class="rising-chip"><img class="rising-chip-thumb" src="https://www.figma.com/api/mcp/asset/53868a48-bd04-403f-9e1a-6cb73a77557c" alt=""><span class="rising-chip-label">スニーカー</span></div>
+            <div class="rising-chip"><img class="rising-chip-thumb" src="https://www.figma.com/api/mcp/asset/d436c85b-0fd3-4c6d-b380-1fc84d91b93d" alt=""><span class="rising-chip-label">レトロゲーム</span></div>
+            <div class="rising-chip"><img class="rising-chip-thumb" src="https://www.figma.com/api/mcp/asset/fec9d60c-5940-4953-a09e-a5642e4b884a" alt=""><span class="rising-chip-label">美容液 高機能スキンケア</span></div>
+          </div>
+          <div class="rising-row">
+            <div class="rising-chip"><img class="rising-chip-thumb" src="https://www.figma.com/api/mcp/asset/e164a3e6-456e-4d09-b065-34e59cc9c64d" alt=""><span class="rising-chip-label">昭和レトロ雑貨</span></div>
+            <div class="rising-chip"><img class="rising-chip-thumb" src="https://www.figma.com/api/mcp/asset/aee7ce4b-5a9e-44c7-bb95-1eeb3db0d79b" alt=""><span class="rising-chip-label">アウトドアギア</span></div>
+            <div class="rising-chip"><img class="rising-chip-thumb" src="https://www.figma.com/api/mcp/asset/23f4a71b-f7dd-4a99-90f2-0d9460c1837c" alt=""><span class="rising-chip-label">アニメキャラクターグッズ</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 人気の検索条件 -->
+      <div class="search-section">
+        <div class="search-section-header">
+          <span class="search-section-title">人気の検索条件</span>
+        </div>
+        <div class="popular-scroll">
+          <div class="popular-card">
+            <span class="popular-card-label">ヴィンテージアクセサリー</span>
+            <div class="popular-card-meta"><span class="popular-card-tag">NEW</span><span>120商品</span></div>
+            <div class="popular-grid">
+              <div class="popular-item-wrap"><img class="popular-grid-thumb" src="https://www.figma.com/api/mcp/asset/53868a48-bd04-403f-9e1a-6cb73a77557c" alt=""><span class="service-item-price">¥10,000</span></div>
+              <div class="popular-item-wrap"><img class="popular-grid-thumb" src="https://www.figma.com/api/mcp/asset/d436c85b-0fd3-4c6d-b380-1fc84d91b93d" alt=""><span class="service-item-price">¥10,000</span></div>
+              <div class="popular-item-wrap"><img class="popular-grid-thumb" src="https://www.figma.com/api/mcp/asset/fec9d60c-5940-4953-a09e-a5642e4b884a" alt=""><span class="service-item-price">¥10,000</span></div>
+              <div class="popular-item-wrap"><img class="popular-grid-thumb" src="https://www.figma.com/api/mcp/asset/e164a3e6-456e-4d09-b065-34e59cc9c64d" alt=""><span class="service-item-price">¥10,000</span></div>
+            </div>
+          </div>
+          <div class="popular-card">
+            <span class="popular-card-label">アウトドアギア</span>
+            <div class="popular-card-meta"><span class="popular-card-tag">NEW</span><span>120商品</span></div>
+            <div class="popular-grid">
+              <div class="popular-item-wrap"><img class="popular-grid-thumb" src="https://www.figma.com/api/mcp/asset/aee7ce4b-5a9e-44c7-bb95-1eeb3db0d79b" alt=""><span class="service-item-price">¥10,000</span></div>
+              <div class="popular-item-wrap"><img class="popular-grid-thumb" src="https://www.figma.com/api/mcp/asset/23f4a71b-f7dd-4a99-90f2-0d9460c1837c" alt=""><span class="service-item-price">¥10,000</span></div>
+              <div class="popular-item-wrap"><img class="popular-grid-thumb" src="https://www.figma.com/api/mcp/asset/633bcd79-dbff-4a57-8d1d-8152780101d8" alt=""><span class="service-item-price">¥10,000</span></div>
+              <div class="popular-item-wrap"><img class="popular-grid-thumb" src="https://www.figma.com/api/mcp/asset/92db6ead-fc1e-4712-a8a6-f530856a94ad" alt=""><span class="service-item-price">¥10,000</span></div>
+            </div>
+          </div>
+          <div class="popular-card">
+            <span class="popular-card-label">ヴィンテージアクセサリー</span>
+            <div class="popular-card-meta"><span class="popular-card-tag">NEW</span><span>120商品</span></div>
+            <div class="popular-grid">
+              <div class="popular-item-wrap"><img class="popular-grid-thumb" src="https://www.figma.com/api/mcp/asset/801a20eb-f2cc-473e-9b4f-3f72a20862e1" alt=""><span class="service-item-price">¥10,000</span></div>
+              <div class="popular-item-wrap"><img class="popular-grid-thumb" src="https://www.figma.com/api/mcp/asset/e56e5fc6-93e9-4e82-9e73-4f6ef1f8ea64" alt=""><span class="service-item-price">¥10,000</span></div>
+              <div class="popular-item-wrap"><img class="popular-grid-thumb" src="https://www.figma.com/api/mcp/asset/5e1dc04a-e8b5-4c94-bc4b-0691bd1ffecc" alt=""><span class="service-item-price">¥10,000</span></div>
+              <div class="popular-item-wrap"><img class="popular-grid-thumb" src="https://www.figma.com/api/mcp/asset/8200b373-e3d1-4e36-9bba-d9f9a1b3a321" alt=""><span class="service-item-price">¥10,000</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- おすすめフォロワー -->
+      <div class="search-section">
+        <div class="search-section-header">
+          <span class="search-section-title">おすすめフォロワー</span>
+        </div>
+        <div class="follower-scroll">
+          <div class="follower-card">
+            <div class="follower-card-header">
+              <div class="follower-avatar"><img src="https://www.figma.com/api/mcp/asset/801a20eb-f2cc-473e-9b4f-3f72a20862e1" alt=""></div>
+              <span class="follower-name">たくま</span>
+            </div>
+            <div class="follower-grid">
+              <div class="popular-item-wrap"><img class="follower-grid-thumb" src="https://www.figma.com/api/mcp/asset/801a20eb-f2cc-473e-9b4f-3f72a20862e1" alt=""><span class="service-item-price">¥10,000</span></div>
+              <div class="popular-item-wrap"><img class="follower-grid-thumb" src="https://www.figma.com/api/mcp/asset/e56e5fc6-93e9-4e82-9e73-4f6ef1f8ea64" alt=""><span class="service-item-price">¥10,000</span></div>
+              <div class="popular-item-wrap"><img class="follower-grid-thumb" src="https://www.figma.com/api/mcp/asset/5e1dc04a-e8b5-4c94-bc4b-0691bd1ffecc" alt=""><span class="service-item-price">¥10,000</span></div>
+              <div class="popular-item-wrap"><img class="follower-grid-thumb" src="https://www.figma.com/api/mcp/asset/8200b373-e3d1-4e36-9bba-d9f9a1b3a321" alt=""><span class="service-item-price">¥10,000</span></div>
+            </div>
+          </div>
+          <div class="follower-card">
+            <div class="follower-card-header">
+              <div class="follower-avatar"><img src="https://www.figma.com/api/mcp/asset/45e074f7-3233-4bc9-b2f8-cb5f9411963f" alt=""></div>
+              <span class="follower-name">ME/チェンソーマングッズ</span>
+            </div>
+            <div class="follower-grid">
+              <div class="popular-item-wrap"><img class="follower-grid-thumb" src="https://www.figma.com/api/mcp/asset/45e074f7-3233-4bc9-b2f8-cb5f9411963f" alt=""><span class="service-item-price">¥10,000</span></div>
+              <div class="popular-item-wrap"><img class="follower-grid-thumb" src="https://www.figma.com/api/mcp/asset/4dc0aae1-5c67-4ce0-ab39-5516a63e80f3" alt=""><span class="service-item-price">¥10,000</span></div>
+              <div class="popular-item-wrap"><img class="follower-grid-thumb" src="https://www.figma.com/api/mcp/asset/35db32b5-622b-4bbd-a3f0-5d95f40a44cc" alt=""><span class="service-item-price">¥10,000</span></div>
+              <div class="popular-item-wrap"><img class="follower-grid-thumb" src="https://www.figma.com/api/mcp/asset/1b8b47ec-668b-4a07-a61b-a78f59913e53" alt=""><span class="service-item-price">¥10,000</span></div>
+            </div>
+          </div>
+          <div class="follower-card">
+            <div class="follower-card-header">
+              <div class="follower-avatar"><img src="https://www.figma.com/api/mcp/asset/53868a48-bd04-403f-9e1a-6cb73a77557c" alt=""></div>
+              <span class="follower-name">ヴィンテージアクセサリー</span>
+            </div>
+            <div class="follower-grid">
+              <div class="popular-item-wrap"><img class="follower-grid-thumb" src="https://www.figma.com/api/mcp/asset/53868a48-bd04-403f-9e1a-6cb73a77557c" alt=""><span class="service-item-price">¥10,000</span></div>
+              <div class="popular-item-wrap"><img class="follower-grid-thumb" src="https://www.figma.com/api/mcp/asset/d436c85b-0fd3-4c6d-b380-1fc84d91b93d" alt=""><span class="service-item-price">¥10,000</span></div>
+              <div class="popular-item-wrap"><img class="follower-grid-thumb" src="https://www.figma.com/api/mcp/asset/fec9d60c-5940-4953-a09e-a5642e4b884a" alt=""><span class="service-item-price">¥10,000</span></div>
+              <div class="popular-item-wrap"><img class="follower-grid-thumb" src="https://www.figma.com/api/mcp/asset/e164a3e6-456e-4d09-b065-34e59cc9c64d" alt=""><span class="service-item-price">¥10,000</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- (旧コンテンツは削除) -->
+      <div class="history-cards" style="display:none;">
+
+        <div class="history-card">
+          <div class="history-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="#999"><path d="M13 3a9 9 0 1 0 0 18A9 9 0 0 0 13 3zm0 16c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7zm.5-11H12v6l5.25 3.15.75-1.23-4.5-2.67V8z"/></svg></div>
+          <div class="history-text">
+            <span class="history-title">ロレックス エクスプローラー1</span>
+            <span class="history-badge"><span class="badge-count">99+新着</span><span class="badge-sort">　(新しい順<svg width="10" height="10" viewBox="0 0 24 24" fill="#666"><path d="M12 5.83L15.17 9l1.41-1.41L12 3 7.41 7.59 8.83 9 12 5.83zm0 12.34L8.83 15l-1.41 1.41L12 21l4.59-4.59L15.17 15 12 18.17z"/></svg>)</span></span>
+          </div>
+          <div class="history-icons"><svg width="18" height="18" viewBox="0 0 24 24" fill="#ccc"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#ccc"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg></div>
+        </div>
+
+        <div class="history-card">
+          <div class="history-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="#999"><path d="M13 3a9 9 0 1 0 0 18A9 9 0 0 0 13 3zm0 16c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7zm.5-11H12v6l5.25 3.15.75-1.23-4.5-2.67V8z"/></svg></div>
+          <div class="history-text">
+            <span class="history-title">Christian Louboutin</span>
+            <span class="history-subtitle">レディーズハイヒール・パンプス</span>
+          </div>
+          <div class="history-icons"><svg width="18" height="18" viewBox="0 0 24 24" fill="#ccc"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#ccc"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg></div>
+        </div>
+
+        <div class="history-card">
+          <div class="history-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="#999"><path d="M13 3a9 9 0 1 0 0 18A9 9 0 0 0 13 3zm0 16c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7zm.5-11H12v6l5.25 3.15.75-1.23-4.5-2.67V8z"/></svg></div>
+          <div class="history-text">
+            <span class="history-title">jill sander Tシャツ</span>
+            <span class="history-badge"><span class="badge-count">99+新着</span><span class="badge-sort">　(新しい順<svg width="10" height="10" viewBox="0 0 24 24" fill="#666"><path d="M12 5.83L15.17 9l1.41-1.41L12 3 7.41 7.59 8.83 9 12 5.83zm0 12.34L8.83 15l-1.41 1.41L12 21l4.59-4.59L15.17 15 12 18.17z"/></svg>)</span></span>
+          </div>
+          <div class="history-icons"><svg width="18" height="18" viewBox="0 0 24 24" fill="#ccc"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#ccc"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg></div>
+        </div>
+
+        <div class="history-card">
+          <div class="history-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="#999"><path d="M13 3a9 9 0 1 0 0 18A9 9 0 0 0 13 3zm0 16c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7zm.5-11H12v6l5.25 3.15.75-1.23-4.5-2.67V8z"/></svg></div>
+          <div class="history-text">
+            <span class="history-title">スリコ ハンモック キャンプ</span>
+          </div>
+          <div class="history-icons"><svg width="18" height="18" viewBox="0 0 24 24" fill="#ccc"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#ccc"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg></div>
+        </div>
+
+        <div class="history-card">
+          <div class="history-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="#999"><path d="M13 3a9 9 0 1 0 0 18A9 9 0 0 0 13 3zm0 16c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7zm.5-11H12v6l5.25 3.15.75-1.23-4.5-2.67V8z"/></svg></div>
+          <div class="history-text">
+            <span class="history-title">pearl drums miniature collection</span>
+            <span class="history-subtitle">カプセルトイ・ガチャガチャ</span>
+            <span class="history-badge"><span class="badge-count">99+新着</span><span class="badge-sort">　(新しい順<svg width="10" height="10" viewBox="0 0 24 24" fill="#666"><path d="M12 5.83L15.17 9l1.41-1.41L12 3 7.41 7.59 8.83 9 12 5.83zm0 12.34L8.83 15l-1.41 1.41L12 21l4.59-4.59L15.17 15 12 18.17z"/></svg>)</span></span>
+          </div>
+          <div class="history-icons"><svg width="18" height="18" viewBox="0 0 24 24" fill="#ccc"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#ccc"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg></div>
+        </div>
+
+        <div class="history-card">
+          <div class="history-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="#999"><path d="M13 3a9 9 0 1 0 0 18A9 9 0 0 0 13 3zm0 16c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7zm.5-11H12v6l5.25 3.15.75-1.23-4.5-2.67V8z"/></svg></div>
+          <div class="history-text">
+            <span class="history-title">iPhone 16 pro max 512gb</span>
+            <span class="history-subtitle">スマートフォン本体</span>
+            <span class="history-badge"><span class="badge-count">99+新着</span><span class="badge-sort">　(新しい順<svg width="10" height="10" viewBox="0 0 24 24" fill="#666"><path d="M12 5.83L15.17 9l1.41-1.41L12 3 7.41 7.59 8.83 9 12 5.83zm0 12.34L8.83 15l-1.41 1.41L12 21l4.59-4.59L15.17 15 12 18.17z"/></svg>)</span></span>
+          </div>
+          <div class="history-icons"><svg width="18" height="18" viewBox="0 0 24 24" fill="#ccc"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#ccc"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg></div>
+        </div>
+
+        <div class="history-card">
+          <div class="history-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="#999"><path d="M13 3a9 9 0 1 0 0 18A9 9 0 0 0 13 3zm0 16c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7zm.5-11H12v6l5.25 3.15.75-1.23-4.5-2.67V8z"/></svg></div>
+          <div class="history-text">
+            <span class="history-title">Nike Air Jordan 1 Retro High OG</span>
+            <span class="history-badge"><span class="badge-count">45新着</span><span class="badge-sort">　(新しい順<svg width="10" height="10" viewBox="0 0 24 24" fill="#666"><path d="M12 5.83L15.17 9l1.41-1.41L12 3 7.41 7.59 8.83 9 12 5.83zm0 12.34L8.83 15l-1.41 1.41L12 21l4.59-4.59L15.17 15 12 18.17z"/></svg>)</span></span>
+          </div>
+          <div class="history-icons"><svg width="18" height="18" viewBox="0 0 24 24" fill="#ccc"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#ccc"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg></div>
+        </div>
+
+        <div class="history-card">
+          <div class="history-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="#999"><path d="M13 3a9 9 0 1 0 0 18A9 9 0 0 0 13 3zm0 16c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7zm.5-11H12v6l5.25 3.15.75-1.23-4.5-2.67V8z"/></svg></div>
+          <div class="history-text">
+            <span class="history-title">LEGO テクニック 42171</span>
+            <span class="history-subtitle">ブロック・積み木</span>
+          </div>
+          <div class="history-icons"><svg width="18" height="18" viewBox="0 0 24 24" fill="#ccc"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#ccc"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg></div>
+        </div>
+
+        <div class="history-card">
+          <div class="history-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="#999"><path d="M13 3a9 9 0 1 0 0 18A9 9 0 0 0 13 3zm0 16c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7zm.5-11H12v6l5.25 3.15.75-1.23-4.5-2.67V8z"/></svg></div>
+          <div class="history-text">
+            <span class="history-title">vintage Levi's denim jacket</span>
+            <span class="history-subtitle">デニムジャケット</span>
+          </div>
+          <div class="history-icons"><svg width="18" height="18" viewBox="0 0 24 24" fill="#ccc"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#ccc"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg></div>
+        </div>
+
+        <div class="history-card">
+          <div class="history-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="#999"><path d="M13 3a9 9 0 1 0 0 18A9 9 0 0 0 13 3zm0 16c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7zm.5-11H12v6l5.25 3.15.75-1.23-4.5-2.67V8z"/></svg></div>
+          <div class="history-text">
+            <span class="history-title">Sony WH-1000XM5</span>
+            <span class="history-badge"><span class="badge-count">32新着</span><span class="badge-sort">　(新しい順<svg width="10" height="10" viewBox="0 0 24 24" fill="#666"><path d="M12 5.83L15.17 9l1.41-1.41L12 3 7.41 7.59 8.83 9 12 5.83zm0 12.34L8.83 15l-1.41 1.41L12 21l4.59-4.59L15.17 15 12 18.17z"/></svg>)</span></span>
+          </div>
+          <div class="history-icons"><svg width="18" height="18" viewBox="0 0 24 24" fill="#ccc"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#ccc"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg></div>
+        </div>
+
+        <div class="history-card">
+          <div class="history-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="#999"><path d="M13 3a9 9 0 1 0 0 18A9 9 0 0 0 13 3zm0 16c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7zm.5-11H12v6l5.25 3.15.75-1.23-4.5-2.67V8z"/></svg></div>
+          <div class="history-text">
+            <span class="history-title">ポケモンカード リザードン 1st edition</span>
+            <span class="history-subtitle">カード・トレカ</span>
+            <span class="history-badge"><span class="badge-count">99+新着</span><span class="badge-sort">　(新しい順<svg width="10" height="10" viewBox="0 0 24 24" fill="#666"><path d="M12 5.83L15.17 9l1.41-1.41L12 3 7.41 7.59 8.83 9 12 5.83zm0 12.34L8.83 15l-1.41 1.41L12 21l4.59-4.59L15.17 15 12 18.17z"/></svg>)</span></span>
+          </div>
+          <div class="history-icons"><svg width="18" height="18" viewBox="0 0 24 24" fill="#ccc"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#ccc"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg></div>
+        </div>
+
+        <div class="history-card">
+          <div class="history-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="#999"><path d="M13 3a9 9 0 1 0 0 18A9 9 0 0 0 13 3zm0 16c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7zm.5-11H12v6l5.25 3.15.75-1.23-4.5-2.67V8z"/></svg></div>
+          <div class="history-text">
+            <span class="history-title">Dyson V15 Detect</span>
+            <span class="history-subtitle">掃除機・クリーナー</span>
+          </div>
+          <div class="history-icons"><svg width="18" height="18" viewBox="0 0 24 24" fill="#ccc"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#ccc"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg></div>
+        </div>
+
+        <div class="history-card">
+          <div class="history-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="#999"><path d="M13 3a9 9 0 1 0 0 18A9 9 0 0 0 13 3zm0 16c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7zm.5-11H12v6l5.25 3.15.75-1.23-4.5-2.67V8z"/></svg></div>
+          <div class="history-text">
+            <span class="history-title">ZARA ニットセーター</span>
+            <span class="history-badge"><span class="badge-count">18新着</span><span class="badge-sort">　(新しい順<svg width="10" height="10" viewBox="0 0 24 24" fill="#666"><path d="M12 5.83L15.17 9l1.41-1.41L12 3 7.41 7.59 8.83 9 12 5.83zm0 12.34L8.83 15l-1.41 1.41L12 21l4.59-4.59L15.17 15 12 18.17z"/></svg>)</span></span>
+          </div>
+          <div class="history-icons"><svg width="18" height="18" viewBox="0 0 24 24" fill="#ccc"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#ccc"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg></div>
+        </div>
+
+        <div class="history-card">
+          <div class="history-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="#999"><path d="M13 3a9 9 0 1 0 0 18A9 9 0 0 0 13 3zm0 16c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7zm.5-11H12v6l5.25 3.15.75-1.23-4.5-2.67V8z"/></svg></div>
+          <div class="history-text">
+            <span class="history-title">PlayStation 5 デジタルエディション</span>
+            <span class="history-subtitle">ゲーム機本体</span>
+            <span class="history-badge"><span class="badge-count">99+新着</span><span class="badge-sort">　(新しい順<svg width="10" height="10" viewBox="0 0 24 24" fill="#666"><path d="M12 5.83L15.17 9l1.41-1.41L12 3 7.41 7.59 8.83 9 12 5.83zm0 12.34L8.83 15l-1.41 1.41L12 21l4.59-4.59L15.17 15 12 18.17z"/></svg>)</span></span>
+          </div>
+          <div class="history-icons"><svg width="18" height="18" viewBox="0 0 24 24" fill="#ccc"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#ccc"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg></div>
+        </div>
+
+        <div class="history-card">
+          <div class="history-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="#999"><path d="M13 3a9 9 0 1 0 0 18A9 9 0 0 0 13 3zm0 16c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7zm.5-11H12v6l5.25 3.15.75-1.23-4.5-2.67V8z"/></svg></div>
+          <div class="history-text">
+            <span class="history-title">Supreme box logo hoodie</span>
+            <span class="history-badge"><span class="badge-count">67新着</span><span class="badge-sort">　(新しい順<svg width="10" height="10" viewBox="0 0 24 24" fill="#666"><path d="M12 5.83L15.17 9l1.41-1.41L12 3 7.41 7.59 8.83 9 12 5.83zm0 12.34L8.83 15l-1.41 1.41L12 21l4.59-4.59L15.17 15 12 18.17z"/></svg>)</span></span>
+          </div>
+          <div class="history-icons"><svg width="18" height="18" viewBox="0 0 24 24" fill="#ccc"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#ccc"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg></div>
+        </div>
+
+        <div class="history-card">
+          <div class="history-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="#999"><path d="M13 3a9 9 0 1 0 0 18A9 9 0 0 0 13 3zm0 16c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7zm.5-11H12v6l5.25 3.15.75-1.23-4.5-2.67V8z"/></svg></div>
+          <div class="history-text">
+            <span class="history-title">遊戯王 青眼の白龍 初期</span>
+            <span class="history-subtitle">トレーディングカード</span>
+            <span class="history-badge"><span class="badge-count">99+新着</span><span class="badge-sort">　(新しい順<svg width="10" height="10" viewBox="0 0 24 24" fill="#666"><path d="M12 5.83L15.17 9l1.41-1.41L12 3 7.41 7.59 8.83 9 12 5.83zm0 12.34L8.83 15l-1.41 1.41L12 21l4.59-4.59L15.17 15 12 18.17z"/></svg>)</span></span>
+          </div>
+          <div class="history-icons"><svg width="18" height="18" viewBox="0 0 24 24" fill="#ccc"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#ccc"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg></div>
+        </div>
+
+        <div class="history-card">
+          <div class="history-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="#999"><path d="M13 3a9 9 0 1 0 0 18A9 9 0 0 0 13 3zm0 16c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7zm.5-11H12v6l5.25 3.15.75-1.23-4.5-2.67V8z"/></svg></div>
+          <div class="history-text">
+            <span class="history-title">MacBook Pro M3 14インチ</span>
+            <span class="history-subtitle">ノートパソコン</span>
+            <span class="history-badge"><span class="badge-count">56新着</span><span class="badge-sort">　(新しい順<svg width="10" height="10" viewBox="0 0 24 24" fill="#666"><path d="M12 5.83L15.17 9l1.41-1.41L12 3 7.41 7.59 8.83 9 12 5.83zm0 12.34L8.83 15l-1.41 1.41L12 21l4.59-4.59L15.17 15 12 18.17z"/></svg>)</span></span>
+          </div>
+          <div class="history-icons"><svg width="18" height="18" viewBox="0 0 24 24" fill="#ccc"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#ccc"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg></div>
+        </div>
+
+        <div class="history-card">
+          <div class="history-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="#999"><path d="M13 3a9 9 0 1 0 0 18A9 9 0 0 0 13 3zm0 16c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7zm.5-11H12v6l5.25 3.15.75-1.23-4.5-2.67V8z"/></svg></div>
+          <div class="history-text">
+            <span class="history-title">ユニクロ フリース プルオーバー</span>
+            <span class="history-badge"><span class="badge-count">99+新着</span><span class="badge-sort">　(新しい順<svg width="10" height="10" viewBox="0 0 24 24" fill="#666"><path d="M12 5.83L15.17 9l1.41-1.41L12 3 7.41 7.59 8.83 9 12 5.83zm0 12.34L8.83 15l-1.41 1.41L12 21l4.59-4.59L15.17 15 12 18.17z"/></svg>)</span></span>
+          </div>
+          <div class="history-icons"><svg width="18" height="18" viewBox="0 0 24 24" fill="#ccc"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#ccc"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg></div>
+        </div>
+
+        <div class="history-card">
+          <div class="history-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="#999"><path d="M13 3a9 9 0 1 0 0 18A9 9 0 0 0 13 3zm0 16c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7zm.5-11H12v6l5.25 3.15.75-1.23-4.5-2.67V8z"/></svg></div>
+          <div class="history-text">
+            <span class="history-title">OMEGA スピードマスタープロ</span>
+            <span class="history-badge"><span class="badge-count">23新着</span><span class="badge-sort">　(新しい順<svg width="10" height="10" viewBox="0 0 24 24" fill="#666"><path d="M12 5.83L15.17 9l1.41-1.41L12 3 7.41 7.59 8.83 9 12 5.83zm0 12.34L8.83 15l-1.41 1.41L12 21l4.59-4.59L15.17 15 12 18.17z"/></svg>)</span></span>
+          </div>
+          <div class="history-icons"><svg width="18" height="18" viewBox="0 0 24 24" fill="#ccc"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#ccc"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg></div>
+        </div>
+
+        <div class="history-card">
+          <div class="history-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="#999"><path d="M13 3a9 9 0 1 0 0 18A9 9 0 0 0 13 3zm0 16c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7zm.5-11H12v6l5.25 3.15.75-1.23-4.5-2.67V8z"/></svg></div>
+          <div class="history-text">
+            <span class="history-title">AirPods Pro 第2世代</span>
+            <span class="history-subtitle">ワイヤレスイヤホン</span>
+            <span class="history-badge"><span class="badge-count">99+新着</span><span class="badge-sort">　(新しい順<svg width="10" height="10" viewBox="0 0 24 24" fill="#666"><path d="M12 5.83L15.17 9l1.41-1.41L12 3 7.41 7.59 8.83 9 12 5.83zm0 12.34L8.83 15l-1.41 1.41L12 21l4.59-4.59L15.17 15 12 18.17z"/></svg>)</span></span>
+          </div>
+          <div class="history-icons"><svg width="18" height="18" viewBox="0 0 24 24" fill="#ccc"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#ccc"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg></div>
+        </div>
+
+        <div class="history-card">
+          <div class="history-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="#999"><path d="M13 3a9 9 0 1 0 0 18A9 9 0 0 0 13 3zm0 16c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7zm.5-11H12v6l5.25 3.15.75-1.23-4.5-2.67V8z"/></svg></div>
+          <div class="history-text">
+            <span class="history-title">パイロット 万年筆 カスタム743</span>
+            <span class="history-subtitle">文房具・ペン</span>
+          </div>
+          <div class="history-icons"><svg width="18" height="18" viewBox="0 0 24 24" fill="#ccc"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#ccc"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg></div>
+        </div>
+
+        <div class="history-card">
+          <div class="history-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="#999"><path d="M13 3a9 9 0 1 0 0 18A9 9 0 0 0 13 3zm0 16c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7zm.5-11H12v6l5.25 3.15.75-1.23-4.5-2.67V8z"/></svg></div>
+          <div class="history-text">
+            <span class="history-title">コールマン キャンプテーブル</span>
+            <span class="history-badge"><span class="badge-count">41新着</span><span class="badge-sort">　(新しい順<svg width="10" height="10" viewBox="0 0 24 24" fill="#666"><path d="M12 5.83L15.17 9l1.41-1.41L12 3 7.41 7.59 8.83 9 12 5.83zm0 12.34L8.83 15l-1.41 1.41L12 21l4.59-4.59L15.17 15 12 18.17z"/></svg>)</span></span>
+          </div>
+          <div class="history-icons"><svg width="18" height="18" viewBox="0 0 24 24" fill="#ccc"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#ccc"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg></div>
+        </div>
+
+        <div class="history-card">
+          <div class="history-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="#999"><path d="M13 3a9 9 0 1 0 0 18A9 9 0 0 0 13 3zm0 16c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7zm.5-11H12v6l5.25 3.15.75-1.23-4.5-2.67V8z"/></svg></div>
+          <div class="history-text">
+            <span class="history-title">ドラゴンボール フィギュア 孫悟空</span>
+            <span class="history-subtitle">アニメフィギュア</span>
+            <span class="history-badge"><span class="badge-count">88新着</span><span class="badge-sort">　(新しい順<svg width="10" height="10" viewBox="0 0 24 24" fill="#666"><path d="M12 5.83L15.17 9l1.41-1.41L12 3 7.41 7.59 8.83 9 12 5.83zm0 12.34L8.83 15l-1.41 1.41L12 21l4.59-4.59L15.17 15 12 18.17z"/></svg>)</span></span>
+          </div>
+          <div class="history-icons"><svg width="18" height="18" viewBox="0 0 24 24" fill="#ccc"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#ccc"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg></div>
+        </div>
+
+        <div class="history-card">
+          <div class="history-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="#999"><path d="M13 3a9 9 0 1 0 0 18A9 9 0 0 0 13 3zm0 16c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7zm.5-11H12v6l5.25 3.15.75-1.23-4.5-2.67V8z"/></svg></div>
+          <div class="history-text">
+            <span class="history-title">シャネル マトラッセ バッグ</span>
+            <span class="history-subtitle">ハンドバッグ</span>
+            <span class="history-badge"><span class="badge-count">34新着</span><span class="badge-sort">　(新しい順<svg width="10" height="10" viewBox="0 0 24 24" fill="#666"><path d="M12 5.83L15.17 9l1.41-1.41L12 3 7.41 7.59 8.83 9 12 5.83zm0 12.34L8.83 15l-1.41 1.41L12 21l4.59-4.59L15.17 15 12 18.17z"/></svg>)</span></span>
+          </div>
+          <div class="history-icons"><svg width="18" height="18" viewBox="0 0 24 24" fill="#ccc"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#ccc"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg></div>
+        </div>
+
+        <div class="history-card">
+          <div class="history-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="#999"><path d="M13 3a9 9 0 1 0 0 18A9 9 0 0 0 13 3zm0 16c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7zm.5-11H12v6l5.25 3.15.75-1.23-4.5-2.67V8z"/></svg></div>
+          <div class="history-text">
+            <span class="history-title">Nintendo Switch 有機ELモデル</span>
+            <span class="history-badge"><span class="badge-count">99+新着</span><span class="badge-sort">　(新しい順<svg width="10" height="10" viewBox="0 0 24 24" fill="#666"><path d="M12 5.83L15.17 9l1.41-1.41L12 3 7.41 7.59 8.83 9 12 5.83zm0 12.34L8.83 15l-1.41 1.41L12 21l4.59-4.59L15.17 15 12 18.17z"/></svg>)</span></span>
+          </div>
+          <div class="history-icons"><svg width="18" height="18" viewBox="0 0 24 24" fill="#ccc"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#ccc"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg></div>
+        </div>
+
+        <div class="history-card">
+          <div class="history-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="#999"><path d="M13 3a9 9 0 1 0 0 18A9 9 0 0 0 13 3zm0 16c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7zm.5-11H12v6l5.25 3.15.75-1.23-4.5-2.67V8z"/></svg></div>
+          <div class="history-text">
+            <span class="history-title">ルイ・ヴィトン モノグラム 二つ折り財布</span>
+            <span class="history-subtitle">ブランド財布</span>
+          </div>
+          <div class="history-icons"><svg width="18" height="18" viewBox="0 0 24 24" fill="#ccc"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#ccc"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg></div>
+        </div>
+
+        <div class="history-card">
+          <div class="history-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="#999"><path d="M13 3a9 9 0 1 0 0 18A9 9 0 0 0 13 3zm0 16c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7zm.5-11H12v6l5.25 3.15.75-1.23-4.5-2.67V8z"/></svg></div>
+          <div class="history-text">
+            <span class="history-title">テーラーメイド ステルス2 ドライバー</span>
+            <span class="history-badge"><span class="badge-count">29新着</span><span class="badge-sort">　(新しい順<svg width="10" height="10" viewBox="0 0 24 24" fill="#666"><path d="M12 5.83L15.17 9l1.41-1.41L12 3 7.41 7.59 8.83 9 12 5.83zm0 12.34L8.83 15l-1.41 1.41L12 21l4.59-4.59L15.17 15 12 18.17z"/></svg>)</span></span>
+          </div>
+          <div class="history-icons"><svg width="18" height="18" viewBox="0 0 24 24" fill="#ccc"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#ccc"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg></div>
+        </div>
+
+        <div class="history-card">
+          <div class="history-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="#999"><path d="M13 3a9 9 0 1 0 0 18A9 9 0 0 0 13 3zm0 16c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7zm.5-11H12v6l5.25 3.15.75-1.23-4.5-2.67V8z"/></svg></div>
+          <div class="history-text">
+            <span class="history-title">ガンダム プラモデル RG νガンダム</span>
+            <span class="history-subtitle">ガンプラ・プラモデル</span>
+            <span class="history-badge"><span class="badge-count">72新着</span><span class="badge-sort">　(新しい順<svg width="10" height="10" viewBox="0 0 24 24" fill="#666"><path d="M12 5.83L15.17 9l1.41-1.41L12 3 7.41 7.59 8.83 9 12 5.83zm0 12.34L8.83 15l-1.41 1.41L12 21l4.59-4.59L15.17 15 12 18.17z"/></svg>)</span></span>
+          </div>
+          <div class="history-icons"><svg width="18" height="18" viewBox="0 0 24 24" fill="#ccc"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#ccc"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg></div>
+        </div>
+
+        <div class="history-card">
+          <div class="history-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="#999"><path d="M13 3a9 9 0 1 0 0 18A9 9 0 0 0 13 3zm0 16c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7zm.5-11H12v6l5.25 3.15.75-1.23-4.5-2.67V8z"/></svg></div>
+          <div class="history-text">
+            <span class="history-title">エルメス ケリー 25</span>
+            <span class="history-subtitle">ブランドバッグ</span>
+            <span class="history-badge"><span class="badge-count">11新着</span><span class="badge-sort">　(新しい順<svg width="10" height="10" viewBox="0 0 24 24" fill="#666"><path d="M12 5.83L15.17 9l1.41-1.41L12 3 7.41 7.59 8.83 9 12 5.83zm0 12.34L8.83 15l-1.41 1.41L12 21l4.59-4.59L15.17 15 12 18.17z"/></svg>)</span></span>
+          </div>
+          <div class="history-icons"><svg width="18" height="18" viewBox="0 0 24 24" fill="#ccc"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#ccc"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg></div>
+        </div>
+
+        <div class="history-card">
+          <div class="history-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="#999"><path d="M13 3a9 9 0 1 0 0 18A9 9 0 0 0 13 3zm0 16c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7zm.5-11H12v6l5.25 3.15.75-1.23-4.5-2.67V8z"/></svg></div>
+          <div class="history-text">
+            <span class="history-title">カシオ G-SHOCK GW-M5610</span>
+            <span class="history-badge"><span class="badge-count">99+新着</span><span class="badge-sort">　(新しい順<svg width="10" height="10" viewBox="0 0 24 24" fill="#666"><path d="M12 5.83L15.17 9l1.41-1.41L12 3 7.41 7.59 8.83 9 12 5.83zm0 12.34L8.83 15l-1.41 1.41L12 21l4.59-4.59L15.17 15 12 18.17z"/></svg>)</span></span>
+          </div>
+          <div class="history-icons"><svg width="18" height="18" viewBox="0 0 24 24" fill="#ccc"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg><svg width="18" height="18" viewBox="0 0 24 24" fill="#ccc"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 浮いている検索フォーム（スクロールされない） -->
+    <div class="search-float-bar" id="search-float-bar">
+      <div class="search-input-wrap">
+        <svg class="search-input-icon" viewBox="0 0 18.0449 18.0453" xmlns="http://www.w3.org/2000/svg"><path d="M17.8353 16.8353L13.8953 12.8953C15.1915 11.3417 15.8387 9.34807 15.7021 7.32936C15.5655 5.31064 14.6557 3.42236 13.162 2.05753C11.6683 0.692688 9.70582 -0.0435684 7.683 0.00199537C5.66019 0.0475592 3.73285 0.871433 2.30214 2.30214C0.871433 3.73285 0.0475592 5.66019 0.00199537 7.683C-0.0435684 9.70582 0.692687 11.6683 2.05753 13.162C3.42236 14.6557 5.31064 15.5655 7.32936 15.7021C9.34807 15.8387 11.3417 15.1915 12.8953 13.8953L16.8353 17.8353C16.9005 17.9018 16.9783 17.9547 17.0642 17.9907C17.15 18.0268 17.2422 18.0453 17.3353 18.0453C17.427 18.0457 17.5178 18.0273 17.6021 17.9912C17.6864 17.955 17.7624 17.902 17.8253 17.8353C17.8937 17.7716 17.9485 17.6945 17.9862 17.6089C18.024 17.5234 18.0439 17.431 18.0448 17.3375C18.0458 17.2439 18.0277 17.1512 17.9917 17.0649C17.9556 16.9786 17.9025 16.9005 17.8353 16.8353ZM3.32533 12.4253C2.42502 11.5245 1.81202 10.377 1.56381 9.12789C1.31561 7.87875 1.44334 6.58406 1.93087 5.4075C2.41841 4.23095 3.24384 3.22537 4.30282 2.51788C5.36179 1.8104 6.60676 1.43279 7.88033 1.43279C9.15389 1.43279 10.3989 1.8104 11.4578 2.51788C12.5168 3.22537 13.3422 4.23095 13.8298 5.4075C14.3173 6.58406 14.445 7.87875 14.1968 9.12789C13.9486 10.377 13.3356 11.5245 12.4353 12.4253C11.8379 13.0249 11.1281 13.5006 10.3464 13.8252C9.56475 14.1498 8.7267 14.3169 7.88033 14.3169C7.03395 14.3169 6.1959 14.1498 5.41424 13.8252C4.63259 13.5006 3.92271 13.0249 3.32533 12.4253Z"/></svg>
+        <input
+          class="search-input-field"
+          id="search-input"
+          type="search"
+          inputmode="search"
+          lang="ja"
+          placeholder="検索"
+          autocomplete="off"
+          autocorrect="off"
+          spellcheck="false"
+        />
+      </div>
+      <button class="search-close-btn" onclick="exitSearch()">
+        <svg viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg">
+          <path d="M1 1L13 13M13 1L1 13" stroke="rgba(0,0,0,0.5)" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+        </svg>
+      </button>
+    </div>
+
+  </div>
+
+  <!-- 共通トップナビ: ホーム・オークション・出品・おさいふで表示、検索では非表示 -->
+  <div class="top-nav">
+    <!-- 左: マイページアバター (Figma画像) -->
+    <div class="nav-avatar">
+      <img src="https://www.figma.com/api/mcp/asset/e7bb5e9e-2215-4f51-8a22-566a05a90965" alt="マイページ">
+    </div>
+    <!-- 右: 通知・カート・やること -->
+    <div class="nav-right">
+      <!-- 通知: NotificationOutline (ベル) -->
+      <div class="nav-icon-btn">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M18 8C18 6.4087 17.3679 4.88258 16.2426 3.75736C15.1174 2.63214 13.5913 2 12 2C10.4087 2 8.88258 2.63214 7.75736 3.75736C6.63214 4.88258 6 6.4087 6 8C6 15 3 17 3 17H21C21 17 18 15 18 8Z" stroke="#3d3d3d" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M13.73 21C13.5542 21.3031 13.3019 21.5547 12.9982 21.7295C12.6946 21.9044 12.3504 21.9965 12 21.9965C11.6496 21.9965 11.3054 21.9044 11.0018 21.7295C10.6982 21.5547 10.4458 21.3031 10.27 21" stroke="#3d3d3d" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <!-- カート: CartOutline -->
+      <div class="nav-icon-btn">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M6 2L3 6V20C3 20.5304 3.21071 21.0391 3.58579 21.4142C3.96086 21.7893 4.46957 22 5 22H19C19.5304 22 20.0391 21.7893 20.4142 21.4142C20.7893 21.0391 21 20.5304 21 20V6L18 2H6Z" stroke="#3d3d3d" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M3 6H21" stroke="#3d3d3d" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M16 10C16 11.0609 15.5786 12.0783 14.8284 12.8284C14.0783 13.5786 13.0609 14 12 14C10.9391 14 9.92172 13.5786 9.17157 12.8284C8.42143 12.0783 8 11.0609 8 10" stroke="#3d3d3d" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <!-- やること: TodoOutline (チェックボックス) -->
+      <div class="nav-icon-btn">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="3" y="3" width="18" height="18" rx="3" stroke="#3d3d3d" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M8.5 12.5L10.5 14.5L15.5 9.5" stroke="#3d3d3d" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab Bar: left pill (4 tabs) + right pill (search only) -->
+  <div class="tab-bar-wrapper">
+
+    <!-- 4-tab pill -->
+    <div class="glass-pill tab-group-pill">
+
+      <div class="tab-item active" onclick="switchTab('home', this)">
+        <div class="tab-icon">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20.5996 10.2734C20.5996 9.94387 20.4866 9.51429 20.2754 9.0918C20.0642 8.66932 19.7881 8.32177 19.5244 8.12402V8.12305L12.9424 3.2041L12.9414 3.20312C12.7084 3.02835 12.3696 2.92188 12 2.92188C11.6309 2.92196 11.2904 3.02746 11.0547 3.20312L11.0557 3.2041L4.47266 8.12402C4.20914 8.32183 3.9328 8.66956 3.72168 9.0918C3.51052 9.5142 3.39844 9.94394 3.39844 10.2734V19.1484L3.40332 19.251C3.45519 19.7565 3.88803 20.1562 4.40625 20.1562H8.5752C9.12779 20.1562 9.58301 19.701 9.58301 19.1484V15.9326C9.58312 14.6381 10.6391 13.5822 11.9336 13.582H12.0596C13.3542 13.582 14.411 14.638 14.4111 15.9326V19.1094C14.4119 19.1224 14.415 19.1353 14.415 19.1484C14.415 19.7011 14.8702 20.1562 15.4229 20.1562H19.5918C20.1445 20.1562 20.5996 19.7011 20.5996 19.1484V10.2734ZM21.9434 19.1484C21.9434 20.4431 20.8865 21.5 19.5918 21.5H15.4229C14.1552 21.5 13.118 20.4871 13.0752 19.2295C13.072 19.2029 13.0674 19.1758 13.0674 19.1484V15.9326C13.0673 15.38 12.6122 14.9248 12.0596 14.9248H11.9336C11.3811 14.9249 10.9259 15.3801 10.9258 15.9326V19.1484C10.9258 20.4431 9.86979 21.4999 8.5752 21.5H4.40625C3.19254 21.5 2.18824 20.5715 2.06738 19.3887L2.05469 19.1484V10.2734C2.05469 9.67944 2.2448 9.0427 2.52051 8.49121C2.79629 7.93966 3.19172 7.40528 3.66699 7.04883L3.66797 7.04785L10.251 2.12793L10.252 2.12695L10.4473 1.99512C10.917 1.70897 11.4701 1.5782 12 1.57812C12.6053 1.57812 13.2412 1.74875 13.7471 2.12793L20.3301 7.04785L20.3311 7.04883L20.5049 7.19043C20.9029 7.53899 21.2362 8.00851 21.4775 8.49121C21.7532 9.04268 21.9434 9.67948 21.9434 10.2734V19.1484Z"/></svg>
+        </div>
+        <span class="tab-label">ホーム</span>
+      </div>
+
+      <div class="tab-item" onclick="switchTab('auction', this)">
+        <div class="tab-icon">
+          <svg viewBox="0 0 22.7036 22.7126" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M10.5901 0.0699509C11.1161 -0.0599093 11.6492 -0.00295058 12.1819 0.191045C13.2013 0.562414 14.3265 1.47828 15.6653 2.81702C15.6716 2.82335 15.677 2.83053 15.6823 2.83766C15.6863 2.84294 15.6903 2.84824 15.6946 2.85315C17.0154 4.17738 17.919 5.2923 18.2874 6.30335C18.4814 6.83603 18.5383 7.36914 18.4085 7.89515C18.2797 8.41631 17.9849 8.86068 17.596 9.24964C17.1214 9.72423 16.5819 10.1023 15.9182 10.1901C15.6664 10.7189 15.3671 11.2455 15.0189 11.7594L21.6682 17.4685L21.8704 17.6589C22.3207 18.1237 22.6069 18.7235 22.6858 19.3689C22.6895 19.3996 22.6909 19.4302 22.6907 19.4607C22.8592 21.282 21.3591 22.8198 19.5442 22.7068L19.3645 22.6902C18.6272 22.6 17.9491 22.2395 17.4641 21.6726L11.7558 15.0241C11.2415 15.3723 10.714 15.6716 10.1838 15.9235C10.0952 16.5832 9.72192 17.1237 9.24536 17.6002C8.85639 17.9892 8.41205 18.2849 7.89087 18.4137C7.3649 18.5436 6.83171 18.4866 6.29908 18.2926C5.27961 17.9213 4.15444 17.0054 2.81568 15.6666C1.47729 14.3267 0.561663 13.2008 0.190677 12.1813C-0.00321508 11.6483 -0.0600675 11.1149 0.0705596 10.5885C0.199919 10.0673 0.495598 9.62245 0.885013 9.23304C1.35932 8.75881 1.89863 8.38051 2.56177 8.29261C3.11749 7.12574 3.90553 5.97036 4.93872 4.93714C5.97005 3.90301 7.12632 3.11498 8.29615 2.55921C8.38496 1.89971 8.75917 1.35888 9.2356 0.882451C9.62448 0.493659 10.0691 0.19869 10.5901 0.0699509ZM11.3884 13.5056C11.7633 13.222 12.1284 12.907 12.4779 12.56C12.4906 12.5474 12.5032 12.5348 12.5159 12.5221C12.6997 12.3398 12.8754 12.1502 13.043 11.9561C13.1946 11.7813 13.3389 11.6036 13.4759 11.4236C13.4878 11.408 13.5022 11.3943 13.5139 11.3786C14.047 10.6708 14.4662 9.92746 14.7805 9.19104C14.9057 8.89807 15.2078 8.72158 15.5247 8.7555C15.8168 8.78679 16.1078 8.68702 16.5706 8.22425C16.8304 7.96444 16.9529 7.7432 17.0012 7.54749C17.0483 7.35681 17.042 7.12178 16.9251 6.80042C16.674 6.11102 15.974 5.18238 14.637 3.84534C14.6318 3.84022 14.6274 3.83448 14.6229 3.82877C14.6196 3.82442 14.6162 3.82009 14.6126 3.81604C13.29 2.49657 12.3706 1.80285 11.6858 1.55335C11.3642 1.43622 11.1285 1.43105 10.9377 1.47815C10.7421 1.52649 10.5207 1.64826 10.261 1.90784C9.80112 2.36771 9.70061 2.66414 9.73072 2.95765C9.7631 3.27376 9.5856 3.57439 9.29322 3.69886C8.14366 4.18822 6.98666 4.9371 5.96509 5.96155C4.94006 6.98662 4.18985 8.14496 3.70044 9.29163C3.57533 9.58479 3.27322 9.76205 2.9563 9.72815C2.66427 9.69687 2.37297 9.79595 1.9104 10.2584C1.64947 10.5194 1.52644 10.7421 1.47779 10.9381C1.4305 11.129 1.43616 11.364 1.55298 11.6852C1.80371 12.3744 2.50386 13.3025 3.84107 14.6412L4.32349 15.1129C5.40607 16.1459 6.19197 16.7095 6.79517 16.9293C7.11675 17.0464 7.35246 17.0526 7.54322 17.0055C7.73893 16.9571 7.96014 16.8347 8.21997 16.5748C8.67975 16.115 8.78031 15.8195 8.75025 15.526C8.71782 15.2099 8.89534 14.9093 9.18775 14.7848C9.93105 14.4684 10.6775 14.0434 11.3884 13.5056ZM14.1343 12.9109L20.7259 18.5701C21.0062 18.8098 21.187 19.1427 21.2405 19.5085L21.2412 19.5191C21.2417 19.5286 21.2423 19.5382 21.2434 19.5476C21.2436 19.5488 21.2433 19.5464 21.2434 19.5476C21.3407 20.3635 20.7844 21.0802 20.029 21.2331C19.8733 21.2646 19.709 21.2722 19.5403 21.2517C19.1603 21.2053 18.8124 21.0188 18.5647 20.7292L12.9055 14.1365L12.9314 14.1159L12.9528 14.0954C13.0337 14.0249 13.1147 13.9539 13.1946 13.8809C13.2003 13.8757 13.2059 13.8705 13.2116 13.8654C13.2325 13.8461 13.2534 13.8267 13.2741 13.8071C13.3642 13.7222 13.4535 13.6352 13.5422 13.5465C13.6336 13.4552 13.723 13.3628 13.8105 13.2696C13.8298 13.2491 13.8489 13.2285 13.8679 13.2079C13.9145 13.1575 13.9606 13.107 14.0061 13.0564C14.0102 13.0518 14.0143 13.0472 14.0183 13.0427C14.0264 13.0335 14.0345 13.0243 14.0425 13.0151C14.0584 12.9968 14.0743 12.9783 14.0901 12.9599L14.1216 12.9231L14.1343 12.9109Z"/></svg>
+        </div>
+        <span class="tab-label">オークション</span>
+      </div>
+
+      <div class="tab-item" onclick="switchTab('list', this)">
+        <div class="tab-icon">
+          <svg viewBox="2 3 20 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M15.2998 3C15.4307 2.99956 15.5596 3.03559 15.6709 3.1045C15.7821 3.17336 15.8717 3.27239 15.9297 3.38965L16.7305 5H19.2998C20.0159 5 20.7026 5.28467 21.209 5.79102C21.7153 6.29737 22 6.98411 22 7.7002V18.2998C22 19.0159 21.7153 19.7026 21.209 20.209C20.7026 20.7153 20.0159 21 19.2998 21H4.7002C3.98411 21 3.29736 20.7153 2.79102 20.209C2.28467 19.7026 2 19.0159 2 18.2998V7.7002C2 6.98411 2.28467 6.29737 2.79102 5.79102C3.29736 5.28467 3.98411 5 4.7002 5H7.26953L8.07031 3.38965C8.12832 3.27239 8.21786 3.17336 8.3291 3.1045C8.44045 3.03559 8.56925 2.99956 8.7002 3H15.2998ZM9.12988 4.38965L8.33008 6C8.27349 6.11931 8.18374 6.22024 8.07227 6.29102C7.96093 6.36161 7.83203 6.3999 7.7002 6.40039H4.7002C4.35541 6.40039 4.02407 6.53746 3.78027 6.78125C3.53678 7.025 3.40039 7.35565 3.40039 7.7002V18.2998C3.40039 18.6446 3.53648 18.9759 3.78027 19.2197C4.02407 19.4635 4.35541 19.5996 4.7002 19.5996H19.2998C19.4705 19.5996 19.6401 19.5663 19.7979 19.501C19.9554 19.4357 20.0991 19.3404 20.2197 19.2197C20.3404 19.0991 20.4356 18.9554 20.501 18.7979C20.5663 18.6401 20.5996 18.4705 20.5996 18.2998V7.69043C20.5996 7.51972 20.5663 7.35011 20.501 7.19239C20.4357 7.03477 20.3404 6.89117 20.2197 6.77051C20.0991 6.6499 19.9554 6.55459 19.7979 6.48926C19.6401 6.42393 19.4705 6.38965 19.2998 6.38965H16.2998C16.1689 6.39006 16.04 6.35407 15.9287 6.28516C15.8175 6.21623 15.7279 6.11732 15.6699 6L14.8701 4.38965H9.12988ZM12 8C13.3261 8 14.5975 8.52717 15.5352 9.46485C16.4728 10.4025 17 11.6739 17 13C17 13.9889 16.7066 14.9561 16.1572 15.7783C15.6078 16.6004 14.8266 17.2408 13.9131 17.6191C12.9995 17.9975 11.9943 18.0972 11.0244 17.9043C10.0545 17.7114 9.16409 17.2344 8.46484 16.5352C7.7656 15.8359 7.28864 14.9455 7.0957 13.9756C6.90279 13.0058 7.00249 12.0005 7.38086 11.0869C7.75924 10.1734 8.39962 9.39217 9.22168 8.84278C10.0439 8.29337 11.0111 8 12 8ZM13.3779 9.67383C12.7202 9.40139 11.9961 9.32991 11.2979 9.46875C10.5995 9.60766 9.95757 9.95064 9.4541 10.4541C8.95063 10.9576 8.60766 11.5995 8.46875 12.2979C8.32991 12.9961 8.40139 13.7202 8.67383 14.3779C8.94631 15.0357 9.40804 15.5976 10 15.9932C10.592 16.3887 11.288 16.5996 12 16.5996C12.9548 16.5996 13.8708 16.221 14.5459 15.5459C15.221 14.8708 15.5996 13.9548 15.5996 13C15.5996 12.288 15.3887 11.592 14.9932 11C14.5976 10.408 14.0357 9.94631 13.3779 9.67383Z"/></svg>
+        </div>
+        <span class="tab-label">出品</span>
+      </div>
+
+      <div class="tab-item" onclick="switchTab('wallet', this)">
+        <div class="tab-icon">
+          <svg viewBox="0 0 19.1456 20.7383" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.00292969 5.73929C0.00315755 3.95026 1.45339 2.4944 3.24805 2.49418H10.0879V3.83793H3.24805C2.19681 3.83815 1.34691 4.69083 1.34668 5.73929C1.34668 6.78723 2.20016 7.64141 3.24805 7.64164V8.98539C1.45816 8.98516 0.00292969 7.52924 0.00292969 5.73929Z"/><path d="M18.334 2.49418L18.4697 2.50785C18.7756 2.57063 19.0059 2.84156 19.0059 3.16605C19.0059 3.49054 18.7756 3.76147 18.4697 3.82425L18.334 3.83793H15.29C14.919 3.83793 14.6182 3.53705 14.6182 3.16605C14.6182 2.79505 14.919 2.49418 15.29 2.49418H18.334Z"/><path d="M17.8018 9.15824C17.8016 9.06756 17.7245 8.99033 17.6338 8.99027H3.24512C2.53453 8.99018 1.87886 8.75845 1.34375 8.37015V17.4922C1.34375 18.5409 2.19374 19.3943 3.24512 19.3946H17.6338C17.7245 19.3945 17.8017 19.3173 17.8018 19.2266V9.15824ZM19.1455 19.2266C19.1454 20.0593 18.4665 20.7383 17.6338 20.7383H3.24512C1.45032 20.7381 0 19.2815 0 17.4922V5.74515C0 5.37415 0.300875 5.07328 0.671875 5.07328C0.996385 5.07328 1.26731 5.30347 1.33008 5.60941L1.34375 5.74515L1.35352 5.93949C1.45093 6.89938 2.26195 7.64728 3.24512 7.6475H17.6338C18.4665 7.64755 19.1454 8.32556 19.1455 9.15824V19.2266Z"/><path d="M15.1694 15.3623C15.8163 15.3623 16.3408 14.8379 16.3408 14.1909C16.3408 13.544 15.8163 13.0196 15.1694 13.0196C14.5225 13.0196 13.998 13.544 13.998 14.1909C13.998 14.8379 14.5225 15.3623 15.1694 15.3623Z"/><path d="M11.8574 0.00687079C12.0337 -0.018559 12.2128 0.0272266 12.3555 0.133824L18.876 5.00785C19.0187 5.11452 19.1132 5.27392 19.1387 5.45023C19.1641 5.62663 19.1185 5.80657 19.0117 5.94925L16.9375 8.71976C16.8107 8.88922 16.6111 8.98929 16.3994 8.98929H6.23926C5.98502 8.98929 5.75256 8.8455 5.63867 8.6182C5.52481 8.3909 5.54898 8.11871 5.70117 7.91507L11.415 0.269566L11.5049 0.17191C11.6028 0.084062 11.7253 0.0259648 11.8574 0.00687079ZM7.58008 7.64554H16.0635L17.5322 5.6807L12.0889 1.61234L7.58008 7.64554Z"/></svg>
+        </div>
+        <span class="tab-label">おさいふ</span>
+      </div>
+
+    </div>
+
+    <!-- Search pill (circle, icon only) -->
+    <div class="glass-pill search-pill">
+      <div class="search-btn" onclick="goToSearch(this)">
+        <svg viewBox="0 0 18.0449 18.0453" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M17.8353 16.8353L13.8953 12.8953C15.1915 11.3417 15.8387 9.34807 15.7021 7.32936C15.5655 5.31064 14.6557 3.42236 13.162 2.05753C11.6683 0.692688 9.70582 -0.0435684 7.683 0.00199537C5.66019 0.0475592 3.73285 0.871433 2.30214 2.30214C0.871433 3.73285 0.0475592 5.66019 0.00199537 7.683C-0.0435684 9.70582 0.692687 11.6683 2.05753 13.162C3.42236 14.6557 5.31064 15.5655 7.32936 15.7021C9.34807 15.8387 11.3417 15.1915 12.8953 13.8953L16.8353 17.8353C16.9005 17.9018 16.9783 17.9547 17.0642 17.9907C17.15 18.0268 17.2422 18.0453 17.3353 18.0453C17.427 18.0457 17.5178 18.0273 17.6021 17.9912C17.6864 17.955 17.7624 17.902 17.8253 17.8353C17.8937 17.7716 17.9485 17.6945 17.9862 17.6089C18.024 17.5234 18.0439 17.431 18.0448 17.3375C18.0458 17.2439 18.0277 17.1512 17.9917 17.0649C17.9556 16.9786 17.9025 16.9005 17.8353 16.8353ZM3.32533 12.4253C2.42502 11.5245 1.81202 10.377 1.56381 9.12789C1.31561 7.87875 1.44334 6.58406 1.93087 5.4075C2.41841 4.23095 3.24384 3.22537 4.30282 2.51788C5.36179 1.8104 6.60676 1.43279 7.88033 1.43279C9.15389 1.43279 10.3989 1.8104 11.4578 2.51788C12.5168 3.22537 13.3422 4.23095 13.8298 5.4075C14.3173 6.58406 14.445 7.87875 14.1968 9.12789C13.9486 10.377 13.3356 11.5245 12.4353 12.4253C11.8379 13.0249 11.1281 13.5006 10.3464 13.8252C9.56475 14.1498 8.7267 14.3169 7.88033 14.3169C7.03395 14.3169 6.1959 14.1498 5.41424 13.8252C4.63259 13.5006 3.92271 13.0249 3.32533 12.4253Z"/></svg>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+  function switchTab(tabName, el) {
+    document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.search-btn').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('screen-' + tabName).classList.add('active');
+  }
+
+  // キーボード非表示時の画面高さを記録（window.innerHeight はキーボードで変わる場合があるため起動時に固定）
+  const FULL_HEIGHT = window.innerHeight;
+
+  // コンテンツエリアの高さをキーボードに関係なく常に全画面に固定
+  function fixSearchContentHeight() {
+    document.querySelector('.search-content-scroll').style.height = FULL_HEIGHT + 'px';
+  }
+
+  // 前回のキーボード高さを記憶（次回 goToSearch 時に即座に適用してラグを防ぐ）
+  let lastKeyboardH = 0;
+  let prevTab = 'home';
+
+  // 検索アイコンタップ → 検索画面に遷移 + キーボード即時起動
+  function goToSearch(btn) {
+    const active = document.querySelector('.tab-item.active');
+    if (active) prevTab = active.getAttribute('onclick').match(/'(\w+)'/)[1];
+    switchTab('search', btn);
+    fixSearchContentHeight();
+    document.querySelector('.search-content-scroll').scrollTop = 0;
+    window.scrollTo(0, 0);
+    // 前回のキーボード高さで先に位置を確定してからフォーカス
+    document.getElementById('search-float-bar').style.bottom = lastKeyboardH + 'px';
+    document.getElementById('search-input').focus();
+  }
+
+  // × ボタン → キーボードを閉じて前の画面に戻る
+  function exitSearch() {
+    const input = document.getElementById('search-input');
+    input.blur();
+    input.value = '';
+    document.getElementById('search-float-bar').style.bottom = '0px';
+    const prevItem = document.querySelector(`.tab-item[onclick*="'${prevTab}'"]`);
+    if (prevItem) switchTab(prevTab, prevItem);
+  }
+
+  // キーボード表示に合わせてフォームをキーボードのすぐ上に追従させる
+  // FULL_HEIGHT を基準に使うことで window.innerHeight がキーボードで変化しても正確に計算できる
+  function updateFloatBar() {
+    const screen = document.getElementById('screen-search');
+    if (!screen.classList.contains('active')) return;
+    const vv = window.visualViewport;
+    if (!vv) return;
+    const keyboardH = Math.max(0, FULL_HEIGHT - vv.height);
+    lastKeyboardH = keyboardH;
+    document.getElementById('search-float-bar').style.bottom = keyboardH + 'px';
+    fixSearchContentHeight();
+  }
+
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', updateFloatBar);
+    // キーボード表示時に iOS が window をスクロールさせるのを防ぐ
+    window.visualViewport.addEventListener('scroll', () => {
+      const screen = document.getElementById('screen-search');
+      if (!screen.classList.contains('active')) return;
+      window.scrollTo(0, 0);
+      updateFloatBar();
+    });
+  }
+</script>
+</body>
+</html>
