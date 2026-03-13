@@ -499,6 +499,8 @@
 
     /* ════════════════════════════════════════
        TOP NAVIGATION BAR
+       Figma: Liquid Glass - Regular - Small
+       Fill: rgb(247,247,247) + backdrop-blur 20px
     ════════════════════════════════════════ */
     .top-nav {
       position: absolute;
@@ -511,6 +513,9 @@
       z-index: 100;
     }
 
+    /* 検索画面では非表示 */
+    #screen-search.active ~ .top-nav { display: none; }
+
     .nav-right {
       display: flex;
       align-items: center;
@@ -518,93 +523,409 @@
     }
 
     .nav-icon-btn {
-      position: relative;
       width: 40px;
       height: 40px;
-      border-radius: 50%;
+      border-radius: 9999px;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
       cursor: pointer;
       user-select: none;
-      backdrop-filter: blur(48px) saturate(220%) brightness(1.08);
-      -webkit-backdrop-filter: blur(48px) saturate(220%) brightness(1.08);
-      background: linear-gradient(
-        175deg,
-        rgba(255,255,255,0.72) 0%,
-        rgba(255,255,255,0.38) 40%,
-        rgba(255,255,255,0.48) 100%
-      );
-      border: 1px solid rgba(255,255,255,0.85);
-      box-shadow:
-        0 4px 16px rgba(0,0,0,0.10),
-        0 1px 4px rgba(0,0,0,0.08),
-        inset 0 1.5px 0 rgba(255,255,255,1.0),
-        inset 0 -1px 0 rgba(0,0,0,0.05),
-        inset 0 0 12px rgba(255,255,255,0.25);
       overflow: hidden;
-      transition: transform 0.15s ease, opacity 0.15s ease;
+      background: rgb(247, 247, 247);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow:
+        0 2px 14px rgba(0,0,0,0.22),
+        0 1px 4px rgba(0,0,0,0.12),
+        inset 0 1px 0 rgba(255,255,255,0.9);
+      transition: opacity 0.12s ease, transform 0.12s ease;
     }
 
     .nav-icon-btn:active {
+      opacity: 0.65;
       transform: scale(0.88);
-      opacity: 0.8;
-    }
-
-    .nav-icon-btn::before {
-      content: "";
-      position: absolute;
-      top: 0; left: 15%; right: 15%;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.95) 50%, transparent);
-      border-radius: 999px;
     }
 
     .nav-icon-btn svg {
-      width: 22px;
-      height: 22px;
-      fill: #333;
-      position: relative;
-      z-index: 1;
+      width: 24px;
+      height: 24px;
+      display: block;
     }
 
     .nav-avatar {
-      position: relative;
       width: 40px;
       height: 40px;
-      border-radius: 50%;
+      border-radius: 9999px;
       flex-shrink: 0;
       cursor: pointer;
-      backdrop-filter: blur(48px) saturate(220%) brightness(1.08);
-      -webkit-backdrop-filter: blur(48px) saturate(220%) brightness(1.08);
-      background: linear-gradient(
-        175deg,
-        rgba(255,255,255,0.72) 0%,
-        rgba(255,255,255,0.38) 40%,
-        rgba(255,255,255,0.48) 100%
-      );
-      border: 1px solid rgba(255,255,255,0.85);
+      user-select: none;
+      overflow: hidden;
+      background: rgb(247, 247, 247);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       box-shadow:
-        0 4px 16px rgba(0,0,0,0.10),
-        0 1px 4px rgba(0,0,0,0.08),
-        inset 0 1.5px 0 rgba(255,255,255,1.0),
-        inset 0 -1px 0 rgba(0,0,0,0.05);
+        0 2px 14px rgba(0,0,0,0.22),
+        0 1px 4px rgba(0,0,0,0.12),
+        inset 0 1px 0 rgba(255,255,255,0.9);
       display: flex;
       align-items: center;
       justify-content: center;
-      overflow: hidden;
-      transition: transform 0.15s ease;
+      transition: opacity 0.12s ease, transform 0.12s ease;
     }
 
-    .nav-avatar:active { transform: scale(0.88); }
+    .nav-avatar:active {
+      opacity: 0.65;
+      transform: scale(0.88);
+    }
 
-    .nav-avatar svg {
-      width: 22px;
-      height: 22px;
-      fill: #888;
+    .nav-avatar img {
+      width: 24px;
+      height: 24px;
+      object-fit: cover;
+      border-radius: 50%;
+      display: block;
+    }
+
+    /* ────── NEW SEARCH SCREEN SECTIONS ────── */
+    .search-section { margin-bottom: 20px; }
+
+    .search-section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+    }
+    .search-section-title {
+      font-size: 17px;
+      font-weight: 600;
+      color: #333;
+      line-height: 1.4;
+    }
+    .search-section-action {
+      font-size: 14px;
+      font-weight: 600;
+      color: #007AFF;
+      display: flex;
+      align-items: center;
+      gap: 2px;
+    }
+
+    /* ショートカットボタン */
+    .shortcut-buttons {
+      display: flex;
+      gap: 12px;
+      padding: 0 16px 4px;
+    }
+    .shortcut-btn {
+      flex: 1;
+      background: #f0f0f0;
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 12px;
+    }
+    .shortcut-btn-img {
+      width: 64px;
+      height: 64px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+    .shortcut-btn-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: #333;
+      line-height: 1.4;
+      text-align: center;
+      margin-top: 4px;
+    }
+
+    /* 最近の検索チップ */
+    .recent-chip-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 0 16px;
+    }
+    .recent-chip {
+      display: inline-flex;
+      align-items: center;
+      height: 34px;
+      padding: 0 14px;
+      border-radius: 9999px;
+      border: 1px solid rgba(0,0,0,0.15);
+      background: #fff;
+      font-size: 13px;
+      font-weight: 500;
+      color: #333;
+      white-space: nowrap;
+    }
+
+    /* メルカリのサービス */
+    .services-scroll {
+      display: flex;
+      gap: 12px;
+      padding: 0 16px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .services-scroll::-webkit-scrollbar { display: none; }
+    .service-card {
+      flex-shrink: 0;
+      background: #f0f0f0;
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 152px;
+      overflow: hidden;
+    }
+    .service-card-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 4px;
+    }
+    .service-card-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #333;
+      line-height: 1.4;
+      flex: 1;
+    }
+    .service-card-arrow {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+      opacity: 0.5;
+    }
+    .service-card-items {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .service-item-wrap {
       position: relative;
-      z-index: 1;
+      overflow: hidden;
+    }
+    .service-item-thumb {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      display: block;
+    }
+    .service-item-price {
+      position: absolute;
+      bottom: 4px;
+      left: 4px;
+      background: rgba(0,0,0,0.4);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 600;
+      padding: 2px 6px;
+      border-radius: 16px;
+      white-space: nowrap;
+    }
+
+    /* トレンドキーワード */
+    .trend-keywords {
+      display: flex;
+      gap: 8px;
+      padding: 0 16px;
+    }
+    .trend-keyword-card {
+      flex: 1;
+      background: #f0f0f0;
+      border-radius: 8px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-width: 0;
+    }
+    .trend-keyword-rank {
+      display: flex;
+      align-items: flex-start;
+      gap: 4px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #333;
+      line-height: 1.4;
+      word-break: break-all;
+    }
+    .trend-keyword-rank svg { flex-shrink: 0; margin-top: 2px; }
+    .trend-keyword-count {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      font-size: 12px;
+      color: #666;
+    }
+
+    /* 急上昇キーワード */
+    .rising-scroll {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 0 16px;
+    }
+    .rising-row {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .rising-row::-webkit-scrollbar { display: none; }
+    .rising-chip {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #f0f0f0;
+      border-radius: 8px;
+      overflow: hidden;
+      padding-right: 10px;
+      flex-shrink: 0;
+    }
+    .rising-chip-thumb {
+      width: 44px;
+      height: 44px;
+      object-fit: cover;
+      flex-shrink: 0;
+      display: block;
+    }
+    .rising-chip-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: #333;
+      white-space: nowrap;
+    }
+
+    /* 人気の検索条件 */
+    .popular-scroll {
+      display: flex;
+      gap: 8px;
+      padding: 0 16px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .popular-scroll::-webkit-scrollbar { display: none; }
+    .popular-card {
+      flex-shrink: 0;
+      background: #f0f0f0;
+      border-radius: 12px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      width: 200px;
+    }
+    .popular-card-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: #333;
+      line-height: 1.4;
+    }
+    .popular-card-meta {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      color: #666;
+    }
+    .popular-card-tag {
+      display: inline-flex;
+      align-items: center;
+      height: 16px;
+      padding: 0 4px;
+      background: #E8004D;
+      border-radius: 3px;
+      font-size: 10px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .popular-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .popular-grid-thumb {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* おすすめフォロワー */
+    .follower-scroll {
+      display: flex;
+      gap: 8px;
+      padding: 0 16px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .follower-scroll::-webkit-scrollbar { display: none; }
+    .follower-card {
+      flex-shrink: 0;
+      background: #f0f0f0;
+      border-radius: 12px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      width: 210px;
+    }
+    .follower-card-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .follower-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #ccc;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+    .follower-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .follower-name {
+      font-size: 12px;
+      font-weight: 600;
+      color: #333;
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .follower-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .follower-grid-thumb {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      display: block;
     }
   </style>
 </head>
@@ -613,30 +934,7 @@
 <div class="device">
 
   <!-- Screens -->
-  <div id="screen-home"    class="screen active" style="background:#f0f0f0;">
-    <!-- Top Navigation -->
-    <div class="top-nav">
-      <!-- 左: アバター -->
-      <div class="nav-avatar">
-        <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-      </div>
-      <!-- 右: 通知・カート・やること -->
-      <div class="nav-right">
-        <div class="nav-icon-btn">
-          <!-- 通知 -->
-          <svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
-        </div>
-        <div class="nav-icon-btn">
-          <!-- カート -->
-          <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96C5 16.1 6.1 17 7 17h14v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63H19c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1 1 0 0 0 23.45 4H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2S15.9 22 17 22s2-.9 2-2-.9-2-2-2z"/></svg>
-        </div>
-        <div class="nav-icon-btn">
-          <!-- やること -->
-          <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
-        </div>
-      </div>
-    </div>
-  </div>
+  <div id="screen-home"    class="screen active" style="background:#f0f0f0;"></div>
   <div id="screen-auction" class="screen"        style="background:#f0f0f0;"></div>
   <div id="screen-list"    class="screen"        style="background:#f0f0f0;"></div>
   <div id="screen-wallet"  class="screen"        style="background:#f0f0f0;"></div>
@@ -645,16 +943,214 @@
     <!-- スクロールコンテンツ -->
     <div class="search-content-scroll">
 
-      <!-- フィルターチップ -->
-      <div class="filter-chip-bar">
-        <div class="chip chip-active">すべて</div>
-        <div class="chip">超メルカリ市</div>
-        <div class="chip">画像検索</div>
-        <div class="chip">ヘルプセンター</div>
+      <!-- ショートカットボタン -->
+      <div style="padding-top:16px; margin-bottom:20px;">
+        <div class="shortcut-buttons">
+          <div class="shortcut-btn">
+            <img class="shortcut-btn-img" src="https://www.figma.com/api/mcp/asset/e400d0f9-1a36-46bc-ad9f-cf7f216ab742" alt="">
+            <span class="shortcut-btn-label">カテゴリ</span>
+          </div>
+          <div class="shortcut-btn">
+            <img class="shortcut-btn-img" src="https://www.figma.com/api/mcp/asset/6bc4d1cb-14fb-4e01-9017-15b73751ae7b" alt="">
+            <span class="shortcut-btn-label">ブランド</span>
+          </div>
+        </div>
       </div>
 
-      <!-- 履歴カード -->
-      <div class="history-cards">
+      <!-- 最近の検索 -->
+      <div class="search-section">
+        <div class="search-section-header">
+          <span class="search-section-title">最近の検索</span>
+          <span class="search-section-action">編集 <svg width="12" height="12" viewBox="0 0 24 24" fill="#007AFF"><path d="M9.29 6.71a.996.996 0 0 0 0 1.41L13.17 12l-3.88 3.88a.996.996 0 1 0 1.41 1.41l4.59-4.59a.996.996 0 0 0 0-1.41L10.7 6.7c-.38-.38-1.02-.38-1.41.01z"/></svg></span>
+        </div>
+        <div class="recent-chip-group">
+          <div class="recent-chip">ジルサンダー</div>
+          <div class="recent-chip">嵐ライブグッズ</div>
+          <div class="recent-chip">ちいかわ</div>
+          <div class="recent-chip">URBAN EXPRESS</div>
+          <div class="recent-chip">アウトドア</div>
+          <div class="recent-chip">Tシャツ</div>
+          <div class="recent-chip">ポケモンカード</div>
+          <div class="recent-chip">BlackPink</div>
+          <div class="recent-chip">ボンドロ</div>
+        </div>
+      </div>
+
+      <!-- メルカリのサービス -->
+      <div class="search-section">
+        <div class="search-section-header">
+          <span class="search-section-title">メルカリのサービス</span>
+        </div>
+        <div class="services-scroll">
+          <div class="service-card">
+            <div class="service-card-title-row">
+              <span class="service-card-title">出品されたギガ</span>
+              <img class="service-card-arrow" src="https://www.figma.com/api/mcp/asset/1ac0749b-9a8f-4ca9-8e96-aaa8f24317a7" alt="">
+            </div>
+            <div class="service-card-items">
+              <div class="service-item-wrap"><img class="service-item-thumb" src="https://www.figma.com/api/mcp/asset/53868a48-bd04-403f-9e1a-6cb73a77557c" alt=""><span class="service-item-price">¥2,800</span></div>
+              <div class="service-item-wrap"><img class="service-item-thumb" src="https://www.figma.com/api/mcp/asset/d436c85b-0fd3-4c6d-b380-1fc84d91b93d" alt=""><span class="service-item-price">¥2,800</span></div>
+            </div>
+          </div>
+          <div class="service-card">
+            <div class="service-card-title-row">
+              <span class="service-card-title">メルカリNFT</span>
+              <img class="service-card-arrow" src="https://www.figma.com/api/mcp/asset/1ac0749b-9a8f-4ca9-8e96-aaa8f24317a7" alt="">
+            </div>
+            <div class="service-card-items">
+              <div class="service-item-wrap"><img class="service-item-thumb" src="https://www.figma.com/api/mcp/asset/fec9d60c-5940-4953-a09e-a5642e4b884a" alt=""><span class="service-item-price">¥2,800</span></div>
+              <div class="service-item-wrap"><img class="service-item-thumb" src="https://www.figma.com/api/mcp/asset/e164a3e6-456e-4d09-b065-34e59cc9c64d" alt=""><span class="service-item-price">¥2,800</span></div>
+            </div>
+          </div>
+          <div class="service-card">
+            <div class="service-card-title-row">
+              <span class="service-card-title">メルカリギフト</span>
+              <img class="service-card-arrow" src="https://www.figma.com/api/mcp/asset/1ac0749b-9a8f-4ca9-8e96-aaa8f24317a7" alt="">
+            </div>
+            <div class="service-card-items">
+              <div class="service-item-wrap"><img class="service-item-thumb" src="https://www.figma.com/api/mcp/asset/aee7ce4b-5a9e-44c7-bb95-1eeb3db0d79b" alt=""><span class="service-item-price">¥2,800</span></div>
+              <div class="service-item-wrap"><img class="service-item-thumb" src="https://www.figma.com/api/mcp/asset/23f4a71b-f7dd-4a99-90f2-0d9460c1837c" alt=""><span class="service-item-price">¥2,800</span></div>
+            </div>
+          </div>
+          <div class="service-card">
+            <div class="service-card-title-row">
+              <span class="service-card-title">オークション</span>
+              <img class="service-card-arrow" src="https://www.figma.com/api/mcp/asset/1ac0749b-9a8f-4ca9-8e96-aaa8f24317a7" alt="">
+            </div>
+            <div class="service-card-items">
+              <div class="service-item-wrap"><img class="service-item-thumb" src="https://www.figma.com/api/mcp/asset/633bcd79-dbff-4a57-8d1d-8152780101d8" alt=""><span class="service-item-price">¥2,800</span></div>
+              <div class="service-item-wrap"><img class="service-item-thumb" src="https://www.figma.com/api/mcp/asset/92db6ead-fc1e-4712-a8a6-f530856a94ad" alt=""><span class="service-item-price">¥2,800</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- トレンドキーワード -->
+      <div class="search-section">
+        <div class="search-section-header">
+          <span class="search-section-title">トレンドキーワード</span>
+        </div>
+        <div class="trend-keywords">
+          <div class="trend-keyword-card">
+            <div class="trend-keyword-rank"><svg width="14" height="14" viewBox="0 0 24 24" fill="#4CAF50" style="flex-shrink:0;margin-top:2px"><path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22l1-2.3A4.49 4.49 0 0 0 8 20C19 20 22 3 22 3c-1 2-8 2-11 4z"/></svg>ポケモンカード</div>
+            <div class="trend-keyword-count"><svg width="10" height="10" viewBox="0 0 18 18" fill="#666"><path d="M17.8 16.8l-4-4a7.5 7.5 0 1 0-1 1l4 4a.7.7 0 0 0 1-1zM7.5 13.5a6 6 0 1 1 6-6 6 6 0 0 1-6 6z"/></svg>2,269<svg width="10" height="10" viewBox="0 0 24 24" fill="#F44336"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></svg></div>
+          </div>
+          <div class="trend-keyword-card">
+            <div class="trend-keyword-rank"><svg width="14" height="14" viewBox="0 0 24 24" fill="#4CAF50" style="flex-shrink:0;margin-top:2px"><path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22l1-2.3A4.49 4.49 0 0 0 8 20C19 20 22 3 22 3c-1 2-8 2-11 4z"/></svg>嵐ライブグッズ</div>
+            <div class="trend-keyword-count"><svg width="10" height="10" viewBox="0 0 18 18" fill="#666"><path d="M17.8 16.8l-4-4a7.5 7.5 0 1 0-1 1l4 4a.7.7 0 0 0 1-1zM7.5 13.5a6 6 0 1 1 6-6 6 6 0 0 1-6 6z"/></svg>1,884<svg width="10" height="10" viewBox="0 0 24 24" fill="#F44336"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></svg></div>
+          </div>
+          <div class="trend-keyword-card">
+            <div class="trend-keyword-rank"><svg width="14" height="14" viewBox="0 0 24 24" fill="#4CAF50" style="flex-shrink:0;margin-top:2px"><path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22l1-2.3A4.49 4.49 0 0 0 8 20C19 20 22 3 22 3c-1 2-8 2-11 4z"/></svg>ボンボンドロップシール</div>
+            <div class="trend-keyword-count"><svg width="10" height="10" viewBox="0 0 18 18" fill="#666"><path d="M17.8 16.8l-4-4a7.5 7.5 0 1 0-1 1l4 4a.7.7 0 0 0 1-1zM7.5 13.5a6 6 0 1 1 6-6 6 6 0 0 1-6 6z"/></svg>608<svg width="10" height="10" viewBox="0 0 24 24" fill="#F44336"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></svg></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 急上昇キーワード -->
+      <div class="search-section">
+        <div class="search-section-header">
+          <span class="search-section-title">急上昇キーワード</span>
+        </div>
+        <div class="rising-scroll">
+          <div class="rising-row">
+            <div class="rising-chip"><img class="rising-chip-thumb" src="https://www.figma.com/api/mcp/asset/53868a48-bd04-403f-9e1a-6cb73a77557c" alt=""><span class="rising-chip-label">スニーカー</span></div>
+            <div class="rising-chip"><img class="rising-chip-thumb" src="https://www.figma.com/api/mcp/asset/d436c85b-0fd3-4c6d-b380-1fc84d91b93d" alt=""><span class="rising-chip-label">レトロゲーム</span></div>
+            <div class="rising-chip"><img class="rising-chip-thumb" src="https://www.figma.com/api/mcp/asset/fec9d60c-5940-4953-a09e-a5642e4b884a" alt=""><span class="rising-chip-label">美容液 高機能スキンケア</span></div>
+          </div>
+          <div class="rising-row">
+            <div class="rising-chip"><img class="rising-chip-thumb" src="https://www.figma.com/api/mcp/asset/e164a3e6-456e-4d09-b065-34e59cc9c64d" alt=""><span class="rising-chip-label">昭和レトロ雑貨</span></div>
+            <div class="rising-chip"><img class="rising-chip-thumb" src="https://www.figma.com/api/mcp/asset/aee7ce4b-5a9e-44c7-bb95-1eeb3db0d79b" alt=""><span class="rising-chip-label">アウトドアギア</span></div>
+            <div class="rising-chip"><img class="rising-chip-thumb" src="https://www.figma.com/api/mcp/asset/23f4a71b-f7dd-4a99-90f2-0d9460c1837c" alt=""><span class="rising-chip-label">アニメキャラクターグッズ</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 人気の検索条件 -->
+      <div class="search-section">
+        <div class="search-section-header">
+          <span class="search-section-title">人気の検索条件</span>
+        </div>
+        <div class="popular-scroll">
+          <div class="popular-card">
+            <span class="popular-card-label">ヴィンテージアクセサリー</span>
+            <div class="popular-card-meta"><span class="popular-card-tag">NEW</span><span>120商品</span></div>
+            <div class="popular-grid">
+              <div class="popular-item-wrap"><img class="popular-grid-thumb" src="https://www.figma.com/api/mcp/asset/53868a48-bd04-403f-9e1a-6cb73a77557c" alt=""><span class="service-item-price">¥10,000</span></div>
+              <div class="popular-item-wrap"><img class="popular-grid-thumb" src="https://www.figma.com/api/mcp/asset/d436c85b-0fd3-4c6d-b380-1fc84d91b93d" alt=""><span class="service-item-price">¥10,000</span></div>
+              <div class="popular-item-wrap"><img class="popular-grid-thumb" src="https://www.figma.com/api/mcp/asset/fec9d60c-5940-4953-a09e-a5642e4b884a" alt=""><span class="service-item-price">¥10,000</span></div>
+              <div class="popular-item-wrap"><img class="popular-grid-thumb" src="https://www.figma.com/api/mcp/asset/e164a3e6-456e-4d09-b065-34e59cc9c64d" alt=""><span class="service-item-price">¥10,000</span></div>
+            </div>
+          </div>
+          <div class="popular-card">
+            <span class="popular-card-label">アウトドアギア</span>
+            <div class="popular-card-meta"><span class="popular-card-tag">NEW</span><span>120商品</span></div>
+            <div class="popular-grid">
+              <div class="popular-item-wrap"><img class="popular-grid-thumb" src="https://www.figma.com/api/mcp/asset/aee7ce4b-5a9e-44c7-bb95-1eeb3db0d79b" alt=""><span class="service-item-price">¥10,000</span></div>
+              <div class="popular-item-wrap"><img class="popular-grid-thumb" src="https://www.figma.com/api/mcp/asset/23f4a71b-f7dd-4a99-90f2-0d9460c1837c" alt=""><span class="service-item-price">¥10,000</span></div>
+              <div class="popular-item-wrap"><img class="popular-grid-thumb" src="https://www.figma.com/api/mcp/asset/633bcd79-dbff-4a57-8d1d-8152780101d8" alt=""><span class="service-item-price">¥10,000</span></div>
+              <div class="popular-item-wrap"><img class="popular-grid-thumb" src="https://www.figma.com/api/mcp/asset/92db6ead-fc1e-4712-a8a6-f530856a94ad" alt=""><span class="service-item-price">¥10,000</span></div>
+            </div>
+          </div>
+          <div class="popular-card">
+            <span class="popular-card-label">ヴィンテージアクセサリー</span>
+            <div class="popular-card-meta"><span class="popular-card-tag">NEW</span><span>120商品</span></div>
+            <div class="popular-grid">
+              <div class="popular-item-wrap"><img class="popular-grid-thumb" src="https://www.figma.com/api/mcp/asset/801a20eb-f2cc-473e-9b4f-3f72a20862e1" alt=""><span class="service-item-price">¥10,000</span></div>
+              <div class="popular-item-wrap"><img class="popular-grid-thumb" src="https://www.figma.com/api/mcp/asset/e56e5fc6-93e9-4e82-9e73-4f6ef1f8ea64" alt=""><span class="service-item-price">¥10,000</span></div>
+              <div class="popular-item-wrap"><img class="popular-grid-thumb" src="https://www.figma.com/api/mcp/asset/5e1dc04a-e8b5-4c94-bc4b-0691bd1ffecc" alt=""><span class="service-item-price">¥10,000</span></div>
+              <div class="popular-item-wrap"><img class="popular-grid-thumb" src="https://www.figma.com/api/mcp/asset/8200b373-e3d1-4e36-9bba-d9f9a1b3a321" alt=""><span class="service-item-price">¥10,000</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- おすすめフォロワー -->
+      <div class="search-section">
+        <div class="search-section-header">
+          <span class="search-section-title">おすすめフォロワー</span>
+        </div>
+        <div class="follower-scroll">
+          <div class="follower-card">
+            <div class="follower-card-header">
+              <div class="follower-avatar"><img src="https://www.figma.com/api/mcp/asset/801a20eb-f2cc-473e-9b4f-3f72a20862e1" alt=""></div>
+              <span class="follower-name">たくま</span>
+            </div>
+            <div class="follower-grid">
+              <div class="popular-item-wrap"><img class="follower-grid-thumb" src="https://www.figma.com/api/mcp/asset/801a20eb-f2cc-473e-9b4f-3f72a20862e1" alt=""><span class="service-item-price">¥10,000</span></div>
+              <div class="popular-item-wrap"><img class="follower-grid-thumb" src="https://www.figma.com/api/mcp/asset/e56e5fc6-93e9-4e82-9e73-4f6ef1f8ea64" alt=""><span class="service-item-price">¥10,000</span></div>
+              <div class="popular-item-wrap"><img class="follower-grid-thumb" src="https://www.figma.com/api/mcp/asset/5e1dc04a-e8b5-4c94-bc4b-0691bd1ffecc" alt=""><span class="service-item-price">¥10,000</span></div>
+              <div class="popular-item-wrap"><img class="follower-grid-thumb" src="https://www.figma.com/api/mcp/asset/8200b373-e3d1-4e36-9bba-d9f9a1b3a321" alt=""><span class="service-item-price">¥10,000</span></div>
+            </div>
+          </div>
+          <div class="follower-card">
+            <div class="follower-card-header">
+              <div class="follower-avatar"><img src="https://www.figma.com/api/mcp/asset/45e074f7-3233-4bc9-b2f8-cb5f9411963f" alt=""></div>
+              <span class="follower-name">ME/チェンソーマングッズ</span>
+            </div>
+            <div class="follower-grid">
+              <div class="popular-item-wrap"><img class="follower-grid-thumb" src="https://www.figma.com/api/mcp/asset/45e074f7-3233-4bc9-b2f8-cb5f9411963f" alt=""><span class="service-item-price">¥10,000</span></div>
+              <div class="popular-item-wrap"><img class="follower-grid-thumb" src="https://www.figma.com/api/mcp/asset/4dc0aae1-5c67-4ce0-ab39-5516a63e80f3" alt=""><span class="service-item-price">¥10,000</span></div>
+              <div class="popular-item-wrap"><img class="follower-grid-thumb" src="https://www.figma.com/api/mcp/asset/35db32b5-622b-4bbd-a3f0-5d95f40a44cc" alt=""><span class="service-item-price">¥10,000</span></div>
+              <div class="popular-item-wrap"><img class="follower-grid-thumb" src="https://www.figma.com/api/mcp/asset/1b8b47ec-668b-4a07-a61b-a78f59913e53" alt=""><span class="service-item-price">¥10,000</span></div>
+            </div>
+          </div>
+          <div class="follower-card">
+            <div class="follower-card-header">
+              <div class="follower-avatar"><img src="https://www.figma.com/api/mcp/asset/53868a48-bd04-403f-9e1a-6cb73a77557c" alt=""></div>
+              <span class="follower-name">ヴィンテージアクセサリー</span>
+            </div>
+            <div class="follower-grid">
+              <div class="popular-item-wrap"><img class="follower-grid-thumb" src="https://www.figma.com/api/mcp/asset/53868a48-bd04-403f-9e1a-6cb73a77557c" alt=""><span class="service-item-price">¥10,000</span></div>
+              <div class="popular-item-wrap"><img class="follower-grid-thumb" src="https://www.figma.com/api/mcp/asset/d436c85b-0fd3-4c6d-b380-1fc84d91b93d" alt=""><span class="service-item-price">¥10,000</span></div>
+              <div class="popular-item-wrap"><img class="follower-grid-thumb" src="https://www.figma.com/api/mcp/asset/fec9d60c-5940-4953-a09e-a5642e4b884a" alt=""><span class="service-item-price">¥10,000</span></div>
+              <div class="popular-item-wrap"><img class="follower-grid-thumb" src="https://www.figma.com/api/mcp/asset/e164a3e6-456e-4d09-b065-34e59cc9c64d" alt=""><span class="service-item-price">¥10,000</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- (旧コンテンツは削除) -->
+      <div class="history-cards" style="display:none;">
 
         <div class="history-card">
           <div class="history-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="#999"><path d="M13 3a9 9 0 1 0 0 18A9 9 0 0 0 13 3zm0 16c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7zm.5-11H12v6l5.25 3.15.75-1.23-4.5-2.67V8z"/></svg></div>
