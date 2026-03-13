@@ -927,246 +927,6 @@
       object-fit: cover;
       display: block;
     }
-
-    /* ────── WALLET SCREEN ────── */
-    .wallet-scroll {
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
-      height: 100%;
-      padding-bottom: 40px;
-      box-sizing: border-box;
-    }
-
-    /* カード（白角丸ブロック） */
-    .w-card {
-      background: #fff;
-      border-radius: 8px;
-      margin: 0 16px 8px;
-      overflow: hidden;
-    }
-
-    /* ── ヘッダー ── */
-    .w-header {
-      display: flex;
-      align-items: center;
-      padding: 16px 12px 16px 16px;
-      gap: 16px;
-    }
-    .w-header-logo { height: 22px; }
-    .w-header-right {
-      margin-left: auto;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .w-balance-pill {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      background: #f0f0f0;
-      border-radius: 999px;
-      padding: 8px 16px;
-      font-size: 12px;
-      color: #333;
-      white-space: nowrap;
-    }
-    .w-balance-label { font-size: 12px; font-weight: 300; }
-    .w-balance-amount { font-size: 15px; font-weight: 700; }
-    .w-eye-btn {
-      width: 36px; height: 36px;
-      display: flex; align-items: center; justify-content: center;
-      border-radius: 50%;
-    }
-
-    /* バーコード */
-    .w-barcode-wrap {
-      padding: 8px 16px;
-      display: flex;
-      justify-content: center;
-    }
-    .w-barcode-img {
-      width: 100%;
-      max-width: 288px;
-      display: block;
-    }
-
-    /* アクションボタン群 */
-    .w-actions {
-      display: flex;
-      padding: 8px 0 16px;
-    }
-    .w-action-btn {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-    }
-    .w-action-icon {
-      width: 44px; height: 44px;
-      background: #f0f0f0;
-      border-radius: 8px;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .w-action-label { font-size: 12px; font-weight: 300; color: #333; }
-
-    /* アセット行 */
-    .w-row {
-      display: flex;
-      align-items: center;
-      padding: 14px 16px;
-      gap: 12px;
-      border-bottom: 0.5px solid rgba(0,0,0,0.1);
-      position: relative;
-    }
-    .w-row:last-child { border-bottom: none; }
-    .w-row-icon {
-      width: 28px; height: 28px;
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 13px; font-weight: 700; color: #fff;
-      flex-shrink: 0;
-    }
-    .w-row-title {
-      font-size: 15px; font-weight: 600; color: #333;
-    }
-    .w-row-sub {
-      font-size: 11px; font-weight: 300; color: #007AFF;
-      margin-top: 2px;
-    }
-    .w-row-right {
-      margin-left: auto;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .w-row-amount {
-      font-size: 15px; font-weight: 700; color: #333;
-      white-space: nowrap;
-    }
-    .w-row-amount-unit { font-size: 12px; font-weight: 700; }
-    .w-row-chevron { width: 20px; height: 20px; opacity: 0.4; }
-    .w-row-up {
-      color: #4CAF50;
-      display: flex; align-items: center; gap: 2px;
-      font-size: 12px;
-    }
-
-    /* クレジットカードセクション */
-    .w-credit-header {
-      display: flex;
-      align-items: center;
-      padding: 16px 16px 0;
-      gap: 4px;
-    }
-    .w-credit-title { font-size: 15px; font-weight: 600; color: #333; flex: 1; }
-    .w-credit-arrow { width: 20px; height: 20px; opacity: 0.4; }
-
-    .w-card-preview {
-      margin: 16px auto;
-      width: 279px;
-      height: 52px;
-      background: #edf0f3;
-      border-radius: 16px 16px 0 0;
-      border: 0.5px solid rgba(0,0,0,0.2);
-      display: flex;
-      align-items: flex-start;
-      padding: 12px;
-      box-sizing: border-box;
-      overflow: hidden;
-    }
-    .w-card-preview-inner {
-      display: flex;
-      align-items: center;
-      width: 100%;
-    }
-    .w-mercard-logo { height: 13px; }
-    .w-card-tag {
-      margin-left: auto;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-    .w-initial-tag {
-      background: rgba(34,34,34,0.8);
-      color: #fff;
-      font-size: 10px;
-      font-weight: 600;
-      padding: 2px 6px;
-      border-radius: 999px;
-    }
-
-    /* 請求行 */
-    .w-billing-row {
-      display: flex;
-      align-items: center;
-      padding: 14px 16px;
-      gap: 8px;
-      border-top: 0.5px solid rgba(0,0,0,0.1);
-    }
-    .w-billing-title { font-size: 15px; font-weight: 600; color: #333; }
-    .w-billing-tag {
-      background: #f0f0f0;
-      color: #333;
-      font-size: 10px;
-      padding: 2px 6px;
-      border-radius: 999px;
-      white-space: nowrap;
-    }
-    .w-billing-right {
-      margin-left: auto;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .w-billing-amount { font-size: 14px; font-weight: 700; color: #333; }
-    .w-billing-note { font-size: 14px; font-weight: 300; color: #333; }
-
-    /* 取引履歴セクション */
-    .w-history-section {
-      background: #3d3d3d;
-      margin: 0 0 8px;
-      padding: 0;
-    }
-    .w-history-header {
-      display: flex;
-      align-items: center;
-      padding: 14px 16px;
-      color: #fff;
-    }
-    .w-history-title { font-size: 15px; font-weight: 600; flex: 1; }
-    .w-history-row {
-      display: flex;
-      align-items: center;
-      padding: 12px 16px;
-      border-top: 0.5px solid rgba(255,255,255,0.1);
-      gap: 12px;
-    }
-    .w-history-date { font-size: 12px; font-weight: 300; color: rgba(255,255,255,0.6); flex: 1; }
-    .w-history-pill {
-      font-size: 13px; font-weight: 600;
-      padding: 6px 14px;
-      border-radius: 999px;
-      white-space: nowrap;
-    }
-    .w-history-pill.done    { background: transparent; color: rgba(255,255,255,0.8); border: 1.5px solid rgba(255,255,255,0.3); }
-    .w-history-pill.done::after { content: " ✓"; font-size: 11px; }
-    .w-history-pill.active  { background: #FF3B30; color: #fff; border: none; }
-    .w-history-pill.pending { background: transparent; color: rgba(255,255,255,0.5); border: 1.5px solid rgba(255,255,255,0.15); }
-
-    /* サブアセット */
-    .w-sub-row {
-      display: flex;
-      align-items: center;
-      padding: 16px;
-      border-bottom: 0.5px solid rgba(0,0,0,0.1);
-    }
-    .w-sub-row:last-child { border-bottom: none; }
-    .w-sub-title { font-size: 15px; font-weight: 600; color: #333; flex: 1; }
-    .w-sub-value { font-size: 14px; font-weight: 300; color: #333; margin-right: 6px; }
-
   </style>
 </head>
 <body>
@@ -1177,175 +937,219 @@
   <div id="screen-home"    class="screen active" style="background:#f0f0f0;"></div>
   <div id="screen-auction" class="screen"        style="background:#f0f0f0;"></div>
   <div id="screen-list"    class="screen"        style="background:#f0f0f0;"></div>
-  <div id="screen-wallet"  class="screen"        style="background:#f0f0f0;">
-    <div class="wallet-scroll">
-
-      <!-- メルペイカード（ロゴ + バーコード + アクション） -->
-      <div style="height:16px;"></div>
-      <div class="w-card">
-        <!-- ヘッダー -->
-        <div class="w-header">
-          <img class="w-header-logo" src="https://www.figma.com/api/mcp/asset/2b52e922-806f-49af-8c83-2d64a5f04666" alt="m Pay">
-          <div class="w-header-right">
-            <div class="w-balance-pill">
-              <span class="w-balance-label">使える金額</span>
-              <span class="w-balance-amount">¥&thinsp;10,000</span>
-            </div>
-            <div class="w-eye-btn">
-              <img src="https://www.figma.com/api/mcp/asset/3cda4c67-a634-4b0d-8359-6b5700aa3bc7" alt="" style="width:20px;height:20px;opacity:0.5;">
-            </div>
-          </div>
-        </div>
-        <!-- バーコード -->
-        <div class="w-barcode-wrap">
-          <img class="w-barcode-img" src="https://www.figma.com/api/mcp/asset/e52f69e0-8397-4738-bb96-f5cf44064ab1" alt="バーコード">
-        </div>
-        <!-- アクションボタン -->
-        <div class="w-actions">
-          <div class="w-action-btn">
-            <div class="w-action-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1" stroke="#333" stroke-width="1.5"/><rect x="14" y="3" width="7" height="7" rx="1" stroke="#333" stroke-width="1.5"/><rect x="3" y="14" width="7" height="7" rx="1" stroke="#333" stroke-width="1.5"/><rect x="5" y="5" width="3" height="3" fill="#333"/><rect x="16" y="5" width="3" height="3" fill="#333"/><rect x="5" y="16" width="3" height="3" fill="#333"/><rect x="14" y="14" width="3" height="3" fill="#333"/><rect x="18" y="18" width="3" height="3" fill="#333"/><rect x="14" y="18" width="3" height="3" fill="#333"/><rect x="18" y="14" width="3" height="3" fill="#333"/></svg>
-            </div>
-            <span class="w-action-label">QRコード</span>
-          </div>
-          <div class="w-action-btn">
-            <div class="w-action-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="#333" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </div>
-            <span class="w-action-label">おくる</span>
-          </div>
-          <div class="w-action-btn">
-            <div class="w-action-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#333" stroke-width="1.5"/><path d="M12 7v10M9.5 9.5C9.5 8.4 10.6 7.5 12 7.5s2.5.9 2.5 2-.9 2-2.5 2-2.5.9-2.5 2 1.1 2 2.5 2 2.5-.9 2.5-2" stroke="#333" stroke-width="1.3" stroke-linecap="round"/></svg>
-            </div>
-            <span class="w-action-label">借りる</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- 資産リスト -->
-      <div class="w-card">
-        <!-- 残高 -->
-        <div class="w-row">
-          <div class="w-row-icon" style="background:#F5A623;">¥</div>
-          <span class="w-row-title">残高</span>
-          <div class="w-row-right">
-            <span class="w-row-amount">¥5,300</span>
-            <svg class="w-row-chevron" viewBox="0 0 20 20" fill="none"><path d="M7.5 5l5 5-5 5" stroke="#333" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
-        </div>
-        <!-- ポイント -->
-        <div class="w-row">
-          <div class="w-row-icon" style="background:#FF6B2B;">P</div>
-          <span class="w-row-title">ポイント</span>
-          <div class="w-row-right">
-            <span class="w-row-amount">P&thinsp;120</span>
-            <svg class="w-row-chevron" viewBox="0 0 20 20" fill="none"><path d="M7.5 5l5 5-5 5" stroke="#333" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
-        </div>
-        <!-- ビットコイン等 -->
-        <div class="w-row" style="flex-wrap:wrap;">
-          <div class="w-row-icon" style="background:#F7931A; font-size:14px;">₿</div>
-          <div style="display:flex;flex-direction:column;">
-            <span class="w-row-title">ビットコイン等</span>
-            <span class="w-row-sub">ポイントを毎月もらう</span>
-          </div>
-          <div class="w-row-right">
-            <span class="w-row-up">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="#4CAF50"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></svg>
-              <span class="w-row-amount">¥2,700</span>
-            </span>
-            <svg class="w-row-chevron" viewBox="0 0 20 20" fill="none"><path d="M7.5 5l5 5-5 5" stroke="#333" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
-        </div>
-      </div>
-
-      <!-- クレジットカード -->
-      <div class="w-card">
-        <div class="w-credit-header">
-          <span class="w-credit-title">クレジットカード</span>
-          <svg class="w-credit-arrow" viewBox="0 0 20 20" fill="none"><path d="M7.5 5l5 5-5 5" stroke="#333" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-        <!-- mercard プレビュー -->
-        <div style="display:flex;justify-content:center;">
-          <div class="w-card-preview">
-            <div class="w-card-preview-inner">
-              <img class="w-mercard-logo" src="https://www.figma.com/api/mcp/asset/eceeaa98-fd63-437c-b663-44551a8503a2" alt="mercard">
-              <div class="w-card-tag">
-                <span class="w-initial-tag">初期設定</span>
-                <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M7.5 5l5 5-5 5" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- 6月の請求 -->
-        <div class="w-billing-row">
-          <span class="w-billing-title">6月の請求</span>
-          <span class="w-billing-tag">引落し：6/25</span>
-          <div class="w-billing-right">
-            <span class="w-billing-amount">¥12,500</span>
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M7.5 5l5 5-5 5" stroke="#333" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
-        </div>
-        <!-- 請求金額を調整する -->
-        <div class="w-billing-row">
-          <span class="w-billing-title" style="font-weight:300;">請求金額を調整する</span>
-          <div class="w-billing-right">
-            <span class="w-billing-note">あと2日</span>
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M7.5 5l5 5-5 5" stroke="#333" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
-        </div>
-      </div>
-
-      <!-- 取引履歴 -->
-      <div class="w-history-section">
-        <div class="w-history-header">
-          <span class="w-history-title">取引履歴</span>
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M7.5 5l5 5-5 5" stroke="rgba(255,255,255,0.5)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-        <div class="w-history-row">
-          <span class="w-history-date">2025/07/15</span>
-          <span class="w-history-pill done">¥9,800</span>
-        </div>
-        <div class="w-history-row">
-          <span class="w-history-date">2025/07/15</span>
-          <span class="w-history-pill active">¥9,800</span>
-        </div>
-        <div class="w-history-row">
-          <span class="w-history-date">2025/07/15</span>
-          <span class="w-history-pill pending">¥9,800</span>
-        </div>
-        <div class="w-history-row">
-          <span class="w-history-date">2025/07/15</span>
-          <span class="w-history-pill done">¥9,800</span>
-        </div>
-        <div class="w-history-row">
-          <span class="w-history-date">2025/07/15</span>
-          <span class="w-history-pill pending">¥9,800</span>
-        </div>
-      </div>
-
-      <!-- サブアセット（メルカリNFT / メルカリモバイル） -->
-      <div class="w-card">
-        <div class="w-sub-row">
-          <span class="w-sub-title">メルカリNFT</span>
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M7.5 5l5 5-5 5" stroke="#333" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-        <div class="w-sub-row">
-          <span class="w-sub-title">メルカリモバイル</span>
-          <span class="w-sub-value">0 GB</span>
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M7.5 5l5 5-5 5" stroke="#333" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-      </div>
-
-    </div>
-  </div>
-  <div id="screen-search" class="screen" style="background:#f0f0f0;">
+  <div id="screen-wallet"  class="screen"        style="background:#f0f0f0;"></div>
+  <div id="screen-search" class="screen" style="background:#fff;">
 
     <!-- スクロールコンテンツ -->
     <div class="search-content-scroll">
 
-      <!-- 履歴カード (非表示) -->
+      <!-- ショートカットボタン -->
+      <div style="padding-top:16px; margin-bottom:20px;">
+        <div class="shortcut-buttons">
+          <div class="shortcut-btn">
+            <img class="shortcut-btn-img" src="https://www.figma.com/api/mcp/asset/e400d0f9-1a36-46bc-ad9f-cf7f216ab742" alt="">
+            <span class="shortcut-btn-label">カテゴリ</span>
+          </div>
+          <div class="shortcut-btn">
+            <img class="shortcut-btn-img" src="https://www.figma.com/api/mcp/asset/6bc4d1cb-14fb-4e01-9017-15b73751ae7b" alt="">
+            <span class="shortcut-btn-label">ブランド</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 最近の検索 -->
+      <div class="search-section">
+        <div class="search-section-header">
+          <span class="search-section-title">最近の検索</span>
+          <span class="search-section-action">編集 <svg width="12" height="12" viewBox="0 0 24 24" fill="#007AFF"><path d="M9.29 6.71a.996.996 0 0 0 0 1.41L13.17 12l-3.88 3.88a.996.996 0 1 0 1.41 1.41l4.59-4.59a.996.996 0 0 0 0-1.41L10.7 6.7c-.38-.38-1.02-.38-1.41.01z"/></svg></span>
+        </div>
+        <div class="recent-chip-group">
+          <div class="recent-chip">ジルサンダー</div>
+          <div class="recent-chip">嵐ライブグッズ</div>
+          <div class="recent-chip">ちいかわ</div>
+          <div class="recent-chip">URBAN EXPRESS</div>
+          <div class="recent-chip">アウトドア</div>
+          <div class="recent-chip">Tシャツ</div>
+          <div class="recent-chip">ポケモンカード</div>
+          <div class="recent-chip">BlackPink</div>
+          <div class="recent-chip">ボンドロ</div>
+        </div>
+      </div>
+
+      <!-- メルカリのサービス -->
+      <div class="search-section">
+        <div class="search-section-header">
+          <span class="search-section-title">メルカリのサービス</span>
+        </div>
+        <div class="services-scroll">
+          <div class="service-card">
+            <div class="service-card-title-row">
+              <span class="service-card-title">出品されたギガ</span>
+              <img class="service-card-arrow" src="https://www.figma.com/api/mcp/asset/1ac0749b-9a8f-4ca9-8e96-aaa8f24317a7" alt="">
+            </div>
+            <div class="service-card-items">
+              <div class="service-item-wrap"><img class="service-item-thumb" src="https://www.figma.com/api/mcp/asset/53868a48-bd04-403f-9e1a-6cb73a77557c" alt=""><span class="service-item-price">¥2,800</span></div>
+              <div class="service-item-wrap"><img class="service-item-thumb" src="https://www.figma.com/api/mcp/asset/d436c85b-0fd3-4c6d-b380-1fc84d91b93d" alt=""><span class="service-item-price">¥2,800</span></div>
+            </div>
+          </div>
+          <div class="service-card">
+            <div class="service-card-title-row">
+              <span class="service-card-title">メルカリNFT</span>
+              <img class="service-card-arrow" src="https://www.figma.com/api/mcp/asset/1ac0749b-9a8f-4ca9-8e96-aaa8f24317a7" alt="">
+            </div>
+            <div class="service-card-items">
+              <div class="service-item-wrap"><img class="service-item-thumb" src="https://www.figma.com/api/mcp/asset/fec9d60c-5940-4953-a09e-a5642e4b884a" alt=""><span class="service-item-price">¥2,800</span></div>
+              <div class="service-item-wrap"><img class="service-item-thumb" src="https://www.figma.com/api/mcp/asset/e164a3e6-456e-4d09-b065-34e59cc9c64d" alt=""><span class="service-item-price">¥2,800</span></div>
+            </div>
+          </div>
+          <div class="service-card">
+            <div class="service-card-title-row">
+              <span class="service-card-title">メルカリギフト</span>
+              <img class="service-card-arrow" src="https://www.figma.com/api/mcp/asset/1ac0749b-9a8f-4ca9-8e96-aaa8f24317a7" alt="">
+            </div>
+            <div class="service-card-items">
+              <div class="service-item-wrap"><img class="service-item-thumb" src="https://www.figma.com/api/mcp/asset/aee7ce4b-5a9e-44c7-bb95-1eeb3db0d79b" alt=""><span class="service-item-price">¥2,800</span></div>
+              <div class="service-item-wrap"><img class="service-item-thumb" src="https://www.figma.com/api/mcp/asset/23f4a71b-f7dd-4a99-90f2-0d9460c1837c" alt=""><span class="service-item-price">¥2,800</span></div>
+            </div>
+          </div>
+          <div class="service-card">
+            <div class="service-card-title-row">
+              <span class="service-card-title">オークション</span>
+              <img class="service-card-arrow" src="https://www.figma.com/api/mcp/asset/1ac0749b-9a8f-4ca9-8e96-aaa8f24317a7" alt="">
+            </div>
+            <div class="service-card-items">
+              <div class="service-item-wrap"><img class="service-item-thumb" src="https://www.figma.com/api/mcp/asset/633bcd79-dbff-4a57-8d1d-8152780101d8" alt=""><span class="service-item-price">¥2,800</span></div>
+              <div class="service-item-wrap"><img class="service-item-thumb" src="https://www.figma.com/api/mcp/asset/92db6ead-fc1e-4712-a8a6-f530856a94ad" alt=""><span class="service-item-price">¥2,800</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- トレンドキーワード -->
+      <div class="search-section">
+        <div class="search-section-header">
+          <span class="search-section-title">トレンドキーワード</span>
+        </div>
+        <div class="trend-keywords">
+          <div class="trend-keyword-card">
+            <div class="trend-keyword-rank"><svg width="14" height="14" viewBox="0 0 24 24" fill="#4CAF50" style="flex-shrink:0;margin-top:2px"><path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22l1-2.3A4.49 4.49 0 0 0 8 20C19 20 22 3 22 3c-1 2-8 2-11 4z"/></svg>ポケモンカード</div>
+            <div class="trend-keyword-count"><svg width="10" height="10" viewBox="0 0 18 18" fill="#666"><path d="M17.8 16.8l-4-4a7.5 7.5 0 1 0-1 1l4 4a.7.7 0 0 0 1-1zM7.5 13.5a6 6 0 1 1 6-6 6 6 0 0 1-6 6z"/></svg>2,269<svg width="10" height="10" viewBox="0 0 24 24" fill="#F44336"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></svg></div>
+          </div>
+          <div class="trend-keyword-card">
+            <div class="trend-keyword-rank"><svg width="14" height="14" viewBox="0 0 24 24" fill="#4CAF50" style="flex-shrink:0;margin-top:2px"><path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22l1-2.3A4.49 4.49 0 0 0 8 20C19 20 22 3 22 3c-1 2-8 2-11 4z"/></svg>嵐ライブグッズ</div>
+            <div class="trend-keyword-count"><svg width="10" height="10" viewBox="0 0 18 18" fill="#666"><path d="M17.8 16.8l-4-4a7.5 7.5 0 1 0-1 1l4 4a.7.7 0 0 0 1-1zM7.5 13.5a6 6 0 1 1 6-6 6 6 0 0 1-6 6z"/></svg>1,884<svg width="10" height="10" viewBox="0 0 24 24" fill="#F44336"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></svg></div>
+          </div>
+          <div class="trend-keyword-card">
+            <div class="trend-keyword-rank"><svg width="14" height="14" viewBox="0 0 24 24" fill="#4CAF50" style="flex-shrink:0;margin-top:2px"><path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22l1-2.3A4.49 4.49 0 0 0 8 20C19 20 22 3 22 3c-1 2-8 2-11 4z"/></svg>ボンボンドロップシール</div>
+            <div class="trend-keyword-count"><svg width="10" height="10" viewBox="0 0 18 18" fill="#666"><path d="M17.8 16.8l-4-4a7.5 7.5 0 1 0-1 1l4 4a.7.7 0 0 0 1-1zM7.5 13.5a6 6 0 1 1 6-6 6 6 0 0 1-6 6z"/></svg>608<svg width="10" height="10" viewBox="0 0 24 24" fill="#F44336"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></svg></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 急上昇キーワード -->
+      <div class="search-section">
+        <div class="search-section-header">
+          <span class="search-section-title">急上昇キーワード</span>
+        </div>
+        <div class="rising-scroll">
+          <div class="rising-row">
+            <div class="rising-chip"><img class="rising-chip-thumb" src="https://www.figma.com/api/mcp/asset/53868a48-bd04-403f-9e1a-6cb73a77557c" alt=""><span class="rising-chip-label">スニーカー</span></div>
+            <div class="rising-chip"><img class="rising-chip-thumb" src="https://www.figma.com/api/mcp/asset/d436c85b-0fd3-4c6d-b380-1fc84d91b93d" alt=""><span class="rising-chip-label">レトロゲーム</span></div>
+            <div class="rising-chip"><img class="rising-chip-thumb" src="https://www.figma.com/api/mcp/asset/fec9d60c-5940-4953-a09e-a5642e4b884a" alt=""><span class="rising-chip-label">美容液 高機能スキンケア</span></div>
+          </div>
+          <div class="rising-row">
+            <div class="rising-chip"><img class="rising-chip-thumb" src="https://www.figma.com/api/mcp/asset/e164a3e6-456e-4d09-b065-34e59cc9c64d" alt=""><span class="rising-chip-label">昭和レトロ雑貨</span></div>
+            <div class="rising-chip"><img class="rising-chip-thumb" src="https://www.figma.com/api/mcp/asset/aee7ce4b-5a9e-44c7-bb95-1eeb3db0d79b" alt=""><span class="rising-chip-label">アウトドアギア</span></div>
+            <div class="rising-chip"><img class="rising-chip-thumb" src="https://www.figma.com/api/mcp/asset/23f4a71b-f7dd-4a99-90f2-0d9460c1837c" alt=""><span class="rising-chip-label">アニメキャラクターグッズ</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 人気の検索条件 -->
+      <div class="search-section">
+        <div class="search-section-header">
+          <span class="search-section-title">人気の検索条件</span>
+        </div>
+        <div class="popular-scroll">
+          <div class="popular-card">
+            <span class="popular-card-label">ヴィンテージアクセサリー</span>
+            <div class="popular-card-meta"><span class="popular-card-tag">NEW</span><span>120商品</span></div>
+            <div class="popular-grid">
+              <div class="popular-item-wrap"><img class="popular-grid-thumb" src="https://www.figma.com/api/mcp/asset/53868a48-bd04-403f-9e1a-6cb73a77557c" alt=""><span class="service-item-price">¥10,000</span></div>
+              <div class="popular-item-wrap"><img class="popular-grid-thumb" src="https://www.figma.com/api/mcp/asset/d436c85b-0fd3-4c6d-b380-1fc84d91b93d" alt=""><span class="service-item-price">¥10,000</span></div>
+              <div class="popular-item-wrap"><img class="popular-grid-thumb" src="https://www.figma.com/api/mcp/asset/fec9d60c-5940-4953-a09e-a5642e4b884a" alt=""><span class="service-item-price">¥10,000</span></div>
+              <div class="popular-item-wrap"><img class="popular-grid-thumb" src="https://www.figma.com/api/mcp/asset/e164a3e6-456e-4d09-b065-34e59cc9c64d" alt=""><span class="service-item-price">¥10,000</span></div>
+            </div>
+          </div>
+          <div class="popular-card">
+            <span class="popular-card-label">アウトドアギア</span>
+            <div class="popular-card-meta"><span class="popular-card-tag">NEW</span><span>120商品</span></div>
+            <div class="popular-grid">
+              <div class="popular-item-wrap"><img class="popular-grid-thumb" src="https://www.figma.com/api/mcp/asset/aee7ce4b-5a9e-44c7-bb95-1eeb3db0d79b" alt=""><span class="service-item-price">¥10,000</span></div>
+              <div class="popular-item-wrap"><img class="popular-grid-thumb" src="https://www.figma.com/api/mcp/asset/23f4a71b-f7dd-4a99-90f2-0d9460c1837c" alt=""><span class="service-item-price">¥10,000</span></div>
+              <div class="popular-item-wrap"><img class="popular-grid-thumb" src="https://www.figma.com/api/mcp/asset/633bcd79-dbff-4a57-8d1d-8152780101d8" alt=""><span class="service-item-price">¥10,000</span></div>
+              <div class="popular-item-wrap"><img class="popular-grid-thumb" src="https://www.figma.com/api/mcp/asset/92db6ead-fc1e-4712-a8a6-f530856a94ad" alt=""><span class="service-item-price">¥10,000</span></div>
+            </div>
+          </div>
+          <div class="popular-card">
+            <span class="popular-card-label">ヴィンテージアクセサリー</span>
+            <div class="popular-card-meta"><span class="popular-card-tag">NEW</span><span>120商品</span></div>
+            <div class="popular-grid">
+              <div class="popular-item-wrap"><img class="popular-grid-thumb" src="https://www.figma.com/api/mcp/asset/801a20eb-f2cc-473e-9b4f-3f72a20862e1" alt=""><span class="service-item-price">¥10,000</span></div>
+              <div class="popular-item-wrap"><img class="popular-grid-thumb" src="https://www.figma.com/api/mcp/asset/e56e5fc6-93e9-4e82-9e73-4f6ef1f8ea64" alt=""><span class="service-item-price">¥10,000</span></div>
+              <div class="popular-item-wrap"><img class="popular-grid-thumb" src="https://www.figma.com/api/mcp/asset/5e1dc04a-e8b5-4c94-bc4b-0691bd1ffecc" alt=""><span class="service-item-price">¥10,000</span></div>
+              <div class="popular-item-wrap"><img class="popular-grid-thumb" src="https://www.figma.com/api/mcp/asset/8200b373-e3d1-4e36-9bba-d9f9a1b3a321" alt=""><span class="service-item-price">¥10,000</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- おすすめフォロワー -->
+      <div class="search-section">
+        <div class="search-section-header">
+          <span class="search-section-title">おすすめフォロワー</span>
+        </div>
+        <div class="follower-scroll">
+          <div class="follower-card">
+            <div class="follower-card-header">
+              <div class="follower-avatar"><img src="https://www.figma.com/api/mcp/asset/801a20eb-f2cc-473e-9b4f-3f72a20862e1" alt=""></div>
+              <span class="follower-name">たくま</span>
+            </div>
+            <div class="follower-grid">
+              <div class="popular-item-wrap"><img class="follower-grid-thumb" src="https://www.figma.com/api/mcp/asset/801a20eb-f2cc-473e-9b4f-3f72a20862e1" alt=""><span class="service-item-price">¥10,000</span></div>
+              <div class="popular-item-wrap"><img class="follower-grid-thumb" src="https://www.figma.com/api/mcp/asset/e56e5fc6-93e9-4e82-9e73-4f6ef1f8ea64" alt=""><span class="service-item-price">¥10,000</span></div>
+              <div class="popular-item-wrap"><img class="follower-grid-thumb" src="https://www.figma.com/api/mcp/asset/5e1dc04a-e8b5-4c94-bc4b-0691bd1ffecc" alt=""><span class="service-item-price">¥10,000</span></div>
+              <div class="popular-item-wrap"><img class="follower-grid-thumb" src="https://www.figma.com/api/mcp/asset/8200b373-e3d1-4e36-9bba-d9f9a1b3a321" alt=""><span class="service-item-price">¥10,000</span></div>
+            </div>
+          </div>
+          <div class="follower-card">
+            <div class="follower-card-header">
+              <div class="follower-avatar"><img src="https://www.figma.com/api/mcp/asset/45e074f7-3233-4bc9-b2f8-cb5f9411963f" alt=""></div>
+              <span class="follower-name">ME/チェンソーマングッズ</span>
+            </div>
+            <div class="follower-grid">
+              <div class="popular-item-wrap"><img class="follower-grid-thumb" src="https://www.figma.com/api/mcp/asset/45e074f7-3233-4bc9-b2f8-cb5f9411963f" alt=""><span class="service-item-price">¥10,000</span></div>
+              <div class="popular-item-wrap"><img class="follower-grid-thumb" src="https://www.figma.com/api/mcp/asset/4dc0aae1-5c67-4ce0-ab39-5516a63e80f3" alt=""><span class="service-item-price">¥10,000</span></div>
+              <div class="popular-item-wrap"><img class="follower-grid-thumb" src="https://www.figma.com/api/mcp/asset/35db32b5-622b-4bbd-a3f0-5d95f40a44cc" alt=""><span class="service-item-price">¥10,000</span></div>
+              <div class="popular-item-wrap"><img class="follower-grid-thumb" src="https://www.figma.com/api/mcp/asset/1b8b47ec-668b-4a07-a61b-a78f59913e53" alt=""><span class="service-item-price">¥10,000</span></div>
+            </div>
+          </div>
+          <div class="follower-card">
+            <div class="follower-card-header">
+              <div class="follower-avatar"><img src="https://www.figma.com/api/mcp/asset/53868a48-bd04-403f-9e1a-6cb73a77557c" alt=""></div>
+              <span class="follower-name">ヴィンテージアクセサリー</span>
+            </div>
+            <div class="follower-grid">
+              <div class="popular-item-wrap"><img class="follower-grid-thumb" src="https://www.figma.com/api/mcp/asset/53868a48-bd04-403f-9e1a-6cb73a77557c" alt=""><span class="service-item-price">¥10,000</span></div>
+              <div class="popular-item-wrap"><img class="follower-grid-thumb" src="https://www.figma.com/api/mcp/asset/d436c85b-0fd3-4c6d-b380-1fc84d91b93d" alt=""><span class="service-item-price">¥10,000</span></div>
+              <div class="popular-item-wrap"><img class="follower-grid-thumb" src="https://www.figma.com/api/mcp/asset/fec9d60c-5940-4953-a09e-a5642e4b884a" alt=""><span class="service-item-price">¥10,000</span></div>
+              <div class="popular-item-wrap"><img class="follower-grid-thumb" src="https://www.figma.com/api/mcp/asset/e164a3e6-456e-4d09-b065-34e59cc9c64d" alt=""><span class="service-item-price">¥10,000</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- (旧コンテンツは削除) -->
       <div class="history-cards" style="display:none;">
 
         <div class="history-card">
