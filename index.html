@@ -1243,6 +1243,8 @@
           autocomplete="off"
           autocorrect="off"
           spellcheck="false"
+          readonly
+          onclick="this.removeAttribute('readonly')"
         />
       </div>
       <button class="search-close-btn" onclick="exitSearch()">
@@ -1371,6 +1373,7 @@
     const input = document.getElementById('search-input');
     input.blur();
     input.value = '';
+    input.setAttribute('readonly', '');
     document.getElementById('search-float-bar').style.bottom = '0px';
     const prevItem = document.querySelector(`.tab-item[onclick*="'${prevTab}'"]`);
     if (prevItem) switchTab(prevTab, prevItem);
