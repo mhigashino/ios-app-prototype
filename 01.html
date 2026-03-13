@@ -805,6 +805,79 @@
     .auc-mosaic-tile { position: relative; border-radius: 6px; overflow: hidden; background: #ddd; }
     .auc-mosaic-tile img { width: 100%; height: 100%; object-fit: cover; display: block; }
     .auc-mosaic-price { position: absolute; bottom: 5px; left: 5px; font-size: 10px; font-weight: 700; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,0.6); }
+
+    /* ── おさいふ画面 ── */
+    #screen-wallet { background: #f2f2f7; overflow: hidden; }
+    .wal-scroll { position: absolute; inset: 0; overflow-y: auto; padding-top: calc(env(safe-area-inset-top) + 64px); padding-bottom: 100px; }
+    /* Pay エリア */
+    .wal-pay-area { background: #111; padding: 0 16px 16px; }
+    .wal-pay-header { display: flex; align-items: center; padding: 16px 0 12px; }
+    .wal-pay-logo { height: 22px; }
+    .wal-pay-balance-btn { margin-left: auto; display: flex; align-items: center; gap: 6px; background: #2c2c2e; border: none; border-radius: 999px; padding: 7px 14px; color: #fff; font-size: 12px; cursor: pointer; }
+    .wal-pay-balance-btn .amt { font-weight: 700; font-size: 14px; }
+    .wal-eye-btn { background: none; border: none; padding: 6px; margin-left: 4px; cursor: pointer; }
+    .wal-barcode-wrap { display: flex; justify-content: center; padding: 8px 0 12px; }
+    .wal-barcode { width: 100%; max-width: 288px; height: auto; display: block; }
+    .wal-action-row { display: flex; }
+    .wal-action-btn { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; background: none; border: none; padding: 6px 0; cursor: pointer; }
+    .wal-action-icon { width: 44px; height: 44px; background: #2c2c2e; border-radius: 12px; display: flex; align-items: center; justify-content: center; }
+    .wal-action-label { font-size: 11px; color: #8e8e93; }
+    /* アセットカード */
+    .wal-asset-card { background: #fff; margin: 16px 16px 0; border-radius: 8px; overflow: hidden; }
+    .wal-asset-row { display: flex; align-items: center; padding: 14px 16px; border-bottom: 1px solid #f0f0f0; gap: 10px; }
+    .wal-asset-row:last-child { border-bottom: none; }
+    .wal-asset-icon { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 13px; font-weight: 700; color: #fff; }
+    .wal-asset-label { flex: 1; }
+    .wal-asset-name { font-size: 15px; font-weight: 600; color: #333; }
+    .wal-asset-sub { display: block; font-size: 11px; color: #ff333f; margin-top: 2px; }
+    .wal-asset-val { display: flex; align-items: center; gap: 2px; }
+    .wal-asset-yen { font-size: 12px; font-weight: 700; color: #333; }
+    .wal-asset-num { font-size: 15px; font-weight: 700; color: #333; }
+    .wal-asset-trend { font-size: 11px; color: #34c759; margin-right: 2px; }
+    /* クレジットカード */
+    .wal-credit-card { background: #fff; margin: 16px 16px 0; border-radius: 8px; overflow: hidden; }
+    .wal-credit-title-row { display: flex; align-items: center; padding: 14px 16px; }
+    .wal-credit-title { flex: 1; font-size: 15px; font-weight: 600; color: #333; }
+    .wal-mercard-wrap { padding: 0 16px 4px; }
+    .wal-mercard { background: #edf0f3; border-radius: 12px; padding: 10px 12px; }
+    .wal-mercard-hd { display: flex; align-items: center; justify-content: space-between; }
+    .wal-mercard-logo {
+      display: block; width: 68px; height: 13px;
+      background: linear-gradient(13deg, rgb(151,226,254) 20%, rgb(156,160,255) 41%, rgb(255,158,176) 61%, rgb(255,237,140) 82%);
+      -webkit-mask-image: url('https://www.figma.com/api/mcp/asset/995d29d1-6677-4d71-951a-fbde20b48b30');
+      -webkit-mask-size: contain; -webkit-mask-repeat: no-repeat;
+      mask-image: url('https://www.figma.com/api/mcp/asset/995d29d1-6677-4d71-951a-fbde20b48b30');
+      mask-size: contain; mask-repeat: no-repeat;
+    }
+    .wal-mercard-right { display: flex; align-items: center; gap: 4px; }
+    .wal-mercard-tag { background: rgba(34,34,34,0.8); color: #fff; font-size: 10px; padding: 2px 6px; border-radius: 999px; }
+    .wal-credit-row { display: flex; align-items: center; padding: 14px 16px; border-top: 1px solid #f0f0f0; gap: 8px; }
+    .wal-credit-row-l { flex: 1; }
+    .wal-credit-row-title { font-size: 15px; font-weight: 600; color: #333; }
+    .wal-credit-tag { display: inline-block; background: #f0f0f0; border-radius: 999px; font-size: 10px; color: #333; padding: 1px 6px; margin-left: 4px; vertical-align: middle; }
+    .wal-credit-row-val { font-size: 14px; font-weight: 700; color: #333; }
+    .wal-credit-row-sub { font-size: 14px; color: #333; }
+    /* 取引履歴 */
+    .wal-history-section { background: #1c1c1e; margin-top: 16px; }
+    .wal-history-title-row { display: flex; align-items: center; padding: 14px 16px; border-bottom: 1px solid #2c2c2e; }
+    .wal-history-title { flex: 1; font-size: 15px; font-weight: 600; color: #fff; }
+    .wal-history-row { display: flex; align-items: center; padding: 16px; min-height: 70px; border-bottom: 1px solid #2c2c2e; }
+    .wal-history-row:last-child { border-bottom: none; }
+    .wal-history-date { font-size: 11px; color: #636366; }
+    .wal-history-amount { margin-left: auto; }
+    .wal-history-badge { display: inline-flex; align-items: center; gap: 4px; background: #2c2c2e; border-radius: 999px; padding: 6px 12px; font-size: 12px; font-weight: 700; color: #fff; }
+    .wal-history-badge.red { background: #ff333f; }
+    .wal-history-badge.pink { background: rgba(255,51,63,0.15); color: #ff333f; }
+    .wal-history-check { color: #34c759; font-size: 11px; }
+    /* サブアセット */
+    .wal-sub-card { background: #fff; margin: 16px 16px 0; border-radius: 8px; overflow: hidden; }
+    .wal-sub-row { display: flex; align-items: center; padding: 14px 16px; border-bottom: 1px solid #f0f0f0; gap: 8px; }
+    .wal-sub-row:last-child { border-bottom: none; }
+    .wal-sub-name { flex: 1; font-size: 15px; font-weight: 600; color: #333; }
+    .wal-sub-val { font-size: 14px; color: #333; }
+    /* ボトム行 */
+    .wal-bottom-row { background: #fff; margin: 16px 16px 0; border-radius: 8px; display: flex; align-items: center; padding: 14px 16px; }
+    .wal-bottom-title { flex: 1; font-size: 15px; font-weight: 600; color: #333; }
   </style>
 </head>
 <body>
@@ -1349,7 +1422,188 @@
 
     </div>
   </div>
-  <div id="screen-wallet"  class="screen"        style="background:#f0f0f0;"></div>
+  <div id="screen-wallet" class="screen">
+    <div class="wal-scroll">
+
+      <!-- ① merpay Pay エリア -->
+      <div class="wal-pay-area">
+        <div class="wal-pay-header">
+          <img class="wal-pay-logo" src="https://www.figma.com/api/mcp/asset/d7f9d026-d625-493d-a4e6-76ef0b548077" alt="merpay">
+          <button class="wal-pay-balance-btn">
+            <span>使える金額</span>
+            <span class="amt">¥10,000</span>
+          </button>
+          <button class="wal-eye-btn">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 4C5.5 4 2 10 2 10s3.5 6 8 6 8-6 8-6S14.5 4 10 4z" stroke="#8e8e93" stroke-width="1.5" fill="none"/><circle cx="10" cy="10" r="2.5" stroke="#8e8e93" stroke-width="1.5" fill="none"/></svg>
+          </button>
+        </div>
+        <div class="wal-barcode-wrap">
+          <img class="wal-barcode" src="https://www.figma.com/api/mcp/asset/be246963-2376-4982-b905-92a683550d8f" alt="barcode">
+        </div>
+        <div class="wal-action-row">
+          <button class="wal-action-btn">
+            <div class="wal-action-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <rect x="3" y="3" width="7" height="7" rx="1" stroke="#fff" stroke-width="1.5"/>
+                <rect x="5" y="5" width="3" height="3" fill="#fff"/>
+                <rect x="14" y="3" width="7" height="7" rx="1" stroke="#fff" stroke-width="1.5"/>
+                <rect x="16" y="5" width="3" height="3" fill="#fff"/>
+                <rect x="3" y="14" width="7" height="7" rx="1" stroke="#fff" stroke-width="1.5"/>
+                <rect x="5" y="16" width="3" height="3" fill="#fff"/>
+                <rect x="14" y="14" width="2" height="2" fill="#fff"/>
+                <rect x="17" y="14" width="3" height="2" fill="#fff"/>
+                <rect x="14" y="17" width="2" height="3" fill="#fff"/>
+                <rect x="17" y="17" width="3" height="3" fill="#fff"/>
+              </svg>
+            </div>
+            <span class="wal-action-label">QRコード</span>
+          </button>
+          <button class="wal-action-btn">
+            <div class="wal-action-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <span class="wal-action-label">おくる</span>
+          </button>
+          <button class="wal-action-btn">
+            <div class="wal-action-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <circle cx="9" cy="13" r="5.25" stroke="#fff" stroke-width="1.5"/>
+                <path d="M14.5 8A5.25 5.25 0 0114.5 18" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/>
+                <path d="M17.5 6.5A7.25 7.25 0 0117.5 19.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" opacity=".5"/>
+              </svg>
+            </div>
+            <span class="wal-action-label">借りる</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ② 残高・ポイント・ビットコイン -->
+      <div class="wal-asset-card">
+        <div class="wal-asset-row">
+          <div class="wal-asset-icon" style="background:#ff6534;">¥</div>
+          <div class="wal-asset-label"><span class="wal-asset-name">残高</span></div>
+          <div class="wal-asset-val">
+            <span class="wal-asset-yen">¥</span>
+            <span class="wal-asset-num">5,300</span>
+          </div>
+          <svg class="wal-chevron" width="8" height="13" viewBox="0 0 8 13" fill="none"><path d="M1 1l6 5.5L1 12" stroke="#c7c7cc" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="wal-asset-row">
+          <div class="wal-asset-icon" style="background:#ff333f;">P</div>
+          <div class="wal-asset-label"><span class="wal-asset-name">ポイント</span></div>
+          <div class="wal-asset-val">
+            <span class="wal-asset-num" style="font-size:14px;color:#333;">P120</span>
+          </div>
+          <svg class="wal-chevron" width="8" height="13" viewBox="0 0 8 13" fill="none"><path d="M1 1l6 5.5L1 12" stroke="#c7c7cc" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="wal-asset-row">
+          <div class="wal-asset-icon" style="background:#f7931a;">₿</div>
+          <div class="wal-asset-label">
+            <span class="wal-asset-name">ビットコイン等</span>
+            <span class="wal-asset-sub">ポイントを毎月もらう</span>
+          </div>
+          <div class="wal-asset-val">
+            <span class="wal-asset-trend">↑</span>
+            <span class="wal-asset-yen">¥</span>
+            <span class="wal-asset-num">2,700</span>
+          </div>
+          <svg class="wal-chevron" width="8" height="13" viewBox="0 0 8 13" fill="none"><path d="M1 1l6 5.5L1 12" stroke="#c7c7cc" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+      </div>
+
+      <!-- ③ クレジットカード -->
+      <div class="wal-credit-card">
+        <div class="wal-credit-title-row">
+          <span class="wal-credit-title">クレジットカード</span>
+          <svg width="8" height="13" viewBox="0 0 8 13" fill="none"><path d="M1 1l6 5.5L1 12" stroke="#c7c7cc" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="wal-mercard-wrap">
+          <div class="wal-mercard">
+            <div class="wal-mercard-hd">
+              <div class="wal-mercard-logo"></div>
+              <div class="wal-mercard-right">
+                <span class="wal-mercard-tag">初期設定</span>
+                <svg width="8" height="13" viewBox="0 0 8 13" fill="none"><path d="M1 1l6 5.5L1 12" stroke="#888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="wal-credit-row">
+          <div class="wal-credit-row-l">
+            <span class="wal-credit-row-title">6月の請求</span>
+            <span class="wal-credit-tag">引落し：6/25</span>
+          </div>
+          <span class="wal-credit-row-val"><span style="font-size:12px;">¥</span>12,500</span>
+          <svg width="8" height="13" viewBox="0 0 8 13" fill="none" style="margin-left:6px;"><path d="M1 1l6 5.5L1 12" stroke="#c7c7cc" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="wal-credit-row">
+          <div class="wal-credit-row-l">
+            <span class="wal-credit-row-title">請求金額を調整する</span>
+          </div>
+          <span class="wal-credit-row-sub">あと2日</span>
+          <svg width="8" height="13" viewBox="0 0 8 13" fill="none" style="margin-left:6px;"><path d="M1 1l6 5.5L1 12" stroke="#c7c7cc" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+      </div>
+
+      <!-- ④ 取引履歴 -->
+      <div class="wal-history-section">
+        <div class="wal-history-title-row">
+          <span class="wal-history-title">取引履歴</span>
+          <svg width="8" height="13" viewBox="0 0 8 13" fill="none"><path d="M1 1l6 5.5L1 12" stroke="#636366" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="wal-history-row">
+          <span class="wal-history-date">2025/07/15</span>
+          <div class="wal-history-amount">
+            <span class="wal-history-badge">¥9,800 <span class="wal-history-check">✓</span></span>
+          </div>
+        </div>
+        <div class="wal-history-row">
+          <span class="wal-history-date">2025/07/15</span>
+          <div class="wal-history-amount">
+            <span class="wal-history-badge red">¥9,800</span>
+          </div>
+        </div>
+        <div class="wal-history-row">
+          <span class="wal-history-date">2025/07/15</span>
+          <div class="wal-history-amount">
+            <span class="wal-history-badge pink">¥9,800</span>
+          </div>
+        </div>
+        <div class="wal-history-row">
+          <span class="wal-history-date">2025/07/15</span>
+          <div class="wal-history-amount">
+            <span class="wal-history-badge">¥9,800 <span class="wal-history-check">✓</span></span>
+          </div>
+        </div>
+        <div class="wal-history-row">
+          <span class="wal-history-date">2025/07/15</span>
+          <div class="wal-history-amount">
+            <span class="wal-history-badge">¥9,800</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ⑤ サブアセット -->
+      <div class="wal-sub-card">
+        <div class="wal-sub-row">
+          <span class="wal-sub-name">メルカリNFT</span>
+          <svg width="8" height="13" viewBox="0 0 8 13" fill="none"><path d="M1 1l6 5.5L1 12" stroke="#c7c7cc" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="wal-sub-row">
+          <span class="wal-sub-name">メルカリモバイル</span>
+          <span class="wal-sub-val">0 GB</span>
+          <svg width="8" height="13" viewBox="0 0 8 13" fill="none" style="margin-left:8px;"><path d="M1 1l6 5.5L1 12" stroke="#c7c7cc" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+      </div>
+
+      <!-- ⑥ ボトム行 -->
+      <div class="wal-bottom-row">
+        <span class="wal-bottom-title">メルカリ便の領収書</span>
+        <svg width="8" height="13" viewBox="0 0 8 13" fill="none"><path d="M1 1l6 5.5L1 12" stroke="#c7c7cc" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+
+    </div>
+  </div>
   <div id="screen-search" class="screen" style="background:#f0f0f0;">
 
     <!-- スクロールコンテンツ -->
