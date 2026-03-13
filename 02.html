@@ -739,6 +739,116 @@
       display: flex;
       gap: 8px;
       padding: 0 16px;
+    }
+
+    /* ════════════════════════════════════════
+       出品画面 (screen-list)
+    ════════════════════════════════════════ */
+    .list-scroll {
+      position: absolute;
+      inset: 0;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      padding-top: calc(env(safe-area-inset-top) + 64px);
+      padding-bottom: 90px;
+      background: #fff;
+    }
+    .list-hero {
+      position: relative;
+      margin: 0 16px 12px;
+      background: linear-gradient(135deg, #e8f4fd 0%, #ddeeff 100%);
+      border-radius: 16px;
+      padding: 16px 80px 16px 16px;
+      overflow: hidden;
+      min-height: 80px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .list-hero-label { font-size: 11px; color: #555; margin-bottom: 4px; }
+    .list-hero-title { font-size: 20px; font-weight: 700; color: #111; line-height: 1.2; }
+    .list-hero-img { position: absolute; right: 12px; bottom: 0; }
+    .list-hero-camera {
+      position: absolute; top: 12px; right: 12px;
+      width: 32px; height: 32px;
+      background: #fff; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    }
+    .list-status-grid {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 8px; margin: 0 16px 12px;
+    }
+    .list-status-card {
+      background: #f7f7f7; border-radius: 12px;
+      padding: 12px 8px;
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+    }
+    .list-status-label { font-size: 12px; color: #555; }
+    .list-status-count { font-size: 13px; font-weight: 600; color: #111; }
+    .list-notice-bar {
+      display: flex; align-items: center; gap: 6px;
+      margin: 0 16px 16px; padding: 10px 14px;
+      background: #eaf6ff; border-radius: 10px;
+      font-size: 13px; color: #0095ee; font-weight: 500;
+    }
+    .list-notice-bar span { flex: 1; }
+    .list-section { padding: 0 0 4px; }
+    .list-section-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 16px 10px;
+    }
+    .list-section-title { font-size: 16px; font-weight: 700; color: #111; }
+    .list-divider { height: 8px; background: #f2f2f7; margin: 8px 0; }
+    .list-products-scroll {
+      display: flex; gap: 10px; padding: 0 16px 8px;
+      overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none;
+    }
+    .list-products-scroll::-webkit-scrollbar { display: none; }
+    .list-product-card { flex-shrink: 0; width: 120px; }
+    .list-product-img { width: 120px; height: 120px; border-radius: 8px; margin-bottom: 6px; }
+    .list-product-price { font-size: 13px; font-weight: 700; color: #111; margin-bottom: 2px; }
+    .list-product-name {
+      font-size: 11px; color: #555; line-height: 1.4;
+      overflow: hidden; display: -webkit-box;
+      -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+    }
+    .list-items { display: flex; flex-direction: column; }
+    .list-item {
+      display: flex; gap: 12px; padding: 12px 16px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .list-item-img { width: 64px; height: 64px; border-radius: 8px; flex-shrink: 0; }
+    .list-item-body { flex: 1; min-width: 0; }
+    .list-item-name {
+      font-size: 13px; color: #333; line-height: 1.4; margin-bottom: 4px;
+      overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+    }
+    .list-item-price { font-size: 15px; font-weight: 700; color: #111; margin-bottom: 6px; }
+    .list-item-meta { display: flex; align-items: center; gap: 10px; font-size: 11px; color: #888; }
+    .list-item-meta-date { margin-left: auto; }
+    .list-coupon {
+      display: flex; align-items: center; gap: 12px;
+      margin: 0 16px 8px; padding: 14px;
+      background: #fff; border: 1px solid #e8e8e8; border-radius: 12px;
+    }
+    .list-coupon-body { flex: 1; min-width: 0; }
+    .list-coupon-tag { font-size: 13px; font-weight: 600; color: #111; line-height: 1.4; }
+    .list-coupon-cond { font-size: 11px; color: #888; margin-top: 2px; }
+    .list-coupon-btn {
+      flex-shrink: 0; background: #E8004D; color: #fff; border: none;
+      border-radius: 20px; padding: 8px 14px; font-size: 13px; font-weight: 600; cursor: pointer;
+    }
+    .list-hints-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 8px; padding: 0 16px 8px;
+    }
+    .list-hint-card {
+      display: flex; align-items: center; gap: 8px;
+      background: #f7f7f7; border-radius: 12px; padding: 14px 12px;
+      font-size: 13px; font-weight: 500; color: #333;
+    }
+    .list-hint-icon { font-size: 20px; flex-shrink: 0; }
   </style>
 </head>
 <body>
@@ -748,7 +858,195 @@
   <!-- Screens -->
   <div id="screen-home"    class="screen active" style="background:#f0f0f0;"></div>
   <div id="screen-auction" class="screen"        style="background:#f0f0f0;"></div>
-  <div id="screen-list"    class="screen"        style="background:#f0f0f0;"></div>
+  <div id="screen-list" class="screen" style="background:#fff;">
+    <div class="list-scroll">
+
+      <!-- ヒーローバナー -->
+      <div class="list-hero">
+        <div class="list-hero-text">
+          <div class="list-hero-label">メルカリ出品ガイド</div>
+          <div class="list-hero-title">売り方について</div>
+        </div>
+        <div class="list-hero-img">
+          <svg width="80" height="72" viewBox="0 0 80 72" fill="none">
+            <rect x="10" y="18" width="44" height="34" rx="4" fill="#e8e8f0" stroke="#ccc" stroke-width="1.5"/>
+            <rect x="16" y="24" width="32" height="20" rx="2" fill="#d0d0e8"/>
+            <circle cx="32" cy="34" r="6" fill="#b0b0d0"/>
+            <rect x="54" y="8" width="20" height="28" rx="10" fill="#ffcc80"/>
+            <circle cx="64" cy="18" r="6" fill="#ff9800"/>
+            <rect x="58" y="28" width="12" height="6" rx="3" fill="#ff9800"/>
+          </svg>
+        </div>
+        <div class="list-hero-camera">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" stroke="#333" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="12" cy="13" r="4" stroke="#333" stroke-width="1.5"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- ステータスカード -->
+      <div class="list-status-grid">
+        <div class="list-status-card">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" stroke="#666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <div class="list-status-label">下書き</div>
+          <div class="list-status-count">6件</div>
+        </div>
+        <div class="list-status-card">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" stroke="#666" stroke-width="1.5" stroke-linejoin="round"/><rect x="14" y="3" width="7" height="7" stroke="#666" stroke-width="1.5" stroke-linejoin="round"/><rect x="3" y="14" width="7" height="7" stroke="#666" stroke-width="1.5" stroke-linejoin="round"/><rect x="14" y="14" width="7" height="7" stroke="#666" stroke-width="1.5" stroke-linejoin="round"/></svg>
+          <div class="list-status-label">出品中</div>
+          <div class="list-status-count">6件</div>
+        </div>
+        <div class="list-status-card">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M5 8h14M5 8a2 2 0 1 0 0-4h14a2 2 0 1 0 0 4M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8" stroke="#666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <div class="list-status-label">取引中</div>
+          <div class="list-status-count">6件</div>
+        </div>
+      </div>
+
+      <!-- 通知バー -->
+      <div class="list-notice-bar">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#0095ee" stroke-width="1.5"/><path d="M12 8v4M12 16h.01" stroke="#0095ee" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <span>3件の発送・評価待ちの商品があります</span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="#0095ee" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+
+      <!-- すぐに出品できる商品 -->
+      <div class="list-section">
+        <div class="list-section-header">
+          <span class="list-section-title">すぐに出品できる商品 (6)</span>
+          <span class="list-section-arrow">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="#333" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </div>
+        <div class="list-products-scroll">
+          <div class="list-product-card">
+            <div class="list-product-img" style="background:#c8b8a8;"></div>
+            <div class="list-product-price">¥3,200</div>
+            <div class="list-product-name">シャインマスカット予約開始。9月頃…</div>
+          </div>
+          <div class="list-product-card">
+            <div class="list-product-img" style="background:#d8d0c8;"></div>
+            <div class="list-product-price">¥3,200</div>
+            <div class="list-product-name">シャインマスカット予約開始。9月頃…</div>
+          </div>
+          <div class="list-product-card">
+            <div class="list-product-img" style="background:#b0b8c8;"></div>
+            <div class="list-product-price">¥3,200</div>
+            <div class="list-product-name">シャインマスカット予約開始。9月頃…</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="list-divider"></div>
+
+      <!-- 出品中 -->
+      <div class="list-section">
+        <div class="list-section-header">
+          <span class="list-section-title">出品中 (6)</span>
+          <span class="list-section-arrow">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="#333" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </div>
+        <div class="list-items">
+          <div class="list-item">
+            <div class="list-item-img" style="background:#d8d0c8;"></div>
+            <div class="list-item-body">
+              <div class="list-item-name">シャインマスカット予約開始。9月頃発送。</div>
+              <div class="list-item-price">¥2,400</div>
+              <div class="list-item-meta">
+                <span class="list-item-meta-icon">♡ 15</span>
+                <span class="list-item-meta-icon">💬 2</span>
+                <span class="list-item-meta-icon">👁 264</span>
+                <span class="list-item-meta-date">3日前</span>
+              </div>
+            </div>
+          </div>
+          <div class="list-item">
+            <div class="list-item-img" style="background:#d8d0c8;"></div>
+            <div class="list-item-body">
+              <div class="list-item-name">シャインマスカット予約開始。9月頃発送。</div>
+              <div class="list-item-price">¥2,400</div>
+              <div class="list-item-meta">
+                <span class="list-item-meta-icon">♡ 15</span>
+                <span class="list-item-meta-icon">💬 2</span>
+                <span class="list-item-meta-icon">👁 264</span>
+                <span class="list-item-meta-date">3日前</span>
+              </div>
+            </div>
+          </div>
+          <div class="list-item">
+            <div class="list-item-img" style="background:#d8d0c8;"></div>
+            <div class="list-item-body">
+              <div class="list-item-name">シャインマスカット予約開始。9月頃発送。</div>
+              <div class="list-item-price">¥2,400</div>
+              <div class="list-item-meta">
+                <span class="list-item-meta-icon">♡ 15</span>
+                <span class="list-item-meta-icon">💬 2</span>
+                <span class="list-item-meta-icon">👁 264</span>
+                <span class="list-item-meta-date">3日前</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="list-divider"></div>
+
+      <!-- 出品に使えるクーポン -->
+      <div class="list-section">
+        <div class="list-section-header">
+          <span class="list-section-title">出品に使えるクーポン</span>
+          <span class="list-section-arrow">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="#333" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </div>
+        <div class="list-coupon">
+          <div class="list-coupon-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" stroke="#E8004D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><line x1="7" y1="7" x2="7.01" y2="7" stroke="#E8004D" stroke-width="2" stroke-linecap="round"/></svg>
+          </div>
+          <div class="list-coupon-body">
+            <div class="list-coupon-tag">【メンズ限定】10%OFFクーポ<br>ン</div>
+            <div class="list-coupon-cond">上限 ¥500　条件あり</div>
+          </div>
+          <button class="list-coupon-btn">出品する</button>
+        </div>
+      </div>
+
+      <div class="list-divider"></div>
+
+      <!-- 出品に関するヒント -->
+      <div class="list-section">
+        <div class="list-section-header">
+          <span class="list-section-title">出品に関するヒント</span>
+        </div>
+        <div class="list-hints-grid">
+          <div class="list-hint-card">
+            <span class="list-hint-icon">📍</span>
+            <span class="list-hint-label">近くの発送場所</span>
+          </div>
+          <div class="list-hint-card">
+            <span class="list-hint-icon">🚚</span>
+            <span class="list-hint-label">配送方法早わかり表</span>
+          </div>
+          <div class="list-hint-card">
+            <span class="list-hint-icon">📦</span>
+            <span class="list-hint-label">梱包の方法</span>
+          </div>
+          <div class="list-hint-card">
+            <span class="list-hint-icon">🎁</span>
+            <span class="list-hint-label">オリジナル梱包材</span>
+          </div>
+          <div class="list-hint-card">
+            <span class="list-hint-icon">💡</span>
+            <span class="list-hint-label">売れるためのコツ</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="height: 100px;"></div>
+    </div>
+  </div>
   <div id="screen-wallet"  class="screen"        style="background:#f0f0f0;"></div>
   <div id="screen-search" class="screen" style="background:#f0f0f0;">
 
