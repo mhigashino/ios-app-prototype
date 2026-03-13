@@ -489,6 +489,7 @@
     .history-card.pinned .history-icons svg {
       fill: #222;
     }
+    .history-pin-sep { height: 16px; flex-shrink: 0; }
 
     /* ── Top Nav ── */
     .top-nav {
@@ -1815,23 +1816,24 @@
       <!-- 履歴カード -->
       <div class="history-cards">
 
-        <div class="history-card">
+        <div class="history-card pinned">
           <div class="history-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="#222"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg></div>
           <div class="history-text">
             <span class="history-title">ロレックス エクスプローラー1</span>
             <span class="history-badge"><span class="badge-count">99+新着</span><span class="badge-sort">　(新しい順<svg width="10" height="10" viewBox="0 0 24 24" fill="#666"><path d="M12 5.83L15.17 9l1.41-1.41L12 3 7.41 7.59 8.83 9 12 5.83zm0 12.34L8.83 15l-1.41 1.41L12 21l4.59-4.59L15.17 15 12 18.17z"/></svg>)</span></span>
           </div>
-          <div class="history-icons" onclick="togglePin(this)"><svg width="18" height="18" viewBox="0 0 24 24" fill="#ccc"><path d="M16 9V4h1c.55 0 1-.45 1-1s-.45-1-1-1H7c-.55 0-1 .45-1 1s.45 1 1 1h1v5c0 1.66-1.34 3-3 3v2h5.97v7l1 1 1-1v-7H19v-2c-1.66 0-3-1.34-3-3z"/></svg></div>
+          <div class="history-icons" onclick="togglePin(this)"><svg width="18" height="18" viewBox="0 0 24 24" fill="#222"><path d="M16 9V4h1c.55 0 1-.45 1-1s-.45-1-1-1H7c-.55 0-1 .45-1 1s.45 1 1 1h1v5c0 1.66-1.34 3-3 3v2h5.97v7l1 1 1-1v-7H19v-2c-1.66 0-3-1.34-3-3z"/></svg></div>
         </div>
 
-        <div class="history-card">
+        <div class="history-card pinned">
           <div class="history-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="#222"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg></div>
           <div class="history-text">
             <span class="history-title">Christian Louboutin</span>
             <span class="history-subtitle">レディーズハイヒール・パンプス</span>
           </div>
-          <div class="history-icons" onclick="togglePin(this)"><svg width="18" height="18" viewBox="0 0 24 24" fill="#ccc"><path d="M16 9V4h1c.55 0 1-.45 1-1s-.45-1-1-1H7c-.55 0-1 .45-1 1s.45 1 1 1h1v5c0 1.66-1.34 3-3 3v2h5.97v7l1 1 1-1v-7H19v-2c-1.66 0-3-1.34-3-3z"/></svg></div>
+          <div class="history-icons" onclick="togglePin(this)"><svg width="18" height="18" viewBox="0 0 24 24" fill="#222"><path d="M16 9V4h1c.55 0 1-.45 1-1s-.45-1-1-1H7c-.55 0-1 .45-1 1s.45 1 1 1h1v5c0 1.66-1.34 3-3 3v2h5.97v7l1 1 1-1v-7H19v-2c-1.66 0-3-1.34-3-3z"/></svg></div>
         </div>
+        <div class="history-pin-sep"></div>
 
         <div class="history-card">
           <div class="history-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="#222"><path d="M16.5 1.5l-1.8 1.8C13.9 2.5 13 2 12 2s-1.9.5-2.7 1.3L7.5 1.5C6.1 2.5 5 3.9 5 5.5V8h2v13h10V8h2V5.5c0-1.6-1.1-3-2.5-4z"/></svg></div>
@@ -2254,9 +2256,18 @@
     fixSearchContentHeight();
   }
 
+  function updatePinSeparator(container) {
+    const existing = container.querySelector('.history-pin-sep');
+    if (existing) existing.remove();
+    const pinnedCards = container.querySelectorAll('.history-card.pinned');
+    if (pinnedCards.length === 0) return;
+    const sep = document.createElement('div');
+    sep.className = 'history-pin-sep';
+    pinnedCards[pinnedCards.length - 1].after(sep);
+  }
+
   function togglePin(el) {
     const card = el.closest('.history-card');
-    const svg = el.querySelector('svg');
     const container = card.parentNode;
     const pinned = card.classList.toggle('pinned');
     if (pinned) {
@@ -2267,6 +2278,7 @@
       const after = lastPinned ? lastPinned.nextSibling : container.firstChild;
       container.insertBefore(card, after);
     }
+    updatePinSeparator(container);
   }
 
   if (window.visualViewport) {
