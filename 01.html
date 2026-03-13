@@ -801,12 +801,12 @@
     .wal-pay-balance-btn { margin-left: auto; display: flex; align-items: center; gap: 6px; background: #f0f0f0; border: none; border-radius: 999px; padding: 7px 14px; color: #333; font-size: 12px; cursor: pointer; }
     .wal-pay-balance-btn .amt { font-weight: 700; font-size: 14px; }
     .wal-eye-btn { background: none; border: none; padding: 6px; margin-left: 4px; cursor: pointer; }
-    .wal-barcode-wrap { display: flex; justify-content: center; padding: 8px 0 12px; }
+    .wal-barcode-wrap { display: flex; justify-content: center; padding: 0; }
     .wal-barcode { width: 100%; max-width: 288px; height: auto; display: block; }
-    .wal-action-row { display: flex; }
-    .wal-action-btn { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; background: none; border: none; padding: 6px 0; cursor: pointer; }
-    .wal-action-icon { width: 44px; height: 44px; background: #f0f0f0; border-radius: 12px; display: flex; align-items: center; justify-content: center; }
-    .wal-action-label { font-size: 11px; color: #8e8e93; }
+    .wal-action-row { display: flex; padding: 4px 0 8px; }
+    .wal-action-btn { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; background: none; border: none; padding: 8px 0; cursor: pointer; }
+    .wal-action-icon { width: 44px; height: 44px; background: #f0f0f0; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .wal-action-label { font-size: 13px; color: #222; font-weight: 500; }
     /* アセットカード */
     .wal-asset-card { background: #fff; margin: 16px 16px 0; border-radius: 8px; overflow: hidden; }
     .wal-asset-row { display: flex; align-items: center; padding: 14px 16px; border-bottom: 1px solid #f0f0f0; gap: 10px; }
@@ -823,39 +823,23 @@
     .wal-credit-card { background: #fff; margin: 16px 16px 0; border-radius: 8px; overflow: hidden; }
     .wal-credit-title-row { display: flex; align-items: center; padding: 14px 16px; }
     .wal-credit-title { flex: 1; font-size: 15px; font-weight: 600; color: #333; }
-    .wal-mercard-wrap { padding: 0 16px 8px; }
+    .wal-mercard-wrap { padding: 0 16px 12px; display: flex; justify-content: center; }
     .wal-mercard {
-      background: linear-gradient(135deg, #1c2340 0%, #253070 60%, #1a4090 100%);
-      border-radius: 12px; padding: 14px 16px;
-      min-height: 100px; position: relative; overflow: hidden;
+      background: #edf0f3; border-radius: 16px;
+      padding: 14px 12px; width: 279px; flex-shrink: 0;
+      border: 1px solid rgba(0,0,0,0.1);
     }
-    .wal-mercard::before {
-      content: ''; position: absolute; top: -30px; right: -30px;
-      width: 120px; height: 120px; border-radius: 50%;
-      background: rgba(255,255,255,0.06); pointer-events: none;
-    }
-    .wal-mercard-hd { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+    .wal-mercard-hd { display: flex; align-items: center; justify-content: space-between; }
     .wal-mercard-logo {
       display: block; width: 68px; height: 13px;
-      background: #fff;
+      background: linear-gradient(13deg, rgb(151,226,254) 20%, rgb(156,160,255) 41%, rgb(255,158,176) 61%, rgb(255,237,140) 82%);
       -webkit-mask-image: url('https://www.figma.com/api/mcp/asset/995d29d1-6677-4d71-951a-fbde20b48b30');
       -webkit-mask-size: contain; -webkit-mask-repeat: no-repeat;
       mask-image: url('https://www.figma.com/api/mcp/asset/995d29d1-6677-4d71-951a-fbde20b48b30');
       mask-size: contain; mask-repeat: no-repeat;
     }
     .wal-mercard-right { display: flex; align-items: center; gap: 4px; }
-    .wal-mercard-tag { background: rgba(255,255,255,0.2); color: #fff; font-size: 10px; padding: 2px 6px; border-radius: 999px; }
-    .wal-mercard-body { display: flex; align-items: flex-end; justify-content: space-between; }
-    .wal-mercard-chip {
-      width: 26px; height: 20px; border-radius: 4px;
-      background: linear-gradient(135deg, #c8a030 0%, #e8c050 50%, #b87c20 100%);
-      margin-bottom: 10px; position: relative;
-    }
-    .wal-mercard-chip::after { content: ''; position: absolute; top: 50%; left: 0; right: 0; height: 1px; background: rgba(160,120,10,0.6); transform: translateY(-50%); }
-    .wal-mercard-num { font-size: 13px; color: rgba(255,255,255,0.75); letter-spacing: 2px; font-family: monospace; margin-bottom: 2px; }
-    .wal-mercard-ft { display: flex; align-items: center; justify-content: space-between; }
-    .wal-mercard-holder { font-size: 10px; color: rgba(255,255,255,0.55); letter-spacing: 0.5px; }
-    .wal-mercard-network { font-size: 13px; font-weight: 900; color: #fff; font-style: italic; letter-spacing: -1px; }
+    .wal-mercard-tag { background: rgba(34,34,34,0.8); color: #fff; font-size: 10px; padding: 2px 6px; border-radius: 999px; }
     .wal-credit-row { display: flex; align-items: center; padding: 14px 16px; border-top: 1px solid #f0f0f0; gap: 8px; }
     .wal-credit-row-l { flex: 1; }
     .wal-credit-row-title { font-size: 15px; font-weight: 600; color: #333; }
@@ -866,7 +850,8 @@
     .wal-history-section { background: transparent; margin: 16px 0 0; overflow: visible; }
     .wal-history-title-row { display: flex; align-items: center; padding: 6px 16px 10px; border-bottom: none; }
     .wal-history-title { flex: 1; font-size: 15px; font-weight: 600; color: #333; }
-    .wal-history-row { background: #fff; margin: 0 16px 4px; border-radius: 8px; display: flex; align-items: center; padding: 12px 16px; gap: 10px; min-height: 56px; }
+    .wal-history-row { background: transparent; margin: 0 16px 4px; border-radius: 8px; display: flex; align-items: center; padding: 12px 16px; gap: 10px; min-height: 56px; border-bottom: 1px solid #f0f0f0; }
+    .wal-history-row:last-child { border-bottom: none; }
     .wal-history-row:last-child { margin-bottom: 0; }
     .wal-history-info { flex: 1; display: flex; flex-direction: column; gap: 2px; }
     .wal-history-desc { font-size: 13px; font-weight: 600; color: #333; }
@@ -1718,14 +1703,8 @@
               <div class="wal-mercard-logo"></div>
               <div class="wal-mercard-right">
                 <span class="wal-mercard-tag">初期設定</span>
-                <svg width="8" height="13" viewBox="0 0 8 13" fill="none"><path d="M1 1l6 5.5L1 12" stroke="rgba(255,255,255,0.5)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <svg width="8" height="13" viewBox="0 0 8 13" fill="none"><path d="M1 1l6 5.5L1 12" stroke="#888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </div>
-            </div>
-            <div class="wal-mercard-chip"></div>
-            <div class="wal-mercard-num">●●●● ●●●● ●●●● 5678</div>
-            <div class="wal-mercard-ft">
-              <span class="wal-mercard-holder">MERCARI CARD</span>
-              <span class="wal-mercard-network">VISA</span>
             </div>
           </div>
         </div>
@@ -1749,7 +1728,7 @@
       <!-- ④ 取引履歴 -->
       <div class="wal-history-section">
         <div class="wal-history-title-row">
-          <span class="wal-history-title">取引履歴</span>
+          <span class="wal-history-title">最近の利用</span>
           <svg width="8" height="13" viewBox="0 0 8 13" fill="none"><path d="M1 1l6 5.5L1 12" stroke="#c7c7cc" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
         <div class="wal-history-row">
