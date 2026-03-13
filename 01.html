@@ -3,6 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script>
+    (function() {
+      var KEY = 'auth_01';
+      var PASS = 'mirai';
+      if (sessionStorage.getItem(KEY) !== '1') {
+        var input = window.prompt('パスワードを入力してください');
+        if (input !== PASS) {
+          document.documentElement.innerHTML = '<body style="display:flex;align-items:center;justify-content:center;height:100vh;font-family:sans-serif;color:#666;">認証に失敗しました</body>';
+          throw new Error('Unauthorized');
+        }
+        sessionStorage.setItem(KEY, '1');
+      }
+    })();
+  </script>
   <title>iOS App Prototype</title>
   <style>
     * {
@@ -1075,37 +1089,6 @@
   </style>
 </head>
 <body>
-
-<!-- パスワードゲート -->
-<div id="auth-gate" style="
-  position: fixed; inset: 0; z-index: 9999;
-  background: #f2f2f7;
-  display: flex; align-items: center; justify-content: center;
-">
-  <div style="
-    background: #fff; border-radius: 16px;
-    padding: 32px 24px 24px;
-    width: 300px; box-shadow: 0 4px 24px rgba(0,0,0,0.12);
-    display: flex; flex-direction: column; align-items: center; gap: 20px;
-  ">
-    <div style="font-size: 17px; font-weight: 600; color: #000;">パスワードを入力</div>
-    <input id="auth-input" type="password" placeholder="Password"
-      style="
-        width: 100%; box-sizing: border-box;
-        border: 1px solid #d1d1d6; border-radius: 10px;
-        padding: 12px 14px; font-size: 16px; outline: none;
-      "
-      onkeydown="if(event.key==='Enter') checkAuth()"
-    >
-    <div id="auth-error" style="font-size: 13px; color: #ff3b30; display: none;">パスワードが違います</div>
-    <button onclick="checkAuth()" style="
-      width: 100%; background: #222; color: #fff;
-      border: none; border-radius: 10px;
-      padding: 14px; font-size: 16px; font-weight: 600;
-      cursor: pointer;
-    ">ログイン</button>
-  </div>
-</div>
 
 <div class="device">
 
@@ -2692,25 +2675,6 @@
 </div>
 
 <script>
-  // パスワード認証
-  (function() {
-    if (sessionStorage.getItem('auth') === '1') {
-      document.getElementById('auth-gate').style.display = 'none';
-    }
-  })();
-
-  function checkAuth() {
-    const val = document.getElementById('auth-input').value;
-    if (val === 'mirai') {
-      sessionStorage.setItem('auth', '1');
-      document.getElementById('auth-gate').style.display = 'none';
-    } else {
-      document.getElementById('auth-error').style.display = 'block';
-      document.getElementById('auth-input').value = '';
-      document.getElementById('auth-input').focus();
-    }
-  }
-
   function openMyPage() {
     document.getElementById('mypage-overlay').classList.add('open');
   }
