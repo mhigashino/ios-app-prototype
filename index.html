@@ -1243,8 +1243,6 @@
           autocomplete="off"
           autocorrect="off"
           spellcheck="false"
-          readonly
-          onclick="this.removeAttribute('readonly')"
         />
       </div>
       <button class="search-close-btn" onclick="exitSearch()">
@@ -1357,7 +1355,7 @@
   let lastKeyboardH = 0;
   let prevTab = 'home';
 
-  // 検索アイコンタップ → 検索画面に遷移（キーボードは自動起動しない）
+  // 検索アイコンタップ → 検索画面に遷移 + キーボード即時起動
   function goToSearch(btn) {
     const active = document.querySelector('.tab-item.active');
     if (active) prevTab = active.getAttribute('onclick').match(/'(\w+)'/)[1];
@@ -1365,7 +1363,9 @@
     fixSearchContentHeight();
     document.querySelector('.search-content-scroll').scrollTop = 0;
     window.scrollTo(0, 0);
-    document.getElementById('search-float-bar').style.bottom = '0px';
+    // 前回のキーボード高さで先に位置を確定してからフォーカス
+    document.getElementById('search-float-bar').style.bottom = lastKeyboardH + 'px';
+    document.getElementById('search-input').focus();
   }
 
   // × ボタン → キーボードを閉じて前の画面に戻る
@@ -1373,7 +1373,6 @@
     const input = document.getElementById('search-input');
     input.blur();
     input.value = '';
-    input.setAttribute('readonly', '');
     document.getElementById('search-float-bar').style.bottom = '0px';
     const prevItem = document.querySelector(`.tab-item[onclick*="'${prevTab}'"]`);
     if (prevItem) switchTab(prevTab, prevItem);
