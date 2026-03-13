@@ -498,6 +498,10 @@
       fill: #bbb;
       transition: fill 0.15s ease;
     }
+
+    .history-card.pinned .history-icons svg {
+      fill: #222;
+    }
   </style>
 </head>
 <body>
@@ -942,7 +946,6 @@
     const svg = el.querySelector('svg');
     const container = card.parentNode;
     const pinned = card.classList.toggle('pinned');
-    svg.setAttribute('fill', pinned ? '#222' : '#ccc');
     if (pinned) {
       const firstUnpinned = container.querySelector('.history-card:not(.pinned)');
       container.insertBefore(card, firstUnpinned || null);
