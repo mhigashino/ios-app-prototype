@@ -4,6 +4,22 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>iOS App Prototype</title>
+  <script>
+    (function() {
+      if (sessionStorage.getItem('auth') !== '1') {
+        document.addEventListener('DOMContentLoaded', function() {
+          document.body.style.display = 'none';
+          var pw = prompt('パスワードを入力してください');
+          if (pw === 'mirai') {
+            sessionStorage.setItem('auth', '1');
+            document.body.style.display = '';
+          } else {
+            document.body.innerHTML = '';
+          }
+        });
+      }
+    })();
+  </script>
   <style>
     * {
       margin: 0;
