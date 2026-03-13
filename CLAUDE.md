@@ -21,12 +21,19 @@
 | `#screen-wallet` | ios-app-prototype session | |
 | CSS / JS | ios-app-prototype session | |
 
+## セッション別の編集対象
+
+| セッション | 編集可能ファイル |
+|---|---|
+| ios-app-prototype 専用セッション | `index.html`、全ファイル |
+| ホームDir セッション（セッション 23fda683） | `04.html` **のみ** |
+
 ## 他セッションへの指示
 
 別ディレクトリ起動のセッション（例: ホームDir セッション）がここで作業する場合：
 
 1. `index.html` を **直接編集しない**
-2. スナップショット作成（`03.html` など）は OK — ただし `index.html` をコピーするだけ
+2. `04.html` **のみ**を編集対象とすること
 3. `index.html` に変更が必要な場合は、ios-app-prototype 専用セッションで行うこと
 
 ## コミット・プッシュ
