@@ -678,6 +678,133 @@
     .list-hint-label { font-size: 11px; font-weight: 600; color: #333; padding: 8px 8px 10px; line-height: 1.4; }
     .list-hint-card-wide { grid-column: 1 / -1; flex-direction: row; align-items: center; }
     .list-hint-card-wide .list-hint-img { width: 80px; height: 60px; flex-shrink: 0; aspect-ratio: unset; }
+
+    /* ════════════════════════════════════════
+       AUCTION SCREEN
+    ════════════════════════════════════════ */
+    #screen-auction { background: #fff; overflow: hidden; }
+
+    .auc-scroll {
+      position: absolute; inset: 0;
+      overflow-y: auto; -webkit-overflow-scrolling: touch;
+      padding-top: calc(env(safe-area-inset-top) + 64px);
+      padding-bottom: 100px;
+    }
+    .auc-scroll::-webkit-scrollbar { display: none; }
+
+    .auc-section { background: #fff; }
+    .auc-sep { height: 8px; background: #f2f2f7; }
+
+    .auc-sec-hd { display: flex; align-items: center; gap: 8px; padding: 14px 16px 10px; }
+    .auc-sec-title { flex: 1; font-size: 16px; font-weight: 700; color: #111; }
+    .auc-sec-btn {
+      width: 30px; height: 30px; border-radius: 50%;
+      background: #f0f0f0; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+
+    /* Big auction cards */
+    .auc-big-scroll {
+      display: flex; gap: 4px; padding: 0 16px 16px;
+      overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none;
+    }
+    .auc-big-scroll::-webkit-scrollbar { display: none; }
+    .auc-big-card {
+      position: relative; flex-shrink: 0; width: 240px; height: 280px;
+      border-radius: 16px; overflow: hidden;
+      display: flex; flex-direction: column; justify-content: space-between;
+      padding: 12px; background: #333;
+    }
+    .auc-big-card-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .auc-big-card-grad { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0) 26.6%, rgba(0,0,0,0.8) 68.8%); }
+    .auc-bid-badge {
+      position: relative; z-index: 1; display: inline-flex; align-items: center; gap: 4px;
+      background: rgba(0,0,0,0.4); border-radius: 999px;
+      padding: 2px 8px; align-self: flex-start;
+    }
+    .auc-bid-badge span { font-size: 13px; font-weight: 700; color: #fff; }
+    .auc-card-bottom { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 5px; }
+    .auc-bid-label { font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.8); }
+    .auc-bid-price { display: flex; align-items: baseline; gap: 1px; }
+    .auc-bid-price .sym { font-size: 11px; font-weight: 700; color: #fff; }
+    .auc-bid-price .amt { font-size: 20px; font-weight: 700; color: #fff; line-height: 1; }
+    .auc-timer-row { display: flex; align-items: center; gap: 6px; }
+    .auc-timer { font-size: 12px; font-weight: 700; color: #fff; flex-shrink: 0; }
+    .auc-prog { flex: 1; height: 6px; background: rgba(255,255,255,0.25); border-radius: 999px; overflow: hidden; }
+    .auc-prog-fill { height: 100%; background: #ff333f; border-radius: 999px; }
+    .auc-cta-row { display: flex; align-items: center; gap: 6px; }
+    .auc-bid-btn { flex: 1; height: 38px; background: #ff333f; border: none; border-radius: 999px; color: #fff; font-size: 14px; font-weight: 700; cursor: pointer; }
+    .auc-like-btn {
+      width: 38px; height: 38px; border-radius: 50%;
+      background: rgba(255,255,255,0.18); border: none;
+      display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0;
+    }
+
+    /* Small tiles – 3時間オークション */
+    .auc-mini-scroll {
+      display: flex; gap: 4px; padding: 0 16px 16px;
+      overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none;
+    }
+    .auc-mini-scroll::-webkit-scrollbar { display: none; }
+    .auc-mini-tile { flex-shrink: 0; width: 90px; }
+    .auc-mini-thumb { position: relative; width: 90px; height: 90px; border-radius: 10px; overflow: hidden; background: #ddd; }
+    .auc-mini-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .auc-mini-heart {
+      position: absolute; top: 4px; right: 4px; width: 26px; height: 26px;
+      border-radius: 50%; background: rgba(255,255,255,0.88);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .auc-mini-price-tag {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      background: rgba(0,0,0,0.5); font-size: 10px; font-weight: 700; color: #fff;
+      padding: 3px 5px; text-align: center;
+    }
+    .auc-mini-meta { font-size: 11px; color: #999; margin-top: 4px; text-align: center; }
+
+    /* Banner carousel */
+    .auc-banner-scroll {
+      display: flex; gap: 8px; padding: 0 16px 16px;
+      overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none;
+      scroll-snap-type: x mandatory;
+    }
+    .auc-banner-scroll::-webkit-scrollbar { display: none; }
+    .auc-banner-slide {
+      flex-shrink: 0; width: calc(100% - 48px); height: 105px;
+      border-radius: 8px; overflow: hidden; scroll-snap-align: start;
+    }
+    .auc-banner-slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .auc-banner-a { background: linear-gradient(135deg, #ff33aa 0%, #ff6688 100%); display: flex; align-items: center; justify-content: center; height: 105px; border-radius: 8px; }
+    .auc-banner-c { background: linear-gradient(135deg, #ffef03 0%, #ffb300 100%); display: flex; align-items: center; justify-content: center; height: 105px; border-radius: 8px; }
+    .auc-banner-txt { font-size: 13px; font-weight: 800; color: #fff; text-align: center; text-shadow: 0 1px 3px rgba(0,0,0,0.3); line-height: 1.4; }
+    .auc-banner-c .auc-banner-txt { color: #333; text-shadow: none; }
+
+    /* Filter chips */
+    .auc-filter-bar { display: flex; gap: 8px; padding: 4px 16px 12px; overflow-x: auto; scrollbar-width: none; }
+    .auc-filter-bar::-webkit-scrollbar { display: none; }
+    .auc-chip { flex-shrink: 0; padding: 6px 14px; border-radius: 999px; border: 1.5px solid #ddd; font-size: 12px; font-weight: 600; color: #444; background: #fff; cursor: pointer; white-space: nowrap; }
+    .auc-chip.active { background: #111; color: #fff; border-color: #111; }
+
+    /* 3x3 item grid */
+    .auc-item-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; margin: 0 16px 16px; border-radius: 8px; overflow: hidden; background: #f0f0f0; }
+    .auc-item-tile { display: flex; flex-direction: column; gap: 4px; padding: 4px 4px 8px; background: #fff; }
+    .auc-item-thumb { position: relative; aspect-ratio: 1; border-radius: 6px; overflow: hidden; background: #e0e0e0; }
+    .auc-item-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .auc-item-plabel { position: absolute; bottom: 4px; left: 4px; background: rgba(0,0,0,0.65); border-radius: 4px; padding: 2px 5px; font-size: 10px; font-weight: 700; color: #fff; }
+    .auc-item-heart { position: absolute; top: 4px; right: 4px; width: 22px; height: 22px; border-radius: 50%; background: rgba(255,255,255,0.85); display: flex; align-items: center; justify-content: center; }
+    .auc-item-meta { font-size: 10px; color: #999; padding: 0 2px; }
+
+    /* Category grid */
+    .auc-cat-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; grid-template-rows: 111px 111px; gap: 4px; padding: 0 16px 16px; }
+    .auc-cat-card { background: #f0f0f0; border-radius: 16px; overflow: hidden; position: relative; padding: 10px; }
+    .auc-cat-card.tall { grid-row: 1 / 3; }
+    .auc-cat-label { font-size: 11px; font-weight: 700; color: #111; position: relative; z-index: 1; }
+    .auc-cat-img { position: absolute; bottom: 0; right: 0; width: 80px; height: 80px; object-fit: contain; }
+    .auc-cat-img-tall { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 84px; height: 172px; object-fit: contain; }
+
+    /* Mosaic / ranking grid */
+    .auc-mosaic { display: grid; grid-template-columns: repeat(3,1fr); grid-template-rows: repeat(2,1fr); gap: 2px; padding: 0 16px 16px; aspect-ratio: 1.1; }
+    .auc-mosaic-tile { position: relative; border-radius: 6px; overflow: hidden; background: #ddd; }
+    .auc-mosaic-tile img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .auc-mosaic-price { position: absolute; bottom: 5px; left: 5px; font-size: 10px; font-weight: 700; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,0.6); }
   </style>
 </head>
 <body>
@@ -686,7 +813,291 @@
 
   <!-- Screens -->
   <div id="screen-home"    class="screen active" style="background:#f0f0f0;"></div>
-  <div id="screen-auction" class="screen"        style="background:#f0f0f0;"></div>
+  <div id="screen-auction" class="screen">
+    <div class="auc-scroll">
+
+      <!-- ── Hot!!なオークション ── -->
+      <div class="auc-section">
+        <div class="auc-sec-hd">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="#ff333f"><path d="M13.5.67s.74 2.65.74 4.8c0 2.06-1.35 3.73-3.41 3.73-2.07 0-3.63-1.67-3.63-3.73l.03-.36C5.21 7.51 4 10.62 4 14c0 4.42 3.58 8 8 8s8-3.58 8-8C20 8.61 17.41 3.8 13.5.67zM11.71 19c-1.78 0-3.22-1.4-3.22-3.14 0-1.62 1.05-2.76 2.81-3.12 1.77-.36 3.6-1.21 4.62-2.58.39 1.29.59 2.65.59 4.04 0 2.65-2.15 4.8-4.8 4.8z"/></svg>
+          <span class="auc-sec-title">Hot!!なオークション</span>
+          <div class="auc-sec-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="#555"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg></div>
+        </div>
+        <div class="auc-big-scroll">
+          <!-- Card 1: Astro Boy figure -->
+          <div class="auc-big-card">
+            <img class="auc-big-card-img" src="https://www.figma.com/api/mcp/asset/d6b38746-440b-4608-87c7-65d690ca13a0" alt="">
+            <div class="auc-big-card-grad"></div>
+            <div class="auc-bid-badge"><svg width="13" height="13" viewBox="0 0 24 24" fill="#fff"><path d="M13.49 11.38c-.49.49-1.27.49-1.76 0l-7.1-7.09-1.42 1.41 3.54 3.54-4.24 4.24c-.78.78-.78 2.05 0 2.83l2.83 2.83c.78.78 2.05.78 2.83 0l4.24-4.24 3.54 3.54 1.41-1.41-7.1-7.09zm1.42-5.97L12.7 7.62 9.88 4.8l1.41-1.41c.78-.78 2.05-.78 2.83 0l.79.79 1.41-1.41 1.42 1.42-1.42 1.41.59.6zm5.41 12.43l-4.24-4.24-1.42 1.42 4.24 4.24c.39.39 1.02.39 1.41 0l.01-.01c.39-.39.39-1.02 0-1.41z"/></svg><span>53</span></div>
+            <div class="auc-card-bottom">
+              <div class="auc-bid-label">現在の最高入札</div>
+              <div class="auc-bid-price"><span class="sym">¥</span><span class="amt">243,020</span></div>
+              <div class="auc-timer-row"><span class="auc-timer">00:06:50</span><div class="auc-prog"><div class="auc-prog-fill" style="width:40%"></div></div></div>
+              <div class="auc-cta-row"><button class="auc-bid-btn">入札する</button><button class="auc-like-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff" opacity="0.7"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg></button></div>
+            </div>
+          </div>
+          <!-- Card 2: Watch -->
+          <div class="auc-big-card">
+            <img class="auc-big-card-img" src="https://www.figma.com/api/mcp/asset/8b705ced-ce63-4e50-80ce-058afe1379ec" alt="">
+            <div class="auc-big-card-grad"></div>
+            <div class="auc-bid-badge"><svg width="13" height="13" viewBox="0 0 24 24" fill="#fff"><path d="M13.49 11.38c-.49.49-1.27.49-1.76 0l-7.1-7.09-1.42 1.41 3.54 3.54-4.24 4.24c-.78.78-.78 2.05 0 2.83l2.83 2.83c.78.78 2.05.78 2.83 0l4.24-4.24 3.54 3.54 1.41-1.41-7.1-7.09zm1.42-5.97L12.7 7.62 9.88 4.8l1.41-1.41c.78-.78 2.05-.78 2.83 0l.79.79 1.41-1.41 1.42 1.42-1.42 1.41.59.6zm5.41 12.43l-4.24-4.24-1.42 1.42 4.24 4.24c.39.39 1.02.39 1.41 0l.01-.01c.39-.39.39-1.02 0-1.41z"/></svg><span>53</span></div>
+            <div class="auc-card-bottom">
+              <div class="auc-bid-label">現在の最高入札</div>
+              <div class="auc-bid-price"><span class="sym">¥</span><span class="amt">416,000</span></div>
+              <div class="auc-timer-row"><span class="auc-timer">00:06:50</span><div class="auc-prog"><div class="auc-prog-fill" style="width:40%"></div></div></div>
+              <div class="auc-cta-row"><button class="auc-bid-btn">入札する</button><button class="auc-like-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="#ff333f"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3z"/></svg></button></div>
+            </div>
+          </div>
+          <!-- Card 3: Sneakers -->
+          <div class="auc-big-card">
+            <img class="auc-big-card-img" src="https://www.figma.com/api/mcp/asset/c98df241-192e-49db-a8a9-a3bd3b7b7a80" alt="">
+            <div class="auc-big-card-grad"></div>
+            <div class="auc-bid-badge"><svg width="13" height="13" viewBox="0 0 24 24" fill="#fff"><path d="M13.49 11.38c-.49.49-1.27.49-1.76 0l-7.1-7.09-1.42 1.41 3.54 3.54-4.24 4.24c-.78.78-.78 2.05 0 2.83l2.83 2.83c.78.78 2.05.78 2.83 0l4.24-4.24 3.54 3.54 1.41-1.41-7.1-7.09zm1.42-5.97L12.7 7.62 9.88 4.8l1.41-1.41c.78-.78 2.05-.78 2.83 0l.79.79 1.41-1.41 1.42 1.42-1.42 1.41.59.6zm5.41 12.43l-4.24-4.24-1.42 1.42 4.24 4.24c.39.39 1.02.39 1.41 0l.01-.01c.39-.39.39-1.02 0-1.41z"/></svg><span>31</span></div>
+            <div class="auc-card-bottom">
+              <div class="auc-bid-label">現在の最高入札</div>
+              <div class="auc-bid-price"><span class="sym">¥</span><span class="amt">89,500</span></div>
+              <div class="auc-timer-row"><span class="auc-timer">00:12:10</span><div class="auc-prog"><div class="auc-prog-fill" style="width:65%"></div></div></div>
+              <div class="auc-cta-row"><button class="auc-bid-btn">入札する</button><button class="auc-like-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff" opacity="0.7"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg></button></div>
+            </div>
+          </div>
+          <!-- Card 4: Colorful figure -->
+          <div class="auc-big-card">
+            <img class="auc-big-card-img" src="https://www.figma.com/api/mcp/asset/48b48478-b341-409f-929e-6f61ffd4c8aa" alt="">
+            <div class="auc-big-card-grad"></div>
+            <div class="auc-bid-badge"><svg width="13" height="13" viewBox="0 0 24 24" fill="#fff"><path d="M13.49 11.38c-.49.49-1.27.49-1.76 0l-7.1-7.09-1.42 1.41 3.54 3.54-4.24 4.24c-.78.78-.78 2.05 0 2.83l2.83 2.83c.78.78 2.05.78 2.83 0l4.24-4.24 3.54 3.54 1.41-1.41-7.1-7.09zm1.42-5.97L12.7 7.62 9.88 4.8l1.41-1.41c.78-.78 2.05-.78 2.83 0l.79.79 1.41-1.41 1.42 1.42-1.42 1.41.59.6zm5.41 12.43l-4.24-4.24-1.42 1.42 4.24 4.24c.39.39 1.02.39 1.41 0l.01-.01c.39-.39.39-1.02 0-1.41z"/></svg><span>18</span></div>
+            <div class="auc-card-bottom">
+              <div class="auc-bid-label">現在の最高入札</div>
+              <div class="auc-bid-price"><span class="sym">¥</span><span class="amt">124,000</span></div>
+              <div class="auc-timer-row"><span class="auc-timer">00:02:33</span><div class="auc-prog"><div class="auc-prog-fill" style="width:15%"></div></div></div>
+              <div class="auc-cta-row"><button class="auc-bid-btn">入札する</button><button class="auc-like-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff" opacity="0.7"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg></button></div>
+            </div>
+          </div>
+          <!-- Card 5 -->
+          <div class="auc-big-card">
+            <img class="auc-big-card-img" src="https://www.figma.com/api/mcp/asset/4e96e2f8-389d-4653-aae6-8a2848909b61" alt="">
+            <div class="auc-big-card-grad"></div>
+            <div class="auc-bid-badge"><svg width="13" height="13" viewBox="0 0 24 24" fill="#fff"><path d="M13.49 11.38c-.49.49-1.27.49-1.76 0l-7.1-7.09-1.42 1.41 3.54 3.54-4.24 4.24c-.78.78-.78 2.05 0 2.83l2.83 2.83c.78.78 2.05.78 2.83 0l4.24-4.24 3.54 3.54 1.41-1.41-7.1-7.09zm1.42-5.97L12.7 7.62 9.88 4.8l1.41-1.41c.78-.78 2.05-.78 2.83 0l.79.79 1.41-1.41 1.42 1.42-1.42 1.41.59.6zm5.41 12.43l-4.24-4.24-1.42 1.42 4.24 4.24c.39.39 1.02.39 1.41 0l.01-.01c.39-.39.39-1.02 0-1.41z"/></svg><span>7</span></div>
+            <div class="auc-card-bottom">
+              <div class="auc-bid-label">現在の最高入札</div>
+              <div class="auc-bid-price"><span class="sym">¥</span><span class="amt">38,000</span></div>
+              <div class="auc-timer-row"><span class="auc-timer">00:09:22</span><div class="auc-prog"><div class="auc-prog-fill" style="width:55%"></div></div></div>
+              <div class="auc-cta-row"><button class="auc-bid-btn">入札する</button><button class="auc-like-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff" opacity="0.7"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg></button></div>
+            </div>
+          </div>
+          <!-- Card 6: Clock -->
+          <div class="auc-big-card">
+            <img class="auc-big-card-img" src="https://www.figma.com/api/mcp/asset/544d6e08-8c4f-494e-9ba1-c43e09ce4ee8" alt="">
+            <div class="auc-big-card-grad"></div>
+            <div class="auc-bid-badge"><svg width="13" height="13" viewBox="0 0 24 24" fill="#fff"><path d="M13.49 11.38c-.49.49-1.27.49-1.76 0l-7.1-7.09-1.42 1.41 3.54 3.54-4.24 4.24c-.78.78-.78 2.05 0 2.83l2.83 2.83c.78.78 2.05.78 2.83 0l4.24-4.24 3.54 3.54 1.41-1.41-7.1-7.09zm1.42-5.97L12.7 7.62 9.88 4.8l1.41-1.41c.78-.78 2.05-.78 2.83 0l.79.79 1.41-1.41 1.42 1.42-1.42 1.41.59.6zm5.41 12.43l-4.24-4.24-1.42 1.42 4.24 4.24c.39.39 1.02.39 1.41 0l.01-.01c.39-.39.39-1.02 0-1.41z"/></svg><span>22</span></div>
+            <div class="auc-card-bottom">
+              <div class="auc-bid-label">現在の最高入札</div>
+              <div class="auc-bid-price"><span class="sym">¥</span><span class="amt">67,200</span></div>
+              <div class="auc-timer-row"><span class="auc-timer">00:04:17</span><div class="auc-prog"><div class="auc-prog-fill" style="width:25%"></div></div></div>
+              <div class="auc-cta-row"><button class="auc-bid-btn">入札する</button><button class="auc-like-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff" opacity="0.7"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg></button></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="auc-sep"></div>
+
+      <!-- ── 3時間オークション ── -->
+      <div class="auc-section">
+        <div class="auc-sec-hd">
+          <span class="auc-sec-title">3時間オークション</span>
+          <div class="auc-sec-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="#555"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg></div>
+        </div>
+        <div class="auc-mini-scroll">
+          <div class="auc-mini-tile">
+            <div class="auc-mini-thumb">
+              <img src="https://www.figma.com/api/mcp/asset/d6b38746-440b-4608-87c7-65d690ca13a0" alt="">
+              <div class="auc-mini-heart"><svg width="14" height="14" viewBox="0 0 24 24" fill="#ff333f"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3z"/></svg></div>
+              <div class="auc-mini-price-tag">現在 ¥6,400</div>
+            </div>
+            <div class="auc-mini-meta">2時間52分</div>
+          </div>
+          <div class="auc-mini-tile">
+            <div class="auc-mini-thumb">
+              <img src="https://www.figma.com/api/mcp/asset/8b705ced-ce63-4e50-80ce-058afe1379ec" alt="">
+              <div class="auc-mini-heart"><svg width="14" height="14" viewBox="0 0 24 24" fill="#ff333f"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3z"/></svg></div>
+              <div class="auc-mini-price-tag">現在 ¥7,250</div>
+            </div>
+            <div class="auc-mini-meta">1時間40分</div>
+          </div>
+          <div class="auc-mini-tile">
+            <div class="auc-mini-thumb">
+              <img src="https://www.figma.com/api/mcp/asset/c98df241-192e-49db-a8a9-a3bd3b7b7a80" alt="">
+              <div class="auc-mini-heart"><svg width="14" height="14" viewBox="0 0 24 24" fill="#ff333f"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3z"/></svg></div>
+              <div class="auc-mini-price-tag">現在 ¥7,200</div>
+            </div>
+            <div class="auc-mini-meta">2時間10分</div>
+          </div>
+          <div class="auc-mini-tile">
+            <div class="auc-mini-thumb">
+              <img src="https://www.figma.com/api/mcp/asset/48b48478-b341-409f-929e-6f61ffd4c8aa" alt="">
+              <div class="auc-mini-heart"><svg width="14" height="14" viewBox="0 0 24 24" fill="#ccc"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg></div>
+              <div class="auc-mini-price-tag">現在 ¥3,100</div>
+            </div>
+            <div class="auc-mini-meta">0時間55分</div>
+          </div>
+          <div class="auc-mini-tile">
+            <div class="auc-mini-thumb">
+              <img src="https://www.figma.com/api/mcp/asset/4e96e2f8-389d-4653-aae6-8a2848909b61" alt="">
+              <div class="auc-mini-heart"><svg width="14" height="14" viewBox="0 0 24 24" fill="#ccc"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg></div>
+              <div class="auc-mini-price-tag">現在 ¥9,800</div>
+            </div>
+            <div class="auc-mini-meta">1時間22分</div>
+          </div>
+          <div class="auc-mini-tile">
+            <div class="auc-mini-thumb">
+              <img src="https://www.figma.com/api/mcp/asset/544d6e08-8c4f-494e-9ba1-c43e09ce4ee8" alt="">
+              <div class="auc-mini-heart"><svg width="14" height="14" viewBox="0 0 24 24" fill="#ccc"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg></div>
+              <div class="auc-mini-price-tag">現在 ¥1,500</div>
+            </div>
+            <div class="auc-mini-meta">2時間38分</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="auc-sep"></div>
+
+      <!-- ── バナー ── -->
+      <div class="auc-banner-scroll">
+        <div class="auc-banner-slide">
+          <div class="auc-banner-a">
+            <div class="auc-banner-txt">🎉 新規登録で<br>入札手数料0円！</div>
+          </div>
+        </div>
+        <div class="auc-banner-slide">
+          <img src="https://www.figma.com/api/mcp/asset/69ccba83-bed7-4c77-9c1f-626eaaad14d3" alt="">
+        </div>
+        <div class="auc-banner-slide">
+          <div class="auc-banner-c">
+            <div class="auc-banner-txt">🏆 週末限定<br>スペシャルオークション</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="auc-sep"></div>
+
+      <!-- ── 注目のカテゴリー ── -->
+      <div class="auc-section">
+        <div class="auc-sec-hd">
+          <span class="auc-sec-title">注目のカテゴリー</span>
+          <div class="auc-sec-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="#555"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg></div>
+        </div>
+        <div class="auc-filter-bar">
+          <div class="auc-chip active">ゲーム・おもちゃ</div>
+          <div class="auc-chip">レディース</div>
+          <div class="auc-chip">メンズ</div>
+          <div class="auc-chip">コレクション</div>
+          <div class="auc-chip">ブランド品</div>
+        </div>
+        <div class="auc-item-grid">
+          <div class="auc-item-tile"><div class="auc-item-thumb" style="background:#e8d5f5;"><div class="auc-item-plabel">¥ 300</div><div class="auc-item-heart"><svg width="11" height="11" viewBox="0 0 24 24" fill="#ccc"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg></div></div><div class="auc-item-meta">12件</div></div>
+          <div class="auc-item-tile"><div class="auc-item-thumb" style="background:#d5e8f5;"><div class="auc-item-plabel">¥ 500</div><div class="auc-item-heart"><svg width="11" height="11" viewBox="0 0 24 24" fill="#ccc"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg></div></div><div class="auc-item-meta">8件</div></div>
+          <div class="auc-item-tile"><div class="auc-item-thumb" style="background:#f5e8d5;"><div class="auc-item-plabel">¥ 1,200</div><div class="auc-item-heart"><svg width="11" height="11" viewBox="0 0 24 24" fill="#ff333f"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3z"/></svg></div></div><div class="auc-item-meta">21件</div></div>
+          <div class="auc-item-tile"><div class="auc-item-thumb" style="background:#d5f5e8;"><div class="auc-item-plabel">¥ 800</div><div class="auc-item-heart"><svg width="11" height="11" viewBox="0 0 24 24" fill="#ccc"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg></div></div><div class="auc-item-meta">5件</div></div>
+          <div class="auc-item-tile"><div class="auc-item-thumb" style="background:#f5d5e8;"><div class="auc-item-plabel">¥ 2,500</div><div class="auc-item-heart"><svg width="11" height="11" viewBox="0 0 24 24" fill="#ccc"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg></div></div><div class="auc-item-meta">33件</div></div>
+          <div class="auc-item-tile"><div class="auc-item-thumb" style="background:#e8f5d5;"><div class="auc-item-plabel">¥ 400</div><div class="auc-item-heart"><svg width="11" height="11" viewBox="0 0 24 24" fill="#ccc"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg></div></div><div class="auc-item-meta">17件</div></div>
+          <div class="auc-item-tile"><div class="auc-item-thumb" style="background:#f5f5d5;"><div class="auc-item-plabel">¥ 700</div><div class="auc-item-heart"><svg width="11" height="11" viewBox="0 0 24 24" fill="#ccc"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg></div></div><div class="auc-item-meta">9件</div></div>
+          <div class="auc-item-tile"><div class="auc-item-thumb" style="background:#d5d5f5;"><div class="auc-item-plabel">¥ 1,800</div><div class="auc-item-heart"><svg width="11" height="11" viewBox="0 0 24 24" fill="#ff333f"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3z"/></svg></div></div><div class="auc-item-meta">45件</div></div>
+          <div class="auc-item-tile"><div class="auc-item-thumb" style="background:#f5d5d5;"><div class="auc-item-plabel">¥ 600</div><div class="auc-item-heart"><svg width="11" height="11" viewBox="0 0 24 24" fill="#ccc"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg></div></div><div class="auc-item-meta">6件</div></div>
+        </div>
+      </div>
+
+      <div class="auc-sep"></div>
+
+      <!-- ── カテゴリーからさがす ── -->
+      <div class="auc-section">
+        <div class="auc-sec-hd">
+          <span class="auc-sec-title">カテゴリーからさがす</span>
+        </div>
+        <div class="auc-cat-grid">
+          <!-- Left tall: キャラクターグッズ -->
+          <div class="auc-cat-card tall">
+            <div class="auc-cat-label">キャラクター<br>グッズ</div>
+            <img class="auc-cat-img-tall" src="https://www.figma.com/api/mcp/asset/14ad7763-209a-4bbd-bf37-eda66a27eb98" alt="">
+          </div>
+          <!-- Top middle: トレーディングカード -->
+          <div class="auc-cat-card">
+            <div class="auc-cat-label">トレーディング<br>カード</div>
+            <img class="auc-cat-img" src="https://www.figma.com/api/mcp/asset/515d5f92-bcf8-42f2-a348-74a8c08825c3" alt="">
+          </div>
+          <!-- Top right: タレントグッズ -->
+          <div class="auc-cat-card">
+            <div class="auc-cat-label">タレント<br>グッズ</div>
+            <img class="auc-cat-img" src="https://www.figma.com/api/mcp/asset/2bb787ff-fcc6-4d24-8a1e-820c2bebda6e" alt="">
+          </div>
+          <!-- Bottom middle: メンズ -->
+          <div class="auc-cat-card">
+            <div class="auc-cat-label">メンズ</div>
+            <img class="auc-cat-img" src="https://www.figma.com/api/mcp/asset/710719c3-5d1e-4053-8178-960f7447aff1" alt="">
+          </div>
+          <!-- Bottom right: レディース -->
+          <div class="auc-cat-card">
+            <div class="auc-cat-label">レディース</div>
+            <img class="auc-cat-img" src="https://www.figma.com/api/mcp/asset/bbe9f4d5-0cd3-403d-a91b-517c12473ef0" alt="">
+          </div>
+        </div>
+      </div>
+
+      <div class="auc-sep"></div>
+
+      <!-- ── 掘り出しもの ¥300スタート ── -->
+      <div class="auc-section">
+        <div class="auc-sec-hd">
+          <span class="auc-sec-title">掘り出しもの ¥300スタート</span>
+          <div class="auc-sec-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="#555"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg></div>
+        </div>
+        <div class="auc-mosaic">
+          <div class="auc-mosaic-tile" style="background:#c8e6c9;"><div class="auc-mosaic-price">¥ 300</div></div>
+          <div class="auc-mosaic-tile" style="background:#bbdefb;"><div class="auc-mosaic-price">¥ 500</div></div>
+          <div class="auc-mosaic-tile" style="background:#ffe0b2;"><div class="auc-mosaic-price">¥ 800</div></div>
+          <div class="auc-mosaic-tile" style="background:#f8bbd0;"><div class="auc-mosaic-price">¥ 300</div></div>
+          <div class="auc-mosaic-tile" style="background:#e1bee7;"><div class="auc-mosaic-price">¥ 1,200</div></div>
+          <div class="auc-mosaic-tile" style="background:#dcedc8;"><div class="auc-mosaic-price">¥ 400</div></div>
+        </div>
+      </div>
+
+      <div class="auc-sep"></div>
+
+      <!-- ── もうすぐ終了するオークション ── -->
+      <div class="auc-section">
+        <div class="auc-sec-hd">
+          <span class="auc-sec-title">もうすぐ終了するオークション</span>
+          <div class="auc-sec-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="#555"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg></div>
+        </div>
+        <div class="auc-mosaic">
+          <div class="auc-mosaic-tile" style="background:#ffccbc;"><div class="auc-mosaic-price">¥ 2,800</div></div>
+          <div class="auc-mosaic-tile" style="background:#d7ccc8;"><div class="auc-mosaic-price">¥ 14,000</div></div>
+          <div class="auc-mosaic-tile" style="background:#cfd8dc;"><div class="auc-mosaic-price">¥ 900</div></div>
+          <div class="auc-mosaic-tile" style="background:#fff9c4;"><div class="auc-mosaic-price">¥ 5,500</div></div>
+          <div class="auc-mosaic-tile" style="background:#b2dfdb;"><div class="auc-mosaic-price">¥ 1,100</div></div>
+          <div class="auc-mosaic-tile" style="background:#c5cae9;"><div class="auc-mosaic-price">¥ 7,200</div></div>
+        </div>
+      </div>
+
+      <div class="auc-sep"></div>
+
+      <!-- ── 延長中のオークション ── -->
+      <div class="auc-section">
+        <div class="auc-sec-hd">
+          <span class="auc-sec-title">延長中のオークション</span>
+          <div class="auc-sec-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="#555"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg></div>
+        </div>
+        <div class="auc-mosaic">
+          <div class="auc-mosaic-tile" style="background:#e8eaf6;"><div class="auc-mosaic-price">¥ 3,600</div></div>
+          <div class="auc-mosaic-tile" style="background:#fce4ec;"><div class="auc-mosaic-price">¥ 22,000</div></div>
+          <div class="auc-mosaic-tile" style="background:#e0f7fa;"><div class="auc-mosaic-price">¥ 680</div></div>
+          <div class="auc-mosaic-tile" style="background:#f3e5f5;"><div class="auc-mosaic-price">¥ 8,900</div></div>
+          <div class="auc-mosaic-tile" style="background:#e8f5e9;"><div class="auc-mosaic-price">¥ 1,500</div></div>
+          <div class="auc-mosaic-tile" style="background:#fff3e0;"><div class="auc-mosaic-price">¥ 4,300</div></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
   <div id="screen-list" class="screen">
     <div class="list-scroll">
 
