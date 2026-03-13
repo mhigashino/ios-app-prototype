@@ -3,6 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script>
+    (function() {
+      const PASSWORD = 'mirai';
+      const KEY = 'auth_ok';
+      if (sessionStorage.getItem(KEY) !== '1') {
+        var input = prompt('パスワードを入力してください');
+        if (input !== PASSWORD) {
+          document.documentElement.innerHTML = '<body style="display:flex;align-items:center;justify-content:center;height:100vh;margin:0;font-family:sans-serif;background:#f0f0f0;"><p style="color:#999;">アクセスできません</p></body>';
+          throw new Error('Unauthorized');
+        }
+        sessionStorage.setItem(KEY, '1');
+      }
+    })();
+  </script>
   <title>iOS App Prototype</title>
   <style>
     * {
