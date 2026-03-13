@@ -807,20 +807,21 @@
     .auc-mosaic-price { position: absolute; bottom: 5px; left: 5px; font-size: 10px; font-weight: 700; color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,0.6); }
 
     /* ── おさいふ画面 ── */
-    #screen-wallet { background: #f2f2f7; overflow: hidden; }
+    #screen-wallet { background: #f0f0f0; overflow: hidden; }
     .wal-scroll { position: absolute; inset: 0; overflow-y: auto; padding-top: calc(env(safe-area-inset-top) + 64px); padding-bottom: 100px; }
     /* Pay エリア */
-    .wal-pay-area { background: #111; padding: 0 16px 16px; }
+    .wal-pay-area { background: #f0f0f0; padding: 16px 16px 0; }
+    .wal-pay-card { background: #fff; border-radius: 8px; padding: 0 16px 12px; overflow: hidden; }
     .wal-pay-header { display: flex; align-items: center; padding: 16px 0 12px; }
     .wal-pay-logo { height: 22px; }
-    .wal-pay-balance-btn { margin-left: auto; display: flex; align-items: center; gap: 6px; background: #2c2c2e; border: none; border-radius: 999px; padding: 7px 14px; color: #fff; font-size: 12px; cursor: pointer; }
+    .wal-pay-balance-btn { margin-left: auto; display: flex; align-items: center; gap: 6px; background: #f0f0f0; border: none; border-radius: 999px; padding: 7px 14px; color: #333; font-size: 12px; cursor: pointer; }
     .wal-pay-balance-btn .amt { font-weight: 700; font-size: 14px; }
     .wal-eye-btn { background: none; border: none; padding: 6px; margin-left: 4px; cursor: pointer; }
     .wal-barcode-wrap { display: flex; justify-content: center; padding: 8px 0 12px; }
     .wal-barcode { width: 100%; max-width: 288px; height: auto; display: block; }
     .wal-action-row { display: flex; }
     .wal-action-btn { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; background: none; border: none; padding: 6px 0; cursor: pointer; }
-    .wal-action-icon { width: 44px; height: 44px; background: #2c2c2e; border-radius: 12px; display: flex; align-items: center; justify-content: center; }
+    .wal-action-icon { width: 44px; height: 44px; background: #f0f0f0; border-radius: 12px; display: flex; align-items: center; justify-content: center; }
     .wal-action-label { font-size: 11px; color: #8e8e93; }
     /* アセットカード */
     .wal-asset-card { background: #fff; margin: 16px 16px 0; border-radius: 8px; overflow: hidden; }
@@ -858,12 +859,12 @@
     .wal-credit-row-val { font-size: 14px; font-weight: 700; color: #333; }
     .wal-credit-row-sub { font-size: 14px; color: #333; }
     /* 取引履歴 */
-    .wal-history-section { background: #1c1c1e; margin-top: 16px; }
-    .wal-history-title-row { display: flex; align-items: center; padding: 14px 16px; border-bottom: 1px solid #2c2c2e; }
-    .wal-history-title { flex: 1; font-size: 15px; font-weight: 600; color: #fff; }
-    .wal-history-row { display: flex; align-items: center; padding: 16px; min-height: 70px; border-bottom: 1px solid #2c2c2e; }
+    .wal-history-section { background: #fff; margin: 16px 16px 0; border-radius: 8px; overflow: hidden; }
+    .wal-history-title-row { display: flex; align-items: center; padding: 14px 16px; border-bottom: 1px solid #f0f0f0; }
+    .wal-history-title { flex: 1; font-size: 15px; font-weight: 600; color: #333; }
+    .wal-history-row { display: flex; align-items: center; padding: 16px; min-height: 70px; border-bottom: 1px solid #f0f0f0; }
     .wal-history-row:last-child { border-bottom: none; }
-    .wal-history-date { font-size: 11px; color: #636366; }
+    .wal-history-date { font-size: 11px; color: #8e8e93; }
     .wal-history-amount { margin-left: auto; }
     .wal-history-badge { display: inline-flex; align-items: center; gap: 4px; background: #2c2c2e; border-radius: 999px; padding: 6px 12px; font-size: 12px; font-weight: 700; color: #fff; }
     .wal-history-badge.red { background: #ff333f; }
@@ -1427,53 +1428,55 @@
 
       <!-- ① merpay Pay エリア -->
       <div class="wal-pay-area">
-        <div class="wal-pay-header">
-          <img class="wal-pay-logo" src="https://www.figma.com/api/mcp/asset/d7f9d026-d625-493d-a4e6-76ef0b548077" alt="merpay">
-          <button class="wal-pay-balance-btn">
-            <span>使える金額</span>
-            <span class="amt">¥10,000</span>
-          </button>
-          <button class="wal-eye-btn">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 4C5.5 4 2 10 2 10s3.5 6 8 6 8-6 8-6S14.5 4 10 4z" stroke="#8e8e93" stroke-width="1.5" fill="none"/><circle cx="10" cy="10" r="2.5" stroke="#8e8e93" stroke-width="1.5" fill="none"/></svg>
-          </button>
-        </div>
-        <div class="wal-barcode-wrap">
-          <img class="wal-barcode" src="https://www.figma.com/api/mcp/asset/be246963-2376-4982-b905-92a683550d8f" alt="barcode">
-        </div>
-        <div class="wal-action-row">
-          <button class="wal-action-btn">
-            <div class="wal-action-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <rect x="3" y="3" width="7" height="7" rx="1" stroke="#fff" stroke-width="1.5"/>
-                <rect x="5" y="5" width="3" height="3" fill="#fff"/>
-                <rect x="14" y="3" width="7" height="7" rx="1" stroke="#fff" stroke-width="1.5"/>
-                <rect x="16" y="5" width="3" height="3" fill="#fff"/>
-                <rect x="3" y="14" width="7" height="7" rx="1" stroke="#fff" stroke-width="1.5"/>
-                <rect x="5" y="16" width="3" height="3" fill="#fff"/>
-                <rect x="14" y="14" width="2" height="2" fill="#fff"/>
-                <rect x="17" y="14" width="3" height="2" fill="#fff"/>
-                <rect x="14" y="17" width="2" height="3" fill="#fff"/>
-                <rect x="17" y="17" width="3" height="3" fill="#fff"/>
-              </svg>
-            </div>
-            <span class="wal-action-label">QRコード</span>
-          </button>
-          <button class="wal-action-btn">
-            <div class="wal-action-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </div>
-            <span class="wal-action-label">おくる</span>
-          </button>
-          <button class="wal-action-btn">
-            <div class="wal-action-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <circle cx="9" cy="13" r="5.25" stroke="#fff" stroke-width="1.5"/>
-                <path d="M14.5 8A5.25 5.25 0 0114.5 18" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/>
-                <path d="M17.5 6.5A7.25 7.25 0 0117.5 19.5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" opacity=".5"/>
-              </svg>
-            </div>
-            <span class="wal-action-label">借りる</span>
-          </button>
+        <div class="wal-pay-card">
+          <div class="wal-pay-header">
+            <img class="wal-pay-logo" src="https://www.figma.com/api/mcp/asset/d7f9d026-d625-493d-a4e6-76ef0b548077" alt="merpay">
+            <button class="wal-pay-balance-btn">
+              <span>使える金額</span>
+              <span class="amt">¥10,000</span>
+            </button>
+            <button class="wal-eye-btn">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 4C5.5 4 2 10 2 10s3.5 6 8 6 8-6 8-6S14.5 4 10 4z" stroke="#8e8e93" stroke-width="1.5" fill="none"/><circle cx="10" cy="10" r="2.5" stroke="#8e8e93" stroke-width="1.5" fill="none"/></svg>
+            </button>
+          </div>
+          <div class="wal-barcode-wrap">
+            <img class="wal-barcode" src="https://www.figma.com/api/mcp/asset/be246963-2376-4982-b905-92a683550d8f" alt="barcode">
+          </div>
+          <div class="wal-action-row">
+            <button class="wal-action-btn">
+              <div class="wal-action-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <rect x="3" y="3" width="7" height="7" rx="1" stroke="#333" stroke-width="1.5"/>
+                  <rect x="5" y="5" width="3" height="3" fill="#333"/>
+                  <rect x="14" y="3" width="7" height="7" rx="1" stroke="#333" stroke-width="1.5"/>
+                  <rect x="16" y="5" width="3" height="3" fill="#333"/>
+                  <rect x="3" y="14" width="7" height="7" rx="1" stroke="#333" stroke-width="1.5"/>
+                  <rect x="5" y="16" width="3" height="3" fill="#333"/>
+                  <rect x="14" y="14" width="2" height="2" fill="#333"/>
+                  <rect x="17" y="14" width="3" height="2" fill="#333"/>
+                  <rect x="14" y="17" width="2" height="3" fill="#333"/>
+                  <rect x="17" y="17" width="3" height="3" fill="#333"/>
+                </svg>
+              </div>
+              <span class="wal-action-label">QRコード</span>
+            </button>
+            <button class="wal-action-btn">
+              <div class="wal-action-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" stroke="#333" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <span class="wal-action-label">おくる</span>
+            </button>
+            <button class="wal-action-btn">
+              <div class="wal-action-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <circle cx="9" cy="13" r="5.25" stroke="#333" stroke-width="1.5"/>
+                  <path d="M14.5 8A5.25 5.25 0 0114.5 18" stroke="#333" stroke-width="1.5" stroke-linecap="round"/>
+                  <path d="M17.5 6.5A7.25 7.25 0 0117.5 19.5" stroke="#333" stroke-width="1.5" stroke-linecap="round" opacity=".5"/>
+                </svg>
+              </div>
+              <span class="wal-action-label">借りる</span>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -1549,7 +1552,7 @@
       <div class="wal-history-section">
         <div class="wal-history-title-row">
           <span class="wal-history-title">取引履歴</span>
-          <svg width="8" height="13" viewBox="0 0 8 13" fill="none"><path d="M1 1l6 5.5L1 12" stroke="#636366" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <svg width="8" height="13" viewBox="0 0 8 13" fill="none"><path d="M1 1l6 5.5L1 12" stroke="#c7c7cc" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
         <div class="wal-history-row">
           <span class="wal-history-date">2025/07/15</span>
