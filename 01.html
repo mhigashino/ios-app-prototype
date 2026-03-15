@@ -934,7 +934,7 @@
     #screen-home { background: #fff; overflow: hidden; }
     .home-scroll { position: absolute; inset: 0; overflow-y: auto; padding-top: calc(env(safe-area-inset-top) + 56px); padding-bottom: 100px; }
     /* サブタブ */
-    .home-subtab { display: flex; align-items: center; gap: 4px; padding: 8px 16px; background: #fff; overflow-x: auto; }
+    .home-subtab { display: flex; align-items: center; gap: 4px; padding: 8px 16px; background: #fff; overflow-x: auto; position: sticky; top: 0; z-index: 10; }
     .home-subtab::-webkit-scrollbar { display: none; }
     .home-tab { flex-shrink: 0; display: inline-flex; align-items: center; min-height: 36px; padding: 6px 12px; border-radius: 999px; font-size: 12px; font-weight: 600; white-space: nowrap; cursor: pointer; }
     .home-tab.active { background: #333; color: #fff; border: none; }
@@ -1105,12 +1105,13 @@
 
       <!-- サブタブ -->
       <div class="home-subtab">
-        <button class="home-tab active">すべて</button>
-        <button class="home-tab inactive">いいね！</button>
+        <button class="home-tab active" onclick="switchHomeTab('all', this)">すべて</button>
+        <button class="home-tab inactive" onclick="switchHomeTab('like', this)">いいね！</button>
         <button class="home-tab inactive">保存検索</button>
         <button class="home-tab inactive">フォロー中</button>
       </div>
 
+      <div id="tab-all">
       <!-- セクション1: あなたへのおすすめ -->
       <div class="home-section">
         <div class="home-section-hd">
@@ -1260,6 +1261,70 @@
           <div class="home-tile"><img src="https://www.figma.com/api/mcp/asset/cd02d606-3af7-403b-9c0c-456478bbd772" alt=""><div class="home-tile-price">¥6,300</div><div class="home-tile-heart"><svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M7 12S1 8 1 4.5a3 3 0 016-1 3 3 0 016 1C13 8 7 12 7 12z" stroke="#555" stroke-width="1.3"/></svg></div></div>
         </div>
       </div>
+      </div><!-- /#tab-all -->
+
+      <!-- いいね！タブコンテンツ -->
+      <div id="tab-like" style="display:none;">
+
+        <!-- いいね！した商品 -->
+        <div class="home-section">
+          <div class="home-section-hd">
+            <div class="home-section-titles">
+              <span class="home-section-title">いいね！した商品</span>
+              <span class="home-section-sub">24件</span>
+            </div>
+          </div>
+          <div class="home-mosaic">
+            <div class="home-tile"><img src="https://www.figma.com/api/mcp/asset/d6b38746-440b-4608-87c7-65d690ca13a0" alt=""><div class="home-tile-price">¥6,800</div><div class="home-tile-heart liked"><svg width="12" height="12" viewBox="0 0 14 14" fill="#FF0C25"><path d="M7 12S1 8 1 4.5a3 3 0 016-1 3 3 0 016 1C13 8 7 12 7 12z"/></svg></div></div>
+            <div class="home-tile"><img src="https://www.figma.com/api/mcp/asset/8b705ced-ce63-4e50-80ce-058afe1379ec" alt=""><div class="home-tile-price">¥2,800</div><div class="home-tile-heart liked"><svg width="12" height="12" viewBox="0 0 14 14" fill="#FF0C25"><path d="M7 12S1 8 1 4.5a3 3 0 016-1 3 3 0 016 1C13 8 7 12 7 12z"/></svg></div></div>
+            <div class="home-tile"><img src="https://www.figma.com/api/mcp/asset/c98df241-192e-49db-a8a9-a3bd3b7b7a80" alt=""><div class="home-tile-price">¥2,800</div><div class="home-tile-heart liked"><svg width="12" height="12" viewBox="0 0 14 14" fill="#FF0C25"><path d="M7 12S1 8 1 4.5a3 3 0 016-1 3 3 0 016 1C13 8 7 12 7 12z"/></svg></div></div>
+            <div class="home-tile"><img src="https://www.figma.com/api/mcp/asset/48b48478-b341-409f-929e-6f61ffd4c8aa" alt=""><div class="home-tile-price">¥2,000</div><div class="home-tile-heart liked"><svg width="12" height="12" viewBox="0 0 14 14" fill="#FF0C25"><path d="M7 12S1 8 1 4.5a3 3 0 016-1 3 3 0 016 1C13 8 7 12 7 12z"/></svg></div></div>
+            <div class="home-tile"><img src="https://www.figma.com/api/mcp/asset/4e96e2f8-389d-4653-aae6-8a2848909b61" alt=""><div class="home-tile-price">¥2,300</div><div class="home-tile-heart liked"><svg width="12" height="12" viewBox="0 0 14 14" fill="#FF0C25"><path d="M7 12S1 8 1 4.5a3 3 0 016-1 3 3 0 016 1C13 8 7 12 7 12z"/></svg></div></div>
+            <div class="home-tile"><img src="https://www.figma.com/api/mcp/asset/544d6e08-8c4f-494e-9ba1-c43e09ce4ee8" alt=""><div class="home-tile-price">¥2,800</div><div class="home-tile-heart liked"><svg width="12" height="12" viewBox="0 0 14 14" fill="#FF0C25"><path d="M7 12S1 8 1 4.5a3 3 0 016-1 3 3 0 016 1C13 8 7 12 7 12z"/></svg></div></div>
+          </div>
+        </div>
+
+        <!-- いいね！したオークション -->
+        <div class="home-section">
+          <div class="home-section-hd">
+            <div class="home-section-titles">
+              <span class="home-section-title">いいね！したオークション</span>
+              <span class="home-section-sub">4件</span>
+            </div>
+          </div>
+          <div class="home-mosaic">
+            <div class="home-tile"><img src="https://www.figma.com/api/mcp/asset/cd02d606-3af7-403b-9c0c-456478bbd772" alt=""><div class="home-tile-price">¥2,800</div><div class="home-tile-heart liked"><svg width="12" height="12" viewBox="0 0 14 14" fill="#FF0C25"><path d="M7 12S1 8 1 4.5a3 3 0 016-1 3 3 0 016 1C13 8 7 12 7 12z"/></svg></div></div>
+            <div class="home-tile"><img src="https://www.figma.com/api/mcp/asset/088ef175-7721-48a7-98ad-4f07d0ad88d2" alt=""><div class="home-tile-price">¥2,800</div><div class="home-tile-heart liked"><svg width="12" height="12" viewBox="0 0 14 14" fill="#FF0C25"><path d="M7 12S1 8 1 4.5a3 3 0 016-1 3 3 0 016 1C13 8 7 12 7 12z"/></svg></div></div>
+            <div class="home-tile"><img src="https://www.figma.com/api/mcp/asset/7cdaaeba-d7b6-4713-8bf4-c2b356e270e8" alt=""><div class="home-tile-price">¥2,800</div><div class="home-tile-heart liked"><svg width="12" height="12" viewBox="0 0 14 14" fill="#FF0C25"><path d="M7 12S1 8 1 4.5a3 3 0 016-1 3 3 0 016 1C13 8 7 12 7 12z"/></svg></div></div>
+            <div class="home-tile"><img src="https://www.figma.com/api/mcp/asset/d6b38746-440b-4608-87c7-65d690ca13a0" alt=""><div class="home-tile-price">¥2,800</div><div class="home-tile-heart liked"><svg width="12" height="12" viewBox="0 0 14 14" fill="#FF0C25"><path d="M7 12S1 8 1 4.5a3 3 0 016-1 3 3 0 016 1C13 8 7 12 7 12z"/></svg></div></div>
+            <div class="home-tile"><img src="https://www.figma.com/api/mcp/asset/c98df241-192e-49db-a8a9-a3bd3b7b7a80" alt=""><div class="home-tile-price">¥2,600</div><div class="home-tile-heart liked"><svg width="12" height="12" viewBox="0 0 14 14" fill="#FF0C25"><path d="M7 12S1 8 1 4.5a3 3 0 016-1 3 3 0 016 1C13 8 7 12 7 12z"/></svg></div></div>
+            <div class="home-tile"><img src="https://www.figma.com/api/mcp/asset/8b705ced-ce63-4e50-80ce-058afe1379ec" alt=""><div class="home-tile-price">¥2,800</div><div class="home-tile-heart liked"><svg width="12" height="12" viewBox="0 0 14 14" fill="#FF0C25"><path d="M7 12S1 8 1 4.5a3 3 0 016-1 3 3 0 016 1C13 8 7 12 7 12z"/></svg></div></div>
+          </div>
+        </div>
+
+        <!-- おすすめの商品 -->
+        <div class="home-section">
+          <div class="home-section-hd">
+            <div class="home-section-titles">
+              <span class="home-section-title">おすすめの商品</span>
+              <span class="home-section-sub">あなたへのおすすめ</span>
+            </div>
+            <div class="home-icon-btns">
+              <button class="home-icon-btn"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 13.5S1.5 9.5 1.5 5.5A3.5 3.5 0 018 3a3.5 3.5 0 016.5 2c0 4-6.5 8.5-6.5 8.5z" stroke="#333" stroke-width="1.4" fill="none"/></svg></button>
+              <button class="home-icon-btn"><svg width="4" height="16" viewBox="0 0 4 16" fill="#333"><circle cx="2" cy="2" r="1.5"/><circle cx="2" cy="8" r="1.5"/><circle cx="2" cy="14" r="1.5"/></svg></button>
+            </div>
+          </div>
+          <div class="home-mosaic">
+            <div class="home-tile"><img src="https://www.figma.com/api/mcp/asset/4e96e2f8-389d-4653-aae6-8a2848909b61" alt=""><div class="home-tile-price">¥5,800</div><div class="home-tile-heart"><svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M7 12S1 8 1 4.5a3 3 0 016-1 3 3 0 016 1C13 8 7 12 7 12z" stroke="#555" stroke-width="1.3"/></svg></div></div>
+            <div class="home-tile"><img src="https://www.figma.com/api/mcp/asset/544d6e08-8c4f-494e-9ba1-c43e09ce4ee8" alt=""><div class="home-tile-price">¥3,200</div><div class="home-tile-heart"><svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M7 12S1 8 1 4.5a3 3 0 016-1 3 3 0 016 1C13 8 7 12 7 12z" stroke="#555" stroke-width="1.3"/></svg></div></div>
+            <div class="home-tile"><img src="https://www.figma.com/api/mcp/asset/088ef175-7721-48a7-98ad-4f07d0ad88d2" alt=""><div class="home-tile-price">¥2,800</div><div class="home-tile-heart"><svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M7 12S1 8 1 4.5a3 3 0 016-1 3 3 0 016 1C13 8 7 12 7 12z" stroke="#555" stroke-width="1.3"/></svg></div></div>
+            <div class="home-tile"><img src="https://www.figma.com/api/mcp/asset/7cdaaeba-d7b6-4713-8bf4-c2b356e270e8" alt=""><div class="home-tile-price">¥15,000</div><div class="home-tile-heart"><svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M7 12S1 8 1 4.5a3 3 0 016-1 3 3 0 016 1C13 8 7 12 7 12z" stroke="#555" stroke-width="1.3"/></svg></div></div>
+            <div class="home-tile"><img src="https://www.figma.com/api/mcp/asset/d6b38746-440b-4608-87c7-65d690ca13a0" alt=""><div class="home-tile-price">¥4,500</div><div class="home-tile-heart"><svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M7 12S1 8 1 4.5a3 3 0 016-1 3 3 0 016 1C13 8 7 12 7 12z" stroke="#555" stroke-width="1.3"/></svg></div></div>
+            <div class="home-tile"><img src="https://www.figma.com/api/mcp/asset/c98df241-192e-49db-a8a9-a3bd3b7b7a80" alt=""><div class="home-tile-price">¥9,800</div><div class="home-tile-heart"><svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M7 12S1 8 1 4.5a3 3 0 016-1 3 3 0 016 1C13 8 7 12 7 12z" stroke="#555" stroke-width="1.3"/></svg></div></div>
+          </div>
+        </div>
+
+      </div><!-- /#tab-like -->
 
     </div>
   </div>
@@ -2676,6 +2741,21 @@
 </div>
 
 <script>
+  function switchHomeTab(tab, btn) {
+    // タブボタンのactive切り替え
+    btn.closest('.home-subtab').querySelectorAll('.home-tab').forEach(function(b) {
+      b.classList.remove('active');
+      b.classList.add('inactive');
+    });
+    btn.classList.remove('inactive');
+    btn.classList.add('active');
+    // コンテンツ切り替え
+    document.getElementById('tab-all').style.display = tab === 'all' ? '' : 'none';
+    document.getElementById('tab-like').style.display = tab === 'like' ? '' : 'none';
+    // スクロール位置をトップに戻す
+    btn.closest('.home-scroll').scrollTop = 0;
+  }
+
   function openMyPage() {
     document.getElementById('mypage-overlay').classList.add('open');
   }
