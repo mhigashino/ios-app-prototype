@@ -941,7 +941,7 @@
     .home-tab.inactive { background: #fff; color: #333; border: 1px solid #e0e0e0; }
     /* セクション共通 */
     .home-section { background: #fff; padding: 0 16px; margin-bottom: 8px; }
-    .home-section-hd { display: flex; align-items: center; gap: 8px; padding: 12px 16px; min-height: 68px; }
+    .home-section-hd { display: flex; align-items: center; gap: 8px; padding: 12px 0; min-height: 68px; }
     .home-section-titles { flex: 1; min-width: 0; }
     .home-section-title { font-size: 15px; font-weight: 600; color: #333; display: block; }
     .home-section-sub { font-size: 11px; color: #8e8e93; display: block; margin-top: 2px; }
@@ -959,6 +959,7 @@
     .auc-item-heart.liked svg path { fill: #FF0C25; }
     /* 急上昇キーワード */
     .home-kw-section { background: #fff; padding: 0 0 16px; margin-bottom: 8px; }
+    .home-kw-hd { padding-left: 16px !important; padding-right: 16px !important; }
     .home-kw-wrap {
       display: flex; flex-direction: column; flex-wrap: wrap;
       height: 136px; /* 3行 × 40px + 2gap × 8px */
@@ -1143,7 +1144,7 @@
 
       <!-- セクション2: 急上昇キーワード -->
       <div class="home-kw-section">
-        <div class="home-section-hd">
+        <div class="home-section-hd home-kw-hd">
           <div class="home-section-titles">
             <span class="home-section-title">急上昇キーワード</span>
             <span class="home-section-sub">今注目されているキーワード</span>
