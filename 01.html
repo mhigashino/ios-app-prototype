@@ -955,10 +955,11 @@
     .home-tile-heart { position: absolute; top: 4px; right: 4px; width: 26px; height: 26px; border-radius: 50%; background: rgba(255,255,255,0.85); display: flex; align-items: center; justify-content: center; }
     /* 急上昇キーワード */
     .home-kw-section { background: #fff; padding: 0 16px 16px; margin-bottom: 8px; }
-    .home-kw-wrap { display: flex; flex-wrap: wrap; gap: 8px; }
-    .home-kw-pill { display: flex; align-items: center; background: #f0f0f0; border-radius: 8px; overflow: hidden; padding: 4px; }
-    .home-kw-thumb { width: 24px; height: 24px; border-radius: 4px; flex-shrink: 0; }
-    .home-kw-label { font-size: 11px; font-weight: 600; color: #333; padding: 0 8px 0 5px; }
+    .home-kw-wrap { display: flex; flex-direction: column; gap: 8px; }
+    .home-kw-row { display: flex; gap: 8px; }
+    .home-kw-pill { display: flex; align-items: center; background: #f0f0f0; border-radius: 8px; overflow: hidden; gap: 8px; flex-shrink: 0; }
+    .home-kw-thumb { width: 40px; height: 40px; flex-shrink: 0; object-fit: cover; display: block; }
+    .home-kw-label { font-size: 12px; font-weight: 600; color: #333; padding-right: 8px; white-space: nowrap; }
     /* ブランド特集（カラーヘッダー付き） */
     .home-featured { margin-bottom: 8px; }
     .home-featured-hd { position: relative; height: 130px; display: flex; align-items: flex-end; padding: 0 16px 14px; overflow: hidden; }
@@ -1138,21 +1139,16 @@
           </div>
         </div>
         <div class="home-kw-wrap">
-          <div class="home-kw-pill"><div class="home-kw-thumb" style="background:#c0a898;"></div><span class="home-kw-label">スニーカー</span></div>
-          <div class="home-kw-pill"><div class="home-kw-thumb" style="background:#7888a0;"></div><span class="home-kw-label">腕時計</span></div>
-          <div class="home-kw-pill"><div class="home-kw-thumb" style="background:#b0c0a0;"></div><span class="home-kw-label">バッグ</span></div>
-          <div class="home-kw-pill"><div class="home-kw-thumb" style="background:#c0a8b8;"></div><span class="home-kw-label">アニメグッズ</span></div>
-          <div class="home-kw-pill"><div class="home-kw-thumb" style="background:#98b0c0;"></div><span class="home-kw-label">コンバース</span></div>
-          <div class="home-kw-pill"><div class="home-kw-thumb" style="background:#c8b890;"></div><span class="home-kw-label">トレカ</span></div>
-          <div class="home-kw-pill"><div class="home-kw-thumb" style="background:#a898b8;"></div><span class="home-kw-label">ヴィンテージ</span></div>
-          <div class="home-kw-pill"><div class="home-kw-thumb" style="background:#98b8a0;"></div><span class="home-kw-label">ロレックス</span></div>
-          <div class="home-kw-pill"><div class="home-kw-thumb" style="background:#b89888;"></div><span class="home-kw-label">Nike</span></div>
-          <div class="home-kw-pill"><div class="home-kw-thumb" style="background:#a0a8c0;"></div><span class="home-kw-label">ポケモンカード</span></div>
-          <div class="home-kw-pill"><div class="home-kw-thumb" style="background:#90a8b8;"></div><span class="home-kw-label">レゴ</span></div>
-          <div class="home-kw-pill"><div class="home-kw-thumb" style="background:#c0b0a0;"></div><span class="home-kw-label">ジャケット</span></div>
-          <div class="home-kw-pill"><div class="home-kw-thumb" style="background:#b0c0b8;"></div><span class="home-kw-label">フィギュア</span></div>
-          <div class="home-kw-pill"><div class="home-kw-thumb" style="background:#c0a8a0;"></div><span class="home-kw-label">カメラ</span></div>
-          <div class="home-kw-pill"><div class="home-kw-thumb" style="background:#a8b0c8;"></div><span class="home-kw-label">ゲーム</span></div>
+          <div class="home-kw-row">
+            <div class="home-kw-pill"><img class="home-kw-thumb" src="https://www.figma.com/api/mcp/asset/088ef175-7721-48a7-98ad-4f07d0ad88d2" alt=""><span class="home-kw-label">スニーカー</span></div>
+            <div class="home-kw-pill"><img class="home-kw-thumb" src="https://www.figma.com/api/mcp/asset/4e96e2f8-389d-4653-aae6-8a2848909b61" alt=""><span class="home-kw-label">レトロゲーム</span></div>
+            <div class="home-kw-pill"><img class="home-kw-thumb" src="https://www.figma.com/api/mcp/asset/d6b38746-440b-4608-87c7-65d690ca13a0" alt=""><span class="home-kw-label">美容液 高機能スキンケア</span></div>
+          </div>
+          <div class="home-kw-row">
+            <div class="home-kw-pill"><img class="home-kw-thumb" src="https://www.figma.com/api/mcp/asset/544d6e08-8c4f-494e-9ba1-c43e09ce4ee8" alt=""><span class="home-kw-label">昭和レトロ雑貨</span></div>
+            <div class="home-kw-pill"><img class="home-kw-thumb" src="https://www.figma.com/api/mcp/asset/8b705ced-ce63-4e50-80ce-058afe1379ec" alt=""><span class="home-kw-label">アウトドアギア</span></div>
+            <div class="home-kw-pill"><img class="home-kw-thumb" src="https://www.figma.com/api/mcp/asset/48b48478-b341-409f-929e-6f61ffd4c8aa" alt=""><span class="home-kw-label">アニメキャラクターグッズ</span></div>
+          </div>
         </div>
       </div>
 
