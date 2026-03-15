@@ -967,16 +967,16 @@
     .home-kw-thumb { width: 32px; height: 32px; flex-shrink: 0; object-fit: cover; display: block; border-radius: 4px; }
     .home-kw-label { font-size: 12px; font-weight: 600; color: #333; padding: 0 8px 0 6px; white-space: nowrap; }
     /* ブランド特集（カラーヘッダー付き） */
-    .home-featured { margin-bottom: 8px; }
-    .home-featured-hd { position: relative; height: 130px; display: flex; align-items: flex-end; padding: 0 16px 14px; overflow: hidden; }
-    .home-featured-hd-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-    .home-featured-grad { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(108,76,58,0.4) 0%, rgb(108,76,58) 100%); }
+    .home-featured { margin-bottom: 8px; position: relative; overflow: hidden; }
+    .home-featured-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
+    .home-featured-grad { position: absolute; inset: 0; z-index: 1; background: linear-gradient(179.9999999999998deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0) 37.135%), linear-gradient(180deg, rgba(108,76,58,0.4) 0%, rgb(108,76,58) 40%, rgb(108,76,58) 100%); }
+    .home-featured-hd { position: relative; z-index: 2; display: flex; align-items: flex-end; padding: 0 16px 14px; padding-top: 12px; }
     .home-featured-hd-icons { position: absolute; top: 12px; right: 16px; display: flex; gap: 6px; }
     .home-featured-hd-icon { width: 36px; height: 36px; border-radius: 50%; background: rgba(0,0,0,0.3); border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; }
     .home-featured-hd-text { position: relative; z-index: 1; }
     .home-featured-hd-title { font-size: 15px; font-weight: 600; color: #fff; display: block; }
     .home-featured-hd-sub { font-size: 11px; color: rgba(255,255,255,0.8); display: block; margin-top: 2px; }
-    .home-featured-body { background: #fff; padding: 0 16px 16px; }
+    .home-featured-body { position: relative; z-index: 2; padding: 0 16px 16px; }
     .home-featured-body .home-mosaic { margin-bottom: 0; }
   /* ════════════════════════════════════════
      MYPAGE OVERLAY
@@ -1209,9 +1209,9 @@
 
       <!-- セクション5: ブランド特集（ヘッダー画像付き） -->
       <div class="home-featured">
+        <img class="home-featured-bg" src="https://www.figma.com/api/mcp/asset/5e093cc2-f354-4cb0-8d7e-e3adea4fcc1c" alt="">
+        <div class="home-featured-grad"></div>
         <div class="home-featured-hd">
-          <img class="home-featured-hd-img" src="https://www.figma.com/api/mcp/asset/d6f59bd9-d0ff-43d4-a22a-5d67973e428c" alt="">
-          <div class="home-featured-grad"></div>
           <div class="home-featured-hd-icons">
             <button class="home-featured-hd-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 13.5S1.5 9.5 1.5 5.5A3.5 3.5 0 018 3a3.5 3.5 0 016.5 2c0 4-6.5 8.5-6.5 8.5z" stroke="rgba(255,255,255,0.9)" stroke-width="1.4" fill="none"/></svg></button>
             <button class="home-featured-hd-icon"><svg width="4" height="16" viewBox="0 0 4 16" fill="rgba(255,255,255,0.9)"><circle cx="2" cy="2" r="1.5"/><circle cx="2" cy="8" r="1.5"/><circle cx="2" cy="14" r="1.5"/></svg></button>
