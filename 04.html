@@ -943,6 +943,121 @@
       object-fit: cover;
       display: block;
     }
+  /* ════════════════════════════════════════
+     MYPAGE OVERLAY
+  ════════════════════════════════════════ */
+  .mypage-overlay {
+    position: absolute; inset: 0; z-index: 200;
+    background: #fff;
+    display: flex; flex-direction: column;
+    transform: translateX(100%);
+    transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform;
+  }
+  .mypage-overlay.open { transform: translateX(0); }
+
+  .mypage-header {
+    display: flex; align-items: center;
+    padding: 0;
+    background: #fff;
+    border-bottom: 0.5px solid rgba(0,0,0,0.18);
+    flex-shrink: 0;
+    min-height: 52px;
+  }
+  .mypage-back-btn {
+    width: 44px; height: 44px;
+    background: none; border: none;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; flex-shrink: 0;
+    color: #006ed1;
+  }
+  .mypage-back-btn:active { opacity: 0.5; }
+  .mypage-header-title {
+    flex: 1; text-align: center;
+    font-size: 17px; font-weight: 600; color: #000;
+  }
+  .mypage-header-spacer { width: 44px; flex-shrink: 0; }
+
+  .mypage-scroll {
+    flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch;
+  }
+
+  .mypage-user-section {
+    background: #fff;
+    display: flex; align-items: center;
+    padding: 16px;
+    gap: 12px;
+    margin-bottom: 8px;
+    cursor: pointer;
+  }
+  .mypage-user-section:active { background: #f0f0f0; }
+  .mypage-avatar {
+    width: 44px; height: 44px; border-radius: 50%;
+    object-fit: cover; flex-shrink: 0;
+    background: #eee;
+  }
+  .mypage-user-info { flex: 1; min-width: 0; }
+  .mypage-user-name-row {
+    display: flex; align-items: center; gap: 4px;
+    margin-bottom: 6px;
+  }
+  .mypage-user-name {
+    font-size: 15px; font-weight: 600; color: #000;
+  }
+  .mypage-user-meta {
+    display: flex; align-items: center; gap: 12px;
+  }
+  .mypage-rating {
+    display: flex; flex-direction: column; align-items: center; gap: 1px;
+  }
+  .mypage-rating-stars {
+    display: flex; align-items: center; gap: 1px;
+  }
+  .mypage-rating-count {
+    font-size: 11px; color: #006ed1; font-weight: 400;
+  }
+  .mypage-verified {
+    display: flex; align-items: center; gap: 4px;
+    font-size: 11px; color: #006ed1;
+  }
+
+  .mypage-section { margin-bottom: 8px; }
+  .mypage-section-title {
+    font-size: 13px; font-weight: 400; color: #6c6c70;
+    padding: 12px 16px 6px;
+  }
+  .mypage-row {
+    background: #fff;
+    display: flex; align-items: center;
+    padding: 0 16px;
+    min-height: 44px;
+    cursor: pointer;
+    position: relative;
+  }
+  .mypage-row:active { background: #f0f0f0; }
+  .mypage-row + .mypage-row::before {
+    content: '';
+    position: absolute; top: 0; left: 16px; right: 0;
+    height: 0.5px; background: rgba(0,0,0,0.15);
+  }
+  .mypage-row-label {
+    flex: 1; font-size: 15px; color: #000; font-weight: 400;
+    padding: 12px 0;
+  }
+  .mypage-row-sub {
+    font-size: 12px; color: #006ed1; margin-top: 2px;
+  }
+  .mypage-row-chevron {
+    color: #222; flex-shrink: 0; margin-left: 4px;
+  }
+
+  .mypage-logout-section { margin-top: 0; }
+  .mypage-version {
+    text-align: center;
+    font-size: 11px; color: #8e8e93;
+    padding: 16px 16px 32px;
+  }
+
   </style>
 </head>
 <body>
@@ -1477,10 +1592,129 @@
 
   </div>
 
+  <!-- マイページオーバーレイ -->
+  <div id="mypage-overlay" class="mypage-overlay">
+    <div class="mypage-header">
+      <button class="mypage-back-btn" onclick="closeMyPage()">
+        <svg width="12" height="20" viewBox="0 0 12 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M10.5 1.5L1.5 10L10.5 18.5" stroke="#222" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <span class="mypage-header-title">マイページ</span>
+      <div class="mypage-header-spacer"></div>
+    </div>
+    <div class="mypage-scroll">
+
+      <!-- ユーザー情報 -->
+      <div class="mypage-user-section">
+        <img src="https://www.figma.com/api/mcp/asset/e7bb5e9e-2215-4f51-8a22-566a05a90965" alt="" class="mypage-avatar">
+        <div class="mypage-user-info">
+          <div class="mypage-user-name-row">
+            <span class="mypage-user-name">山田あやか</span>
+            <svg width="7" height="12" viewBox="0 0 7 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M1 1L6 6L1 11" stroke="#222" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="mypage-user-meta">
+            <div class="mypage-rating">
+              <div class="mypage-rating-stars">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="#FFB818"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="#FFB818"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="#FFB818"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="#FFB818"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <defs><clipPath id="half"><rect x="0" y="0" width="12" height="24"/></clipPath></defs>
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="#FFB818" clip-path="url(#half)"/>
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="#FFB818" stroke-width="1" fill="none"/>
+                </svg>
+              </div>
+              <span class="mypage-rating-count">9999</span>
+            </div>
+            <div class="mypage-verified">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="#34c759"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke="#34c759" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              本人確認済
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 履歴 -->
+      <div class="mypage-section">
+        <div class="mypage-section-title">履歴</div>
+        <div class="mypage-row">
+          <div class="mypage-row-label">閲覧履歴</div>
+          <svg class="mypage-row-chevron" width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1L6 6L1 11" stroke="#222" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="mypage-row">
+          <div class="mypage-row-label">購入履歴</div>
+          <svg class="mypage-row-chevron" width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1L6 6L1 11" stroke="#222" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="mypage-row">
+          <div class="mypage-row-label">持ち物一覧</div>
+          <svg class="mypage-row-chevron" width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1L6 6L1 11" stroke="#222" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+      </div>
+
+      <!-- クーポン・キャンペーン -->
+      <div class="mypage-section">
+        <div class="mypage-section-title">クーポン・キャンペーン</div>
+        <div class="mypage-row">
+          <div class="mypage-row-label">
+            クーポン
+            <div class="mypage-row-sub">未使用のクーポンがあります</div>
+          </div>
+          <svg class="mypage-row-chevron" width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1L6 6L1 11" stroke="#222" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="mypage-row">
+          <div class="mypage-row-label">
+            キャンペーン
+            <div class="mypage-row-sub">3件のキャンペーンがあります</div>
+          </div>
+          <svg class="mypage-row-chevron" width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1L6 6L1 11" stroke="#222" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+      </div>
+
+      <!-- ヘルプ -->
+      <div class="mypage-section">
+        <div class="mypage-section-title">ヘルプ</div>
+        <div class="mypage-row">
+          <div class="mypage-row-label">
+            ヘルプセンター
+            <div class="mypage-row-sub">ガイド・お問い合わせ</div>
+          </div>
+          <svg class="mypage-row-chevron" width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1L6 6L1 11" stroke="#222" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+      </div>
+
+      <!-- 設定等 -->
+      <div class="mypage-section">
+        <div class="mypage-section-title">設定等</div>
+        <div class="mypage-row">
+          <div class="mypage-row-label">設定</div>
+          <svg class="mypage-row-chevron" width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1L6 6L1 11" stroke="#222" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="mypage-row">
+          <div class="mypage-row-label">規約・ポリシー</div>
+          <svg class="mypage-row-chevron" width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1L6 6L1 11" stroke="#222" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+      </div>
+
+      <!-- ログアウト -->
+      <div class="mypage-logout-section mypage-section">
+        <div class="mypage-row">
+          <div class="mypage-row-label">ログアウト</div>
+          <svg class="mypage-row-chevron" width="7" height="12" viewBox="0 0 7 12" fill="none"><path d="M1 1L6 6L1 11" stroke="#222" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+      </div>
+
+      <div class="mypage-version">バージョン 4.49.2 (79008)</div>
+    </div>
+  </div>
+
   <!-- 共通トップナビ: ホーム・オークション・出品・おさいふで表示、検索では非表示 -->
   <div class="top-nav">
     <!-- 左: マイページアバター (Figma画像) -->
-    <div class="nav-avatar">
+    <div class="nav-avatar" onclick="openMyPage()">
       <img src="https://www.figma.com/api/mcp/asset/e7bb5e9e-2215-4f51-8a22-566a05a90965" alt="マイページ">
     </div>
     <!-- 右: 通知・カート・やること -->
@@ -1622,6 +1856,14 @@
       window.scrollTo(0, 0);
       updateFloatBar();
     });
+  }
+
+  function openMyPage() {
+    document.getElementById('mypage-overlay').classList.add('open');
+  }
+
+  function closeMyPage() {
+    document.getElementById('mypage-overlay').classList.remove('open');
   }
 
   // タブが再表示されたときにリロード
