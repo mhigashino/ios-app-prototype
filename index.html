@@ -1148,6 +1148,281 @@
   }
   .mypage-scroll::-webkit-scrollbar { display: none; }
 
+  /* ════════════════════════════════════════
+     Panel Overlay（お知らせ・カート・やること）
+  ════════════════════════════════════════ */
+  .panel-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 210;
+    background: var(--color-bg-primary);
+    display: flex;
+    flex-direction: column;
+    transform: translateX(100%);
+    transition: transform 0.3s cubic-bezier(0.33, 1, 0.68, 1);
+    will-change: transform;
+  }
+  .panel-overlay.open { transform: translateX(0); }
+
+  .panel-header {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 0 4px 0 4px;
+    padding-top: env(safe-area-inset-top);
+    height: calc(env(safe-area-inset-top) + 52px);
+    background: var(--color-bg-primary);
+    border-bottom: 1px solid var(--color-border-primary);
+    box-shadow: var(--shadow-layer2);
+    flex-shrink: 0;
+    position: relative;
+  }
+  .panel-back-btn {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    border-radius: var(--radius-medium);
+    flex-shrink: 0;
+    color: var(--color-fg-accent);
+  }
+  .panel-back-btn:active { opacity: 0.5; }
+  .panel-title {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--color-fg-primary);
+    flex: 1;
+    text-align: center;
+    margin-right: 44px; /* back btn幅分オフセット */
+  }
+  .panel-scroll {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    background: var(--color-bg-secondary);
+  }
+  .panel-scroll::-webkit-scrollbar { display: none; }
+
+  /* ── お知らせ ── */
+  .notif-section-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--color-fg-tertiary);
+    padding: 16px 16px 8px;
+    background: var(--color-bg-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .notif-list {
+    background: var(--color-bg-primary);
+    border-top: 1px solid var(--color-border-primary);
+    border-bottom: 1px solid var(--color-border-primary);
+  }
+  .notif-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 16px;
+    position: relative;
+    cursor: pointer;
+    background: var(--color-bg-primary);
+    transition: background 0.1s;
+  }
+  .notif-item + .notif-item {
+    border-top: 1px solid var(--color-border-secondary);
+  }
+  .notif-item.unread { background: #EFF7FF; }
+  .notif-item:active { background: var(--color-bg-secondary); }
+  .notif-icon-wrap {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .notif-icon-wrap.type-trade  { background: #EFF7FF; }
+  .notif-icon-wrap.type-promo  { background: #FFF5D0; }
+  .notif-icon-wrap.type-like   { background: #FEF5F7; }
+  .notif-icon-wrap.type-system { background: var(--color-bg-secondary); }
+  .notif-body { flex: 1; min-width: 0; }
+  .notif-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-fg-primary);
+    line-height: 1.4;
+    margin-bottom: 3px;
+  }
+  .notif-desc {
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--color-fg-secondary);
+    line-height: 1.4;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .notif-time {
+    font-size: 12px;
+    color: var(--color-fg-tertiary);
+    margin-top: 4px;
+  }
+  .notif-unread-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-fg-attention);
+    flex-shrink: 0;
+    margin-top: 6px;
+  }
+
+  /* ── カート ── */
+  #panel-cart .panel-scroll { background: var(--color-bg-secondary); }
+  .cart-list {
+    background: var(--color-bg-primary);
+    border-top: 1px solid var(--color-border-primary);
+    border-bottom: 1px solid var(--color-border-primary);
+    margin-top: 12px;
+  }
+  .cart-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    cursor: pointer;
+    transition: background 0.1s;
+  }
+  .cart-item + .cart-item { border-top: 1px solid var(--color-border-secondary); }
+  .cart-item:active { background: var(--color-bg-secondary); }
+  .cart-thumb {
+    width: 64px;
+    height: 64px;
+    border-radius: var(--radius-small);
+    object-fit: cover;
+    flex-shrink: 0;
+    background: var(--color-bg-secondary);
+  }
+  .cart-item-body { flex: 1; min-width: 0; }
+  .cart-item-name {
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--color-fg-primary);
+    line-height: 1.4;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 4px;
+  }
+  .cart-item-price {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--color-fg-primary);
+  }
+  .cart-footer {
+    background: var(--color-bg-primary);
+    border-top: 1px solid var(--color-border-primary);
+    padding: 16px;
+    padding-bottom: calc(env(safe-area-inset-bottom) + 16px);
+    margin-top: 12px;
+  }
+  .cart-total-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+  }
+  .cart-total-label { font-size: 14px; color: var(--color-fg-secondary); }
+  .cart-total-price { font-size: 18px; font-weight: 600; color: var(--color-fg-primary); }
+  .cart-checkout-btn {
+    width: 100%;
+    height: 52px;
+    background: var(--color-bg-accent);
+    color: var(--color-fg-bold);
+    font-size: 17px;
+    font-weight: 600;
+    border: none;
+    border-radius: var(--radius-medium);
+    cursor: pointer;
+    transition: opacity 0.12s;
+  }
+  .cart-checkout-btn:active { opacity: 0.75; }
+
+  /* ── やること ── */
+  #panel-todo .panel-scroll { background: var(--color-bg-secondary); }
+  .todo-section {
+    margin-top: 12px;
+  }
+  .todo-section-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--color-fg-tertiary);
+    padding: 0 16px 8px;
+    letter-spacing: 0.04em;
+  }
+  .todo-list {
+    background: var(--color-bg-primary);
+    border-top: 1px solid var(--color-border-primary);
+    border-bottom: 1px solid var(--color-border-primary);
+  }
+  .todo-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    cursor: pointer;
+    transition: background 0.1s;
+  }
+  .todo-item + .todo-item { border-top: 1px solid var(--color-border-secondary); }
+  .todo-item:active { background: var(--color-bg-secondary); }
+  .todo-icon-wrap {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .todo-icon-wrap.type-send    { background: #EFF7FF; }
+  .todo-icon-wrap.type-receive { background: #E3FFEA; }
+  .todo-icon-wrap.type-rate    { background: #FFF5D0; }
+  .todo-icon-wrap.type-alert   { background: #FEF5F7; }
+  .todo-item-body { flex: 1; }
+  .todo-item-label {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--color-fg-primary);
+    margin-bottom: 2px;
+  }
+  .todo-item-sub {
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--color-fg-secondary);
+  }
+  .todo-badge {
+    min-width: 22px;
+    height: 22px;
+    border-radius: var(--radius-full);
+    background: var(--color-bg-attention);
+    color: var(--color-fg-bold);
+    font-size: 12px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 6px;
+    flex-shrink: 0;
+  }
+  .todo-chevron {
+    color: var(--color-fg-disabled);
+    flex-shrink: 0;
+  }
+
   /* ─ コンテンツ全体パディング ─ */
   .mp-content {
     display: flex; flex-direction: column;
@@ -2550,6 +2825,196 @@
 
   </div>
 
+  <!-- ══ お知らせ画面 ══ -->
+  <div id="panel-notification" class="panel-overlay">
+    <div class="panel-header">
+      <button class="panel-back-btn" onclick="closePanel('notification')" aria-label="戻る">
+        <svg width="10" height="17" viewBox="0 0 10 17" fill="none">
+          <path d="M9 1L1.5 8.5L9 16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <span class="panel-title">お知らせ</span>
+    </div>
+    <div class="panel-scroll">
+      <div class="notif-section-label">新着</div>
+      <div class="notif-list">
+        <div class="notif-item unread">
+          <div class="notif-icon-wrap type-trade">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="var(--color-fg-accent)" stroke-width="1.5" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="notif-body">
+            <div class="notif-title">購入申請が届きました</div>
+            <div class="notif-desc">【ナイキ】エアフォース1 ホワイト 26.5cm に購入申請がありました</div>
+            <div class="notif-time">5分前</div>
+          </div>
+          <div class="notif-unread-dot"></div>
+        </div>
+        <div class="notif-item unread">
+          <div class="notif-icon-wrap type-promo">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" fill="var(--color-bg-notice)"/></svg>
+          </div>
+          <div class="notif-body">
+            <div class="notif-title">ポイント5倍キャンペーン開催中！</div>
+            <div class="notif-desc">本日23:59まで！対象カテゴリの購入でポイントが5倍になります</div>
+            <div class="notif-time">2時間前</div>
+          </div>
+          <div class="notif-unread-dot"></div>
+        </div>
+        <div class="notif-item unread">
+          <div class="notif-icon-wrap type-like">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" stroke="var(--color-fg-attention)" stroke-width="1.5" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="notif-body">
+            <div class="notif-title">出品中の商品にいいね！がつきました</div>
+            <div class="notif-desc">【アディダス】スタンスミス ホワイトグリーン 27cm</div>
+            <div class="notif-time">3時間前</div>
+          </div>
+          <div class="notif-unread-dot"></div>
+        </div>
+      </div>
+
+      <div class="notif-section-label" style="margin-top:8px;">過去のお知らせ</div>
+      <div class="notif-list">
+        <div class="notif-item">
+          <div class="notif-icon-wrap type-trade">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="2" y="3" width="20" height="14" rx="2" stroke="var(--color-fg-accent)" stroke-width="1.5"/><path d="M8 21h8M12 17v4" stroke="var(--color-fg-accent)" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <div class="notif-body">
+            <div class="notif-title">評価をお願いします</div>
+            <div class="notif-desc">取引が完了しました。相手の評価をお忘れなく</div>
+            <div class="notif-time">昨日</div>
+          </div>
+        </div>
+        <div class="notif-item">
+          <div class="notif-icon-wrap type-system">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 22C6.48 22 2 17.52 2 12S6.48 2 12 2s10 4.48 10 10-4.48 10-10 10zm0-11v5m0-8v1" stroke="var(--color-fg-tertiary)" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <div class="notif-body">
+            <div class="notif-title">メルカリ便の配送状況が更新されました</div>
+            <div class="notif-desc">お荷物が配送中になりました（追跡番号: 1234-5678-9012）</div>
+            <div class="notif-time">2日前</div>
+          </div>
+        </div>
+        <div class="notif-item">
+          <div class="notif-icon-wrap type-system">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 22C6.48 22 2 17.52 2 12S6.48 2 12 2s10 4.48 10 10-4.48 10-10 10zm0-11v5m0-8v1" stroke="var(--color-fg-tertiary)" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <div class="notif-body">
+            <div class="notif-title">サービス利用規約が更新されました</div>
+            <div class="notif-desc">2026年4月1日より新しい利用規約が適用されます</div>
+            <div class="notif-time">3日前</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ カート画面 ══ -->
+  <div id="panel-cart" class="panel-overlay">
+    <div class="panel-header">
+      <button class="panel-back-btn" onclick="closePanel('cart')" aria-label="戻る">
+        <svg width="10" height="17" viewBox="0 0 10 17" fill="none">
+          <path d="M9 1L1.5 8.5L9 16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <span class="panel-title">カート</span>
+    </div>
+    <div class="panel-scroll">
+      <div class="cart-list">
+        <div class="cart-item">
+          <img class="cart-thumb" src="assets/images/b1e08b52-4db2-4a3b-a8dc-ba64ce3e7c18.png" alt="商品">
+          <div class="cart-item-body">
+            <div class="cart-item-name">【ナイキ】エアマックス95 OG ネオンイエロー 27.0cm 美品</div>
+            <div class="cart-item-price">¥24,800</div>
+          </div>
+        </div>
+        <div class="cart-item">
+          <img class="cart-thumb" src="assets/images/46c29b27-bbb0-42f7-ac00-78e302a3e5ac.png" alt="商品">
+          <div class="cart-item-body">
+            <div class="cart-item-name">LOEWE ロエベ パズルバッグ スモール ブラック</div>
+            <div class="cart-item-price">¥148,000</div>
+          </div>
+        </div>
+      </div>
+      <div class="cart-footer">
+        <div class="cart-total-row">
+          <span class="cart-total-label">合計（2点）</span>
+          <span class="cart-total-price">¥172,800</span>
+        </div>
+        <button class="cart-checkout-btn">購入手続きへ</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ やること画面 ══ -->
+  <div id="panel-todo" class="panel-overlay">
+    <div class="panel-header">
+      <button class="panel-back-btn" onclick="closePanel('todo')" aria-label="戻る">
+        <svg width="10" height="17" viewBox="0 0 10 17" fill="none">
+          <path d="M9 1L1.5 8.5L9 16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <span class="panel-title">やること</span>
+    </div>
+    <div class="panel-scroll">
+      <div class="todo-section">
+        <div class="todo-section-label">出品中の取引</div>
+        <div class="todo-list">
+          <div class="todo-item">
+            <div class="todo-icon-wrap type-alert">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" stroke="var(--color-fg-attention)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="todo-item-body">
+              <div class="todo-item-label">発送期限が近い</div>
+              <div class="todo-item-sub">本日23:59までに発送してください</div>
+            </div>
+            <div class="todo-badge">1</div>
+            <svg class="todo-chevron" width="8" height="13" viewBox="0 0 8 13" fill="none"><path d="M1 1l6 5.5L1 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="todo-item">
+            <div class="todo-icon-wrap type-send">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="var(--color-fg-accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="todo-item-body">
+              <div class="todo-item-label">発送待ち</div>
+              <div class="todo-item-sub">購入者が支払い済みです</div>
+            </div>
+            <div class="todo-badge">2</div>
+            <svg class="todo-chevron" width="8" height="13" viewBox="0 0 8 13" fill="none"><path d="M1 1l6 5.5L1 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="todo-item">
+            <div class="todo-icon-wrap type-rate">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="var(--color-bg-notice)" stroke-width="1.5" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="todo-item-body">
+              <div class="todo-item-label">評価待ち</div>
+              <div class="todo-item-sub">取引完了後に評価をお願いします</div>
+            </div>
+            <div class="todo-badge">1</div>
+            <svg class="todo-chevron" width="8" height="13" viewBox="0 0 8 13" fill="none"><path d="M1 1l6 5.5L1 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="todo-section" style="margin-top:8px;">
+        <div class="todo-section-label">購入中の取引</div>
+        <div class="todo-list">
+          <div class="todo-item">
+            <div class="todo-icon-wrap type-receive">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke="var(--color-fg-success)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="todo-item-body">
+              <div class="todo-item-label">受取評価を忘れずに</div>
+              <div class="todo-item-sub">商品到着後は受取連絡をしてください</div>
+            </div>
+            <div class="todo-badge">1</div>
+            <svg class="todo-chevron" width="8" height="13" viewBox="0 0 8 13" fill="none"><path d="M1 1l6 5.5L1 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- マイページバックドロップ -->
   <div id="mypage-backdrop" class="mypage-backdrop" onclick="closeMyPage()"></div>
 
@@ -2798,7 +3263,7 @@
     </div>
     <div class="nav-right">
       <!-- NotificationOutline -->
-      <div class="nav-icon-btn">
+      <div class="nav-icon-btn" onclick="openPanel('notification')" style="cursor:pointer">
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M12 2C9.23858 2 7 4.23858 7 7V13.5858L5.29289 15.2929C5.10536 15.4804 5 15.7348 5 16V17C5 17.5523 5.44772 18 6 18H9.17071C9.58254 19.1652 10.6938 20 12 20C13.3062 20 14.4175 19.1652 14.8293 18H18C18.5523 18 19 17.5523 19 17V16C19 15.7348 18.8946 15.4804 18.7071 15.2929L17 13.5858V7C17 4.23858 14.7614 2 12 2Z" stroke="#2a2a2a" stroke-width="1.4" stroke-linejoin="round"/>
           <path d="M12 22C10.8954 22 10 21.1046 10 20H14C14 21.1046 13.1046 22 12 22Z" fill="#2a2a2a"/>
@@ -2806,7 +3271,7 @@
         </svg>
       </div>
       <!-- CartOutline -->
-      <div class="nav-icon-btn">
+      <div class="nav-icon-btn" onclick="openPanel('cart')" style="cursor:pointer">
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M2 3H4.5L6.5 14H17.5L19.5 7H5.5" stroke="#2a2a2a" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
           <circle cx="9" cy="18" r="1.5" fill="#2a2a2a"/>
@@ -2814,7 +3279,7 @@
         </svg>
       </div>
       <!-- TodoOutline (DS4: checkmark ✓) -->
-      <div class="nav-icon-btn">
+      <div class="nav-icon-btn" onclick="openPanel('todo')" style="cursor:pointer">
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M4 12.5L9.5 18L20 7" stroke="#2a2a2a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
@@ -2896,6 +3361,13 @@
   function closeMyPage() {
     document.getElementById('mypage-overlay').classList.remove('open');
     document.getElementById('mypage-backdrop').classList.remove('open');
+  }
+
+  function openPanel(name) {
+    document.getElementById('panel-' + name).classList.add('open');
+  }
+  function closePanel(name) {
+    document.getElementById('panel-' + name).classList.remove('open');
   }
 
   function switchTab(tabName, el) {
