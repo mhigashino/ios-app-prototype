@@ -313,7 +313,7 @@
       fill: inherit;
     }
 
-    .search-btn.active svg {
+    .search-btn.active:not(.search-close-btn) svg {
       fill: var(--color-fg-primary);
       transform: scale(1.08);
       filter: none;
@@ -390,6 +390,7 @@
       width: 24px;
       height: 24px;
       fill: none;
+      color: var(--color-fg-primary);
       stroke: var(--color-fg-primary);
     }
 
