@@ -3898,8 +3898,8 @@
       const indicator = document.getElementById('tab-indicator');
       if (indicator) {
         indicator.style.transition = 'none';
-        indicator.style.left = activeTab.offsetLeft + 'px';
-        indicator.style.width = activeTab.offsetWidth + 'px';
+        indicator.style.left = (activeTab.offsetLeft + 4) + 'px';
+        indicator.style.width = (activeTab.offsetWidth - 8) + 'px';
         // 次フレームからアニメーション有効化
         requestAnimationFrame(() => {
           indicator.style.transition = '';
