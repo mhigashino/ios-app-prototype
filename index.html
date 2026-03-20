@@ -3845,8 +3845,8 @@
   function updateTabIndicator(el) {
     const indicator = document.getElementById('tab-indicator');
     if (!indicator || !el) return;
-    indicator.style.left = el.offsetLeft + 'px';
-    indicator.style.width = el.offsetWidth + 'px';
+    indicator.style.left = (el.offsetLeft + 4) + 'px';
+    indicator.style.width = (el.offsetWidth - 8) + 'px';
   }
 
   function switchTab(tabName, el) {
