@@ -3836,7 +3836,15 @@
     indicator.style.width = (el.offsetWidth - 8) + 'px';
   }
 
+  const tabScrollMap = { home: '.home-scroll', auction: '.auc-scroll', list: '.list-scroll', wallet: '.wal-scroll' };
+
   function switchTab(tabName, el) {
+    // 既にアクティブなタブをタップ → スクロールトップ
+    if (el.classList.contains('active')) {
+      const scrollEl = document.querySelector(tabScrollMap[tabName]);
+      if (scrollEl) scrollEl.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
     document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
     document.querySelectorAll('.search-btn').forEach(t => t.classList.remove('active'));
     el.classList.add('active');
