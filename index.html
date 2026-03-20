@@ -1191,7 +1191,7 @@
     cursor: pointer;
     border-radius: var(--radius-medium);
     flex-shrink: 0;
-    color: var(--color-fg-accent);
+    color: var(--color-fg-primary);
   }
   .panel-back-btn:active { opacity: 0.5; }
   .panel-title {
@@ -1335,9 +1335,15 @@
     margin-top: 6px;
   }
   .campaign-card-wrap {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
     padding: 12px 16px 16px;
     background: transparent;
-    flex-shrink: 0;
+  }
+  #panel-notification .panel-scroll {
+    padding-bottom: 90px;
   }
   .campaign-card {
     border: 1px solid #0095EE;
@@ -1433,7 +1439,7 @@
     color: var(--color-fg-tertiary);
     margin-top: 2px;
   }
-  .info-chevron { color: var(--color-fg-disabled); flex-shrink: 0; }
+  .info-chevron { color: var(--color-fg-primary); flex-shrink: 0; }
 
   /* ── カート ── */
   #panel-cart .panel-scroll { background: #fff; }
