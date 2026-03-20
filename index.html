@@ -1231,7 +1231,7 @@
     font-weight: 600;
     white-space: nowrap;
     cursor: pointer;
-    border: 1.5px solid var(--color-border-primary);
+    border: 0.5px solid var(--color-border-primary);
     background: var(--color-bg-primary);
     color: var(--color-fg-primary);
     transition: all 0.12s;
@@ -1253,8 +1253,14 @@
     transition: background 0.1s;
     position: relative;
   }
-  .notif-row + .notif-row {
-    border-top: 1px solid var(--color-border-primary);
+  .notif-row + .notif-row::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 16px;
+    right: 16px;
+    height: 0.5px;
+    background: #ccc;
   }
   .notif-row:active { background: var(--color-bg-secondary); }
   .notif-thumb-wrap {
@@ -1276,7 +1282,7 @@
     width: 48px;
     height: 48px;
     border-radius: var(--radius-full);
-    background: #FF333F;
+    background: var(--color-bg-secondary);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1329,9 +1335,8 @@
   }
   .campaign-card-wrap {
     padding: 12px 16px 16px;
-    background: var(--color-bg-primary);
+    background: transparent;
     flex-shrink: 0;
-    border-top: 0.5px solid var(--color-border-primary);
   }
   .campaign-card {
     border: 1px solid #0095EE;
@@ -1459,7 +1464,16 @@
     align-items: center;
     gap: 8px;
     padding: 12px 16px 10px;
-    border-bottom: 1px solid var(--color-border-primary);
+    position: relative;
+  }
+  .cart-seller-row::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 16px;
+    right: 16px;
+    height: 0.5px;
+    background: #ccc;
   }
   .cart-seller-avatar {
     width: 32px;
@@ -1598,7 +1612,16 @@
   }
   .cart-purchase-section {
     padding: 14px 16px 16px;
-    border-top: 1px solid var(--color-border-primary);
+    position: relative;
+  }
+  .cart-purchase-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 16px;
+    right: 16px;
+    height: 0.5px;
+    background: #ccc;
   }
   .cart-price-row {
     display: flex;
@@ -1641,7 +1664,16 @@
     margin-top: 8px;
     padding: 16px;
     padding-bottom: calc(env(safe-area-inset-bottom) + 20px);
-    border-top: 1px solid var(--color-border-primary);
+    position: relative;
+  }
+  .cart-overall-footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 16px;
+    right: 16px;
+    height: 0.5px;
+    background: #ccc;
   }
   .cart-overall-row {
     display: flex;
@@ -3091,7 +3123,7 @@
         <!-- row 1: いいね通知（商品サムネイル＋いいねバッジ） -->
         <div class="notif-row">
           <div class="notif-thumb-wrap">
-            <img class="notif-thumb item-shape" src="assets/images/b1e08b52-4db2-4a3b-a8dc-ba64ce3e7c18.png" alt="">
+            <img class="notif-thumb item-shape" src="assets/images/7f3f093c-e633-4f50-8ffa-d1a17dc3eaca.png" alt="">
             <div class="notif-badge like">
               <svg width="9" height="9" viewBox="0 0 24 24" fill="#fff"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
               3
@@ -3107,7 +3139,7 @@
         <!-- row 2: コメント通知（商品サムネイル＋コメントバッジ） -->
         <div class="notif-row">
           <div class="notif-thumb-wrap">
-            <img class="notif-thumb item-shape" src="assets/images/46c29b27-bbb0-42f7-ac00-78e302a3e5ac.png" alt="">
+            <img class="notif-thumb item-shape" src="assets/images/5750dc24-874f-4df5-a522-f2824e02b7db.png" alt="">
             <div class="notif-badge comment">
               <svg width="9" height="9" viewBox="0 0 24 24" fill="#fff"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
               1
@@ -3137,7 +3169,7 @@
         <!-- row 4: ユーザーアバター（購入申請） -->
         <div class="notif-row">
           <div class="notif-thumb-wrap">
-            <img class="notif-thumb" src="assets/images/c2e9c9a2-01fe-4f8d-b53c-b84b12fba3b1.png" alt="">
+            <img class="notif-thumb" src="assets/images/cart_seller_hanako.png" alt="">
           </div>
           <div class="notif-text">
             <div class="notif-text-primary"><strong>taro_fashion</strong>さんから購入申請が届きました</div>
@@ -3162,7 +3194,7 @@
         <!-- row 6: いいね通知（商品サムネイル） -->
         <div class="notif-row">
           <div class="notif-thumb-wrap">
-            <img class="notif-thumb item-shape" src="assets/images/f9e1f26d-7e71-4c02-a6d5-12edd5e9aafc.png" alt="">
+            <img class="notif-thumb item-shape" src="assets/images/64654282-88bd-4ae2-a9e9-30969f717c4d.png" alt="">
             <div class="notif-badge like">
               <svg width="9" height="9" viewBox="0 0 24 24" fill="#fff"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
               12
@@ -3190,7 +3222,7 @@
         <!-- row 8: 評価リマインダー（ユーザーアバター） -->
         <div class="notif-row">
           <div class="notif-thumb-wrap">
-            <img class="notif-thumb" src="assets/images/0eb5ec2e-e0c3-414c-a7ef-9b26c79ead9a.png" alt="">
+            <img class="notif-thumb" src="assets/images/cart_seller_merblue.png" alt="">
           </div>
           <div class="notif-text">
             <div class="notif-text-primary">取引が完了しました。<strong>hana_tokyo</strong>さんへの評価をお願いします</div>
