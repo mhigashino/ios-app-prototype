@@ -1197,78 +1197,122 @@
     color: var(--color-fg-primary);
     flex: 1;
     text-align: center;
-    margin-right: 44px; /* back btn幅分オフセット */
+    margin-right: 44px;
   }
   .panel-scroll {
     flex: 1;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    background: var(--color-bg-secondary);
+    background: var(--color-bg-primary);
   }
   .panel-scroll::-webkit-scrollbar { display: none; }
 
-  /* ── お知らせ ── */
-  .notif-section-label {
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--color-fg-tertiary);
-    padding: 16px 16px 8px;
-    background: var(--color-bg-secondary);
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-  }
-  .notif-list {
+  /* ── FilterChip bar ── */
+  .panel-chip-bar {
+    display: flex;
+    gap: 8px;
+    padding: 10px 16px 12px;
     background: var(--color-bg-primary);
-    border-top: 1px solid var(--color-border-primary);
+    overflow-x: auto;
+    flex-shrink: 0;
     border-bottom: 1px solid var(--color-border-primary);
   }
-  .notif-item {
+  .panel-chip-bar::-webkit-scrollbar { display: none; }
+  .panel-chip {
+    display: inline-flex;
+    align-items: center;
+    height: 32px;
+    padding: 0 14px;
+    border-radius: var(--radius-full);
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+    border: 1.5px solid var(--color-border-primary);
+    background: var(--color-bg-primary);
+    color: var(--color-fg-primary);
+    transition: all 0.12s;
+  }
+  .panel-chip.active {
+    background: var(--color-bg-accent);
+    color: #fff;
+    border-color: var(--color-bg-accent);
+  }
+
+  /* ── お知らせ notification rows ── */
+  .notif-list { background: var(--color-bg-primary); }
+  .notif-row {
     display: flex;
     align-items: flex-start;
-    gap: 12px;
-    padding: 14px 16px;
-    position: relative;
+    gap: 10px;
+    padding: 12px 16px;
     cursor: pointer;
-    background: var(--color-bg-primary);
     transition: background 0.1s;
+    position: relative;
   }
-  .notif-item + .notif-item {
-    border-top: 1px solid var(--color-border-secondary);
+  .notif-row + .notif-row {
+    border-top: 1px solid var(--color-border-primary);
   }
-  .notif-item.unread { background: #EFF7FF; }
-  .notif-item:active { background: var(--color-bg-secondary); }
-  .notif-icon-wrap {
-    width: 40px;
-    height: 40px;
+  .notif-row:active { background: var(--color-bg-secondary); }
+  .notif-thumb-wrap {
+    position: relative;
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+  }
+  .notif-thumb {
+    width: 48px;
+    height: 48px;
     border-radius: var(--radius-full);
+    object-fit: cover;
+    background: var(--color-bg-secondary);
+    display: block;
+  }
+  .notif-thumb.item-shape { border-radius: var(--radius-small); }
+  .notif-mercari-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-full);
+    background: #FF333F;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
   }
-  .notif-icon-wrap.type-trade  { background: #EFF7FF; }
-  .notif-icon-wrap.type-promo  { background: #FFF5D0; }
-  .notif-icon-wrap.type-like   { background: #FEF5F7; }
-  .notif-icon-wrap.type-system { background: var(--color-bg-secondary); }
-  .notif-body { flex: 1; min-width: 0; }
-  .notif-title {
-    font-size: 14px;
+  .notif-badge {
+    position: absolute;
+    bottom: -3px;
+    right: -4px;
+    height: 18px;
+    min-width: 18px;
+    border-radius: var(--radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    padding: 0 4px;
+    font-size: 10px;
     font-weight: 600;
+    color: #fff;
+    border: 1.5px solid #fff;
+  }
+  .notif-badge.like { background: var(--color-bg-attention); }
+  .notif-badge.comment { background: #222; }
+  .notif-text { flex: 1; min-width: 0; }
+  .notif-text-primary {
+    font-size: 14px;
+    font-weight: 300;
     color: var(--color-fg-primary);
     line-height: 1.4;
-    margin-bottom: 3px;
-  }
-  .notif-desc {
-    font-size: 13px;
-    font-weight: 300;
-    color: var(--color-fg-secondary);
-    line-height: 1.4;
-    white-space: nowrap;
+    margin-bottom: 2px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
     overflow: hidden;
-    text-overflow: ellipsis;
   }
+  .notif-text-primary strong { font-weight: 600; }
   .notif-time {
-    font-size: 12px;
+    font-size: 11px;
     color: var(--color-fg-tertiary);
     margin-top: 4px;
   }
@@ -1280,147 +1324,339 @@
     flex-shrink: 0;
     margin-top: 6px;
   }
-
-  /* ── カート ── */
-  #panel-cart .panel-scroll { background: var(--color-bg-secondary); }
-  .cart-list {
+  .campaign-card {
+    margin: 12px 16px;
+    border: 1.5px solid #0095ee;
+    border-radius: var(--radius-medium);
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
     background: var(--color-bg-primary);
-    border-top: 1px solid var(--color-border-primary);
-    border-bottom: 1px solid var(--color-border-primary);
-    margin-top: 12px;
+    box-shadow: 0 1px 6px rgba(0,149,238,0.18);
+    cursor: pointer;
   }
-  .cart-item {
+  .campaign-card-text {
+    font-size: 14px;
+    font-weight: 600;
+    color: #0095ee;
+    line-height: 1.4;
+    flex: 1;
+  }
+
+  /* ── やることリスト info rows ── */
+  #panel-todo .panel-scroll { background: var(--color-bg-primary); }
+  .info-list { background: var(--color-bg-primary); }
+  .info-row {
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 14px 16px;
+    padding: 12px 16px;
     cursor: pointer;
     transition: background 0.1s;
+    position: relative;
   }
-  .cart-item + .cart-item { border-top: 1px solid var(--color-border-secondary); }
-  .cart-item:active { background: var(--color-bg-secondary); }
-  .cart-thumb {
+  .info-row + .info-row::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 72px;
+    right: 0;
+    height: 1px;
+    background: var(--color-border-primary);
+  }
+  .info-row:active { background: var(--color-bg-secondary); }
+  .info-thumb-wrap {
+    position: relative;
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+  }
+  .info-thumb {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-full);
+    object-fit: cover;
+    background: var(--color-bg-secondary);
+    display: block;
+    border: 1px solid var(--color-border-primary);
+  }
+  .info-thumb.item-shape {
+    border-radius: var(--radius-small);
+    border: none;
+  }
+  .info-thumb-badge {
+    position: absolute;
+    bottom: -3px;
+    right: -4px;
+    height: 18px;
+    min-width: 18px;
+    border-radius: var(--radius-full);
+    background: var(--color-bg-attention);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+    border: 1.5px solid #fff;
+  }
+  .info-body { flex: 1; min-width: 0; }
+  .info-label {
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--color-fg-primary);
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .info-label strong { font-weight: 600; }
+  .info-sub {
+    font-size: 12px;
+    color: var(--color-fg-tertiary);
+    margin-top: 2px;
+  }
+  .info-chevron { color: var(--color-fg-disabled); flex-shrink: 0; }
+
+  /* ── カート ── */
+  #panel-cart .panel-scroll { background: #efefef; }
+  .cart-check-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    background: var(--color-bg-primary);
+    border-bottom: 1px solid var(--color-border-primary);
+    margin-bottom: 8px;
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--color-fg-primary);
+  }
+  .cart-check-row input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--color-bg-accent);
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .cart-seller-group {
+    background: var(--color-bg-primary);
+    margin-bottom: 8px;
+  }
+  .cart-seller-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px 10px;
+    border-bottom: 1px solid var(--color-border-primary);
+  }
+  .cart-seller-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-full);
+    background: var(--color-bg-secondary);
+    object-fit: cover;
+    flex-shrink: 0;
+    border: 1px solid var(--color-border-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .cart-seller-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-fg-primary);
+    flex: 1;
+  }
+  .cart-item-group {
+    padding: 12px 16px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .cart-item-thumb {
     width: 64px;
     height: 64px;
     border-radius: var(--radius-small);
     object-fit: cover;
     flex-shrink: 0;
     background: var(--color-bg-secondary);
+    display: block;
   }
-  .cart-item-body { flex: 1; min-width: 0; }
+  .cart-item-info { flex: 1; min-width: 0; }
   .cart-item-name {
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 300;
     color: var(--color-fg-primary);
     line-height: 1.4;
-    white-space: nowrap;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
     overflow: hidden;
-    text-overflow: ellipsis;
-    margin-bottom: 4px;
+    margin-bottom: 6px;
   }
   .cart-item-price {
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--color-fg-primary);
-  }
-  .cart-footer {
-    background: var(--color-bg-primary);
-    border-top: 1px solid var(--color-border-primary);
-    padding: 16px;
-    padding-bottom: calc(env(safe-area-inset-bottom) + 16px);
-    margin-top: 12px;
-  }
-  .cart-total-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 14px;
-  }
-  .cart-total-label { font-size: 14px; color: var(--color-fg-secondary); }
-  .cart-total-price { font-size: 18px; font-weight: 600; color: var(--color-fg-primary); }
-  .cart-checkout-btn {
-    width: 100%;
-    height: 52px;
-    background: var(--color-bg-accent);
-    color: var(--color-fg-bold);
     font-size: 17px;
     font-weight: 600;
-    border: none;
-    border-radius: var(--radius-medium);
-    cursor: pointer;
-    transition: opacity 0.12s;
+    color: var(--color-fg-primary);
+    margin-bottom: 6px;
   }
-  .cart-checkout-btn:active { opacity: 0.75; }
-
-  /* ── やること ── */
-  #panel-todo .panel-scroll { background: var(--color-bg-secondary); }
-  .todo-section {
-    margin-top: 12px;
+  .cart-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+  .cart-tag {
+    display: inline-flex;
+    align-items: center;
+    height: 20px;
+    padding: 0 6px;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: 300;
+    border: 1px solid;
   }
-  .todo-section-label {
-    font-size: 12px;
+  .cart-tag.attention { color: #E32B30; border-color: #E32B30; }
+  .cart-tag.secondary { color: var(--color-fg-tertiary); border-color: #C7C7C7; }
+  .cart-sold-overlay {
+    position: relative;
+  }
+  .cart-sold-overlay .cart-item-thumb {
+    opacity: 0.5;
+  }
+  .cart-sold-sticker {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0,0,0,0.55);
+    color: #fff;
+    font-size: 11px;
     font-weight: 600;
-    color: var(--color-fg-tertiary);
-    padding: 0 16px 8px;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.06em;
+    padding: 3px 8px;
+    border-radius: 3px;
+    white-space: nowrap;
+    pointer-events: none;
   }
-  .todo-list {
+  .cart-sold-btn {
+    display: block;
+    width: calc(100% - 32px);
+    margin: 0 16px 12px;
+    height: 40px;
+    border-radius: var(--radius-medium);
+    border: 1.5px solid var(--color-border-primary);
     background: var(--color-bg-primary);
-    border-top: 1px solid var(--color-border-primary);
-    border-bottom: 1px solid var(--color-border-primary);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-fg-primary);
+    cursor: pointer;
+    text-align: center;
   }
-  .todo-item {
+  .cart-coupon-box {
+    margin: 0 16px 0;
+    background: #f5f5f5;
+    border-radius: var(--radius-medium);
+    padding: 12px 14px;
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 16px;
+    gap: 10px;
     cursor: pointer;
-    transition: background 0.1s;
   }
-  .todo-item + .todo-item { border-top: 1px solid var(--color-border-secondary); }
-  .todo-item:active { background: var(--color-bg-secondary); }
-  .todo-icon-wrap {
-    width: 40px;
-    height: 40px;
-    border-radius: var(--radius-full);
+  .cart-coupon-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-small);
+    background: var(--color-bg-attention);
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+    color: #fff;
+    font-size: 17px;
+    font-weight: 700;
   }
-  .todo-icon-wrap.type-send    { background: #EFF7FF; }
-  .todo-icon-wrap.type-receive { background: #E3FFEA; }
-  .todo-icon-wrap.type-rate    { background: #FFF5D0; }
-  .todo-icon-wrap.type-alert   { background: #FEF5F7; }
-  .todo-item-body { flex: 1; }
-  .todo-item-label {
-    font-size: 15px;
+  .cart-coupon-body { flex: 1; min-width: 0; }
+  .cart-coupon-title {
+    font-size: 13px;
     font-weight: 600;
     color: var(--color-fg-primary);
     margin-bottom: 2px;
   }
-  .todo-item-sub {
-    font-size: 13px;
+  .cart-coupon-sub {
+    font-size: 12px;
     font-weight: 300;
     color: var(--color-fg-secondary);
   }
-  .todo-badge {
-    min-width: 22px;
-    height: 22px;
-    border-radius: var(--radius-full);
-    background: var(--color-bg-attention);
-    color: var(--color-fg-bold);
-    font-size: 12px;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0 6px;
-    flex-shrink: 0;
+  .cart-purchase-section {
+    padding: 14px 16px 16px;
+    border-top: 1px solid var(--color-border-primary);
   }
-  .todo-chevron {
-    color: var(--color-fg-disabled);
-    flex-shrink: 0;
+  .cart-price-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 2px;
+  }
+  .cart-price-label {
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--color-fg-primary);
+  }
+  .cart-price-value {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--color-fg-primary);
+  }
+  .cart-points-text {
+    font-size: 12px;
+    font-weight: 300;
+    color: var(--color-fg-attention);
+    text-align: right;
+    margin-bottom: 14px;
+  }
+  .cart-btn-primary {
+    width: 100%;
+    height: 52px;
+    background: var(--color-bg-attention);
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    transition: opacity 0.12s;
+  }
+  .cart-btn-primary:active { opacity: 0.75; }
+  .cart-overall-footer {
+    background: var(--color-bg-primary);
+    margin-top: 8px;
+    padding: 16px;
+    padding-bottom: calc(env(safe-area-inset-bottom) + 20px);
+    border-top: 1px solid var(--color-border-primary);
+  }
+  .cart-overall-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 2px;
+  }
+  .cart-overall-label {
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--color-fg-primary);
+  }
+  .cart-overall-value {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--color-fg-primary);
+  }
+  .cart-overall-sub {
+    font-size: 12px;
+    font-weight: 300;
+    color: var(--color-fg-attention);
+    text-align: right;
+    margin-bottom: 16px;
   }
 
   /* ─ コンテンツ全体パディング ─ */
@@ -2835,73 +3071,135 @@
       </button>
       <span class="panel-title">お知らせ</span>
     </div>
+    <!-- FilterChip -->
+    <div class="panel-chip-bar">
+      <div class="panel-chip active">すべて</div>
+      <div class="panel-chip">あなた宛</div>
+      <div class="panel-chip">キャンペーン</div>
+    </div>
     <div class="panel-scroll">
-      <div class="notif-section-label">新着</div>
+      <!-- おすすめキャンペーンカード -->
+      <div class="campaign-card">
+        <div class="campaign-card-text">6件のおすすめキャンペーンを見る</div>
+        <svg width="8" height="13" viewBox="0 0 8 13" fill="none">
+          <path d="M1 1l6 5.5L1 12" stroke="#0095ee" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+
+      <!-- 通知リスト -->
       <div class="notif-list">
-        <div class="notif-item unread">
-          <div class="notif-icon-wrap type-trade">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="var(--color-fg-accent)" stroke-width="1.5" stroke-linejoin="round"/></svg>
+        <!-- row 1: いいね通知（商品サムネイル＋いいねバッジ） -->
+        <div class="notif-row">
+          <div class="notif-thumb-wrap">
+            <img class="notif-thumb item-shape" src="assets/images/b1e08b52-4db2-4a3b-a8dc-ba64ce3e7c18.png" alt="">
+            <div class="notif-badge like">
+              <svg width="9" height="9" viewBox="0 0 24 24" fill="#fff"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              3
+            </div>
           </div>
-          <div class="notif-body">
-            <div class="notif-title">購入申請が届きました</div>
-            <div class="notif-desc">【ナイキ】エアフォース1 ホワイト 26.5cm に購入申請がありました</div>
+          <div class="notif-text">
+            <div class="notif-text-primary"><strong>username_abc</strong>さんが出品中の商品にいいね！しました</div>
             <div class="notif-time">5分前</div>
           </div>
           <div class="notif-unread-dot"></div>
         </div>
-        <div class="notif-item unread">
-          <div class="notif-icon-wrap type-promo">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" fill="var(--color-bg-notice)"/></svg>
+
+        <!-- row 2: コメント通知（商品サムネイル＋コメントバッジ） -->
+        <div class="notif-row">
+          <div class="notif-thumb-wrap">
+            <img class="notif-thumb item-shape" src="assets/images/46c29b27-bbb0-42f7-ac00-78e302a3e5ac.png" alt="">
+            <div class="notif-badge comment">
+              <svg width="9" height="9" viewBox="0 0 24 24" fill="#fff"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              1
+            </div>
           </div>
-          <div class="notif-body">
-            <div class="notif-title">ポイント5倍キャンペーン開催中！</div>
-            <div class="notif-desc">本日23:59まで！対象カテゴリの購入でポイントが5倍になります</div>
+          <div class="notif-text">
+            <div class="notif-text-primary"><strong>buyer_2025</strong>さんからコメントが届きました：「こちらはまだ出品中ですか？」</div>
+            <div class="notif-time">32分前</div>
+          </div>
+          <div class="notif-unread-dot"></div>
+        </div>
+
+        <!-- row 3: 取引（ユーザーアバター＋Mercariアイコン） -->
+        <div class="notif-row">
+          <div class="notif-thumb-wrap">
+            <div class="notif-mercari-icon">
+              <svg width="22" height="22" viewBox="0 0 36 36" fill="none">
+                <path d="M18 6C11.373 6 6 11.373 6 18s5.373 12 12 12 12-5.373 12-12S24.627 6 18 6zm-2 17l-5-5 1.41-1.41L16 20.17l7.59-7.59L25 14l-9 9z" fill="#fff"/>
+              </svg>
+            </div>
+          </div>
+          <div class="notif-text">
+            <div class="notif-text-primary">お支払いが完了しました。<strong>3日以内</strong>に発送手続きをお願いします</div>
             <div class="notif-time">2時間前</div>
           </div>
           <div class="notif-unread-dot"></div>
         </div>
-        <div class="notif-item unread">
-          <div class="notif-icon-wrap type-like">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" stroke="var(--color-fg-attention)" stroke-width="1.5" stroke-linejoin="round"/></svg>
+
+        <!-- row 4: ユーザーアバター（購入申請） -->
+        <div class="notif-row">
+          <div class="notif-thumb-wrap">
+            <img class="notif-thumb" src="assets/images/c2e9c9a2-01fe-4f8d-b53c-b84b12fba3b1.png" alt="">
           </div>
-          <div class="notif-body">
-            <div class="notif-title">出品中の商品にいいね！がつきました</div>
-            <div class="notif-desc">【アディダス】スタンスミス ホワイトグリーン 27cm</div>
+          <div class="notif-text">
+            <div class="notif-text-primary"><strong>taro_fashion</strong>さんから購入申請が届きました</div>
             <div class="notif-time">3時間前</div>
           </div>
           <div class="notif-unread-dot"></div>
         </div>
-      </div>
 
-      <div class="notif-section-label" style="margin-top:8px;">過去のお知らせ</div>
-      <div class="notif-list">
-        <div class="notif-item">
-          <div class="notif-icon-wrap type-trade">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="2" y="3" width="20" height="14" rx="2" stroke="var(--color-fg-accent)" stroke-width="1.5"/><path d="M8 21h8M12 17v4" stroke="var(--color-fg-accent)" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <!-- row 5: メルカリアイコン（配送） -->
+        <div class="notif-row">
+          <div class="notif-thumb-wrap">
+            <div class="notif-mercari-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zm-.5 1.5l1.96 2.5H17V9.5h2.5zM6 18c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm2.22-3c-.55-.61-1.33-1-2.22-1s-1.67.39-2.22 1H3V6h12v9H8.22zm9.78 3c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z" fill="#fff"/>
+              </svg>
+            </div>
           </div>
-          <div class="notif-body">
-            <div class="notif-title">評価をお願いします</div>
-            <div class="notif-desc">取引が完了しました。相手の評価をお忘れなく</div>
+          <div class="notif-text">
+            <div class="notif-text-primary">配送状況が更新されました。「配送中」になりました</div>
             <div class="notif-time">昨日</div>
           </div>
         </div>
-        <div class="notif-item">
-          <div class="notif-icon-wrap type-system">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 22C6.48 22 2 17.52 2 12S6.48 2 12 2s10 4.48 10 10-4.48 10-10 10zm0-11v5m0-8v1" stroke="var(--color-fg-tertiary)" stroke-width="1.5" stroke-linecap="round"/></svg>
+
+        <!-- row 6: いいね通知（商品サムネイル） -->
+        <div class="notif-row">
+          <div class="notif-thumb-wrap">
+            <img class="notif-thumb item-shape" src="assets/images/f9e1f26d-7e71-4c02-a6d5-12edd5e9aafc.png" alt="">
+            <div class="notif-badge like">
+              <svg width="9" height="9" viewBox="0 0 24 24" fill="#fff"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              12
+            </div>
           </div>
-          <div class="notif-body">
-            <div class="notif-title">メルカリ便の配送状況が更新されました</div>
-            <div class="notif-desc">お荷物が配送中になりました（追跡番号: 1234-5678-9012）</div>
+          <div class="notif-text">
+            <div class="notif-text-primary">出品中の商品に<strong>12件</strong>のいいね！がつきました</div>
             <div class="notif-time">2日前</div>
           </div>
         </div>
-        <div class="notif-item">
-          <div class="notif-icon-wrap type-system">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 22C6.48 22 2 17.52 2 12S6.48 2 12 2s10 4.48 10 10-4.48 10-10 10zm0-11v5m0-8v1" stroke="var(--color-fg-tertiary)" stroke-width="1.5" stroke-linecap="round"/></svg>
+
+        <!-- row 7: キャンペーン（メルカリアイコン） -->
+        <div class="notif-row">
+          <div class="notif-thumb-wrap">
+            <div class="notif-mercari-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm4.24 16L12 15.45 7.77 18l1.12-4.81-3.73-3.23 4.92-.42L12 5l1.92 4.53 4.92.42-3.73 3.23L16.23 18z" fill="#fff"/>
+              </svg>
+            </div>
           </div>
-          <div class="notif-body">
-            <div class="notif-title">サービス利用規約が更新されました</div>
-            <div class="notif-desc">2026年4月1日より新しい利用規約が適用されます</div>
+          <div class="notif-text">
+            <div class="notif-text-primary">ポイント<strong>5倍</strong>キャンペーン開催中！本日23:59まで</div>
+            <div class="notif-time">2日前</div>
+          </div>
+        </div>
+
+        <!-- row 8: 評価リマインダー（ユーザーアバター） -->
+        <div class="notif-row">
+          <div class="notif-thumb-wrap">
+            <img class="notif-thumb" src="assets/images/0eb5ec2e-e0c3-414c-a7ef-9b26c79ead9a.png" alt="">
+          </div>
+          <div class="notif-text">
+            <div class="notif-text-primary">取引が完了しました。<strong>hana_tokyo</strong>さんへの評価をお願いします</div>
             <div class="notif-time">3日前</div>
           </div>
         </div>
@@ -2917,31 +3215,124 @@
           <path d="M9 1L1.5 8.5L9 16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </button>
-      <span class="panel-title">カート</span>
+      <span class="panel-title">カート（3）</span>
     </div>
     <div class="panel-scroll">
-      <div class="cart-list">
-        <div class="cart-item">
-          <img class="cart-thumb" src="assets/images/b1e08b52-4db2-4a3b-a8dc-ba64ce3e7c18.png" alt="商品">
-          <div class="cart-item-body">
-            <div class="cart-item-name">【ナイキ】エアマックス95 OG ネオンイエロー 27.0cm 美品</div>
+      <!-- 販売中フィルター -->
+      <div class="cart-check-row">
+        <input type="checkbox" id="cart-filter" checked>
+        <label for="cart-filter">販売中の商品のみ表示</label>
+      </div>
+
+      <!-- 出品者グループ 1 -->
+      <div class="cart-seller-group">
+        <div class="cart-seller-row">
+          <div class="cart-seller-avatar" style="background:#f0e0d0;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="#C7C7C7"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>
+          </div>
+          <span class="cart-seller-name">sneaker_lover_jp</span>
+        </div>
+
+        <!-- item 1 -->
+        <div class="cart-item-group">
+          <img class="cart-item-thumb" src="assets/images/b1e08b52-4db2-4a3b-a8dc-ba64ce3e7c18.png" alt="商品">
+          <div class="cart-item-info">
+            <div class="cart-item-name">【ナイキ】エアマックス95 OG ネオンイエロー 27.0cm 美品 箱付き</div>
             <div class="cart-item-price">¥24,800</div>
+            <div class="cart-tags">
+              <span class="cart-tag attention">送料込み</span>
+              <span class="cart-tag secondary">ゆうゆうメルカリ便</span>
+            </div>
           </div>
         </div>
-        <div class="cart-item">
-          <img class="cart-thumb" src="assets/images/46c29b27-bbb0-42f7-ac00-78e302a3e5ac.png" alt="商品">
-          <div class="cart-item-body">
-            <div class="cart-item-name">LOEWE ロエベ パズルバッグ スモール ブラック</div>
-            <div class="cart-item-price">¥148,000</div>
+
+        <!-- クーポンボックス -->
+        <div class="cart-coupon-box">
+          <div class="cart-coupon-icon">%</div>
+          <div class="cart-coupon-body">
+            <div class="cart-coupon-title">クーポンを選択してください</div>
+            <div class="cart-coupon-sub">利用可能なクーポンが1枚あります</div>
           </div>
+          <svg width="8" height="13" viewBox="0 0 8 13" fill="none"><path d="M1 1l6 5.5L1 12" stroke="#C7C7C7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+
+        <!-- 支払い小計・ボタン -->
+        <div class="cart-purchase-section">
+          <div class="cart-price-row">
+            <span class="cart-price-label">支払い金額</span>
+            <span class="cart-price-value">¥24,800</span>
+          </div>
+          <div class="cart-points-text">獲得予定ポイント：248P</div>
+          <button class="cart-btn-primary">購入手続きへ</button>
         </div>
       </div>
-      <div class="cart-footer">
-        <div class="cart-total-row">
-          <span class="cart-total-label">合計（2点）</span>
-          <span class="cart-total-price">¥172,800</span>
+
+      <!-- 出品者グループ 2 -->
+      <div class="cart-seller-group">
+        <div class="cart-seller-row">
+          <div class="cart-seller-avatar" style="background:#d0e8f0;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="#C7C7C7"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>
+          </div>
+          <span class="cart-seller-name">vintage_select_osaka</span>
         </div>
-        <button class="cart-checkout-btn">購入手続きへ</button>
+
+        <!-- item 2 -->
+        <div class="cart-item-group">
+          <img class="cart-item-thumb" src="assets/images/46c29b27-bbb0-42f7-ac00-78e302a3e5ac.png" alt="商品">
+          <div class="cart-item-info">
+            <div class="cart-item-name">LOEWE ロエベ パズルバッグ スモール ブラック 正規品</div>
+            <div class="cart-item-price">¥148,000</div>
+            <div class="cart-tags">
+              <span class="cart-tag attention">送料込み</span>
+              <span class="cart-tag secondary">らくらくメルカリ便</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 支払い小計・ボタン -->
+        <div class="cart-purchase-section">
+          <div class="cart-price-row">
+            <span class="cart-price-label">支払い金額</span>
+            <span class="cart-price-value">¥148,000</span>
+          </div>
+          <div class="cart-points-text">獲得予定ポイント：1,480P</div>
+          <button class="cart-btn-primary">購入手続きへ</button>
+        </div>
+      </div>
+
+      <!-- 出品者グループ 3（売り切れ） -->
+      <div class="cart-seller-group">
+        <div class="cart-seller-row">
+          <div class="cart-seller-avatar" style="background:#e0e0e0;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="#C7C7C7"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>
+          </div>
+          <span class="cart-seller-name">miki_handmade</span>
+        </div>
+
+        <!-- item 3（売り切れ） -->
+        <div class="cart-item-group">
+          <div class="cart-sold-overlay" style="position:relative;flex-shrink:0;">
+            <img class="cart-item-thumb" src="assets/images/f9e1f26d-7e71-4c02-a6d5-12edd5e9aafc.png" alt="商品" style="opacity:0.45;">
+            <div class="cart-sold-sticker">SOLD</div>
+          </div>
+          <div class="cart-item-info" style="opacity:0.5;">
+            <div class="cart-item-name">ハンドメイド刺繍ポーチ フラワーモチーフ ピンク</div>
+            <div class="cart-item-price">¥3,200</div>
+            <div class="cart-tags">
+              <span class="cart-tag secondary">売り切れ</span>
+            </div>
+          </div>
+        </div>
+        <button class="cart-sold-btn">似た商品をさがす</button>
+      </div>
+
+      <!-- 合計フッター -->
+      <div class="cart-overall-footer">
+        <div class="cart-overall-row">
+          <span class="cart-overall-label">お支払い合計（2点）</span>
+          <span class="cart-overall-value">¥172,800</span>
+        </div>
+        <div class="cart-overall-sub">獲得予定ポイント合計：1,728P</div>
       </div>
     </div>
   </div>
@@ -2957,59 +3348,76 @@
       <span class="panel-title">やること</span>
     </div>
     <div class="panel-scroll">
-      <div class="todo-section">
-        <div class="todo-section-label">出品中の取引</div>
-        <div class="todo-list">
-          <div class="todo-item">
-            <div class="todo-icon-wrap type-alert">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" stroke="var(--color-fg-attention)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div class="info-list">
+        <!-- row 1: 発送期限（メルカリアイコン＋バッジ） -->
+        <div class="info-row">
+          <div class="info-thumb-wrap">
+            <div class="notif-mercari-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zm-.5 1.5l1.96 2.5H17V9.5h2.5zM6 18c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm2.22-3c-.55-.61-1.33-1-2.22-1s-1.67.39-2.22 1H3V6h12v9H8.22zm9.78 3c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z" fill="#fff"/>
+              </svg>
             </div>
-            <div class="todo-item-body">
-              <div class="todo-item-label">発送期限が近い</div>
-              <div class="todo-item-sub">本日23:59までに発送してください</div>
-            </div>
-            <div class="todo-badge">1</div>
-            <svg class="todo-chevron" width="8" height="13" viewBox="0 0 8 13" fill="none"><path d="M1 1l6 5.5L1 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <div class="info-thumb-badge">1</div>
           </div>
-          <div class="todo-item">
-            <div class="todo-icon-wrap type-send">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="var(--color-fg-accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </div>
-            <div class="todo-item-body">
-              <div class="todo-item-label">発送待ち</div>
-              <div class="todo-item-sub">購入者が支払い済みです</div>
-            </div>
-            <div class="todo-badge">2</div>
-            <svg class="todo-chevron" width="8" height="13" viewBox="0 0 8 13" fill="none"><path d="M1 1l6 5.5L1 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <div class="info-body">
+            <div class="info-label"><strong>本日23:59までに発送</strong>してください</div>
+            <div class="info-sub">発送期限が迫っています</div>
           </div>
-          <div class="todo-item">
-            <div class="todo-icon-wrap type-rate">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="var(--color-bg-notice)" stroke-width="1.5" stroke-linejoin="round"/></svg>
-            </div>
-            <div class="todo-item-body">
-              <div class="todo-item-label">評価待ち</div>
-              <div class="todo-item-sub">取引完了後に評価をお願いします</div>
-            </div>
-            <div class="todo-badge">1</div>
-            <svg class="todo-chevron" width="8" height="13" viewBox="0 0 8 13" fill="none"><path d="M1 1l6 5.5L1 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
+          <svg class="info-chevron" width="8" height="13" viewBox="0 0 8 13" fill="none"><path d="M1 1l6 5.5L1 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
-      </div>
 
-      <div class="todo-section" style="margin-top:8px;">
-        <div class="todo-section-label">購入中の取引</div>
-        <div class="todo-list">
-          <div class="todo-item">
-            <div class="todo-icon-wrap type-receive">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke="var(--color-fg-success)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </div>
-            <div class="todo-item-body">
-              <div class="todo-item-label">受取評価を忘れずに</div>
-              <div class="todo-item-sub">商品到着後は受取連絡をしてください</div>
-            </div>
-            <div class="todo-badge">1</div>
-            <svg class="todo-chevron" width="8" height="13" viewBox="0 0 8 13" fill="none"><path d="M1 1l6 5.5L1 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <!-- row 2: 発送待ち（商品サムネイル） -->
+        <div class="info-row">
+          <div class="info-thumb-wrap">
+            <img class="info-thumb item-shape" src="assets/images/b1e08b52-4db2-4a3b-a8dc-ba64ce3e7c18.png" alt="">
+            <div class="info-thumb-badge">2</div>
           </div>
+          <div class="info-body">
+            <div class="info-label">購入者が支払いを完了しました。<strong>発送手続き</strong>をしてください</div>
+            <div class="info-sub">発送待ち · 2件</div>
+          </div>
+          <svg class="info-chevron" width="8" height="13" viewBox="0 0 8 13" fill="none"><path d="M1 1l6 5.5L1 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+
+        <!-- row 3: 評価依頼（ユーザーアバター） -->
+        <div class="info-row">
+          <div class="info-thumb-wrap">
+            <img class="info-thumb" src="assets/images/c2e9c9a2-01fe-4f8d-b53c-b84b12fba3b1.png" alt="">
+            <div class="info-thumb-badge">1</div>
+          </div>
+          <div class="info-body">
+            <div class="info-label">取引が完了しました。<strong>評価</strong>をしてください</div>
+            <div class="info-sub">評価待ち · taro_fashion さん</div>
+          </div>
+          <svg class="info-chevron" width="8" height="13" viewBox="0 0 8 13" fill="none"><path d="M1 1l6 5.5L1 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+
+        <!-- row 4: 受取評価（商品サムネイル） -->
+        <div class="info-row">
+          <div class="info-thumb-wrap">
+            <img class="info-thumb item-shape" src="assets/images/46c29b27-bbb0-42f7-ac00-78e302a3e5ac.png" alt="">
+          </div>
+          <div class="info-body">
+            <div class="info-label">商品を受け取ったら<strong>受取評価</strong>をしてください</div>
+            <div class="info-sub">受取確認待ち</div>
+          </div>
+          <svg class="info-chevron" width="8" height="13" viewBox="0 0 8 13" fill="none"><path d="M1 1l6 5.5L1 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+
+        <!-- row 5: 本人確認（メルカリアイコン） -->
+        <div class="info-row">
+          <div class="info-thumb-wrap">
+            <div class="notif-mercari-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z" fill="#fff"/>
+              </svg>
+            </div>
+          </div>
+          <div class="info-body">
+            <div class="info-label">売上金の振込には<strong>本人確認</strong>が必要です</div>
+            <div class="info-sub">かんたん本人確認で約5分</div>
+          </div>
+          <svg class="info-chevron" width="8" height="13" viewBox="0 0 8 13" fill="none"><path d="M1 1l6 5.5L1 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
       </div>
     </div>
