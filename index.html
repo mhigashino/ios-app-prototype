@@ -244,28 +244,24 @@
     .tab-icon {
       width: 26px;
       height: 26px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
+      display: grid;
+    }
+
+    .tab-icon svg,
+    .tab-icon img {
+      grid-area: 1 / 1;
+      width: 24px;
+      height: 24px;
+      align-self: center;
+      justify-self: center;
     }
 
     .tab-icon svg {
-      position: absolute;
-      width: 24px;
-      height: 24px;
       fill: var(--color-fg-primary);
     }
 
     .tab-icon svg path {
       fill: inherit;
-    }
-
-    .tab-icon img {
-      position: absolute;
-      width: 24px;
-      height: 24px;
-      display: block;
     }
 
     .tab-label {
